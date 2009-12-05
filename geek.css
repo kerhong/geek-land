@@ -1,0 +1,66 @@
+body
+{
+	width: 900px;
+	margin: 0px;
+}
+#en_tete
+{
+	width: 900px;
+	border: 1px solid black;
+	font-family: "trebuchet ms";
+	font-size: 25px;
+	margin-left: 150px;
+	text-align: center;
+}
+#colonne
+{
+	width: 200px;
+	float: left;
+	border: 1px solid black;
+	margin-left: 150px;
+}
+.bloc
+{
+	border: 1px dashed green;
+	font-family: "trebuchet ms";
+	margin-bottom: 10px;
+	width: 180px;
+	margin-left: 10px;
+}
+.bloc h3
+{
+	font-size: 15px;
+	text-align: center;
+}
+.bloc li
+{
+	text-align: center;
+	font-size: 12px;
+}
+.bloc a
+{
+	color: black;
+}
+.bloc a:hover;
+{
+	font-size: 15px;
+}
+#corps
+{
+	width: 700px;
+	margin-left: 350px;
+	border: 1px solid black;
+	font-family: "trebuchet ms";
+}
+#corps h1
+{
+	font-size: 17px;
+	text-align: center;
+}
+#corps p
+{
+	font-size: 12px;
+	text-align: center;
+}
+	
+
