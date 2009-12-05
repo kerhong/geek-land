@@ -17,7 +17,6 @@
 <input type="text" name="pseudo" value="Pseudo" size=15 /><br />
 <input type="password" name="password" value="*******" size=15 /><br />
 <input type="submit" value="submit"/>
-</form>
 <a href="inscription.php">Inscription</a>
 </div>
 
