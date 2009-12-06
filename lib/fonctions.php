@@ -1,7 +1,7 @@
 <?php
 defined( 'PHP_EXT' ) || exit();
 
-include_once 'lib/class_bdd' . PHP_EXT;
+require_once 'lib/class_bdd' . PHP_EXT;
 
 bdd::init();
 

@@ -7,7 +7,7 @@
 			exit( 'Page bloquée.' );
 		}
 //Ici je vais mettre toutes les fonctions qui reviennent souvent sur le site.
-	include_once 'lib/fonctions' . PHP_EXT;
+	require_once 'lib/fonctions' . PHP_EXT;
 	$erreur = array();
 	if( !isset( $_POST['pseudo'] ) || !isset( $_POST['pass'] ) || !isset( $_POST['passconf'] ) || !isset( $_POST['email'] ) || !isset( $_POST['date'] ) )
 	{
@@ -71,7 +71,7 @@
 		$erreur[] = 'c'.$_SESSION['securecode'];
 	}
 	//Validation
-	if( $erreur == '' )
+	if( $erreur == array() )
 	{
 		include( 'haut' . PHP_EXT );
 		$pass = md5( $pass );
@@ -79,10 +79,12 @@
 		 VALUES(\'\',\'' . $pseudo . '\',\'' . $pass . '\', \'' . $email . '\', \'' . $date . '\', \'' . 0 . '\')');
 		 or die('Erreur MySQL: '.mysql_error().'<br />'.__LINE__);
 		echo '<center>Inscription réussi !</center>';
-		include_once 'bas' . PHP_EXT;
+		require_once 'bas' . PHP_EXT;
 	}
 	else
 	{
-		header( 'Location: ' . ROOT_URL . '/inscription' . PHP_EXT . '?pseudo=' . $pseudo . '&pass=' . $pass . '&mail=' . $email . '&date=' . $date . '&erreur=' . $erreur );
+		header( 'Location: ' . ROOT_URL . '/?inscription?pseudo=' . $pseudo . '&pass=' . $pass . '&mail=' . $email . '&date=' . $date );
+		$_SESSION['erreur'] = $erreur;
+//		'&erreur=' . $erreur );
 	}
-	include_once 'bas' . PHP_EXT;
+	require_once 'bas' . PHP_EXT;

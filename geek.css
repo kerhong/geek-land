@@ -34,7 +34,7 @@ body
 }
 .bloc li
 {
-	text-align: center;
+/*	text-align: center;	*/
 	font-size: 12px;
 }
 .bloc a

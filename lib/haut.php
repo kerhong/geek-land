@@ -4,13 +4,13 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
 	<head>
 		<title>
-			.:: GeeK-LanD :: <?php ?> ::.
+			.:: GeeK-LanD &bull; <?php echo ucfirst( $page ); ?> ::.
 		</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<link rel="stylesheet" media="screen" type="text/css" title="Design" href="geek.css" />
 	</head>
 	<body>
-		<div id="en_tete"><!--Header basique...-->
+		<div id="en_tete"><!--Header basique ...-->
 			<h1>
 				GeeK-LanD
 			</h1>
@@ -36,7 +36,7 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 				<a href="?inscription">Inscription</a>
 			</div>
 			<div class="bloc"><!--Le menu-->
-				<h3>
+				<h3 align="center">
 					Menu
 				</h3>
 				<ul>
