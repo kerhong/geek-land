@@ -1,4 +1,7 @@
 <?php
+	define('BLOCK','1');
+	if (BLOCK == 1) 
+		exit('Page bloquée.');
 //Ici je vais mettre toutes les fonctions qui reviennent souvent sur le site.
 	include('fonctions.php');
 	$erreur = '';
@@ -43,7 +46,7 @@
 		include_once('bas.php');
 	}
 	else {
-		header('Location: /inscription.php?pseudo='.$pseudo.'&pass='.$pass.'&mail='.$email.'&date='.$date.'&erreur='.$erreur);
+		header('Location: http://geek-land.zxq.net/inscription.php?pseudo='.$pseudo.'&pass='.$pass.'&mail='.$email.'&date='.$date.'&erreur='.$erreur);
 	}
 	include_once('bas.php');
 ?>

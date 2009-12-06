@@ -1,4 +1,7 @@
 <?php 
+	define('BLOCK','1');
+	if (BLOCK == 1) 
+		exit('Page bloquée.');
 	include('haut.php'); 
 	if (isset($_GET['erreur'])) {
 		$erreur = $_GET['erreur'];
