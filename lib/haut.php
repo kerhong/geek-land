@@ -31,7 +31,6 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 				echo $form->input( array( 'name' => 'pseudo', 'value' => 'Pseudo' ) ) . '<br />';
 				echo $form->input( array( 'name' => 'password' ), 'password' ) . '<br />';
 				echo $form->input( NULL, 'submit' );
-				unset( $form );
 				?><br />
 				<a href="?inscription">Inscription</a>
 			</div>

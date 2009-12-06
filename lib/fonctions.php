@@ -5,11 +5,13 @@ require_once 'lib/class_bdd' . PHP_EXT;
 
 bdd::init();
 
+//Répète un certain nombre de fois la balise <br />
 function doBR($i = 1)
 {
 	return str_repeat( '<br />', $i );
 }
-function toHTMLAttr( $attr )
+//Tranforme un array() en attribut HTML
+function toHTMLAttr( $attr, $for_CSS = false )
 {
 	if( !is_array( $attr ) )
 	{
@@ -18,7 +20,10 @@ function toHTMLAttr( $attr )
 	$formattedElem = '';
 	foreach( $attr as $key => $value )
 	{
-		$formattedElem .= ' ' . $key . '="' . $value . '"';
+		if( $value != NULL)
+		{
+			$formattedElem .= ' ' . $key . ( !$for_CSS ? '="' : ': ' ) . $value . ( !$for_CSS ? '"' : ";\n" );
+		}
 	}
 	return $formattedElem;
 }
@@ -49,32 +54,49 @@ class Form
 		{
 			$data['size'] = 15;
 		}
+		if( !isset( $data['maxlength'] ) )
+		{
+			$data['maxlength'] = $data['size'];
+		}
 		$str = '<form' . toHTMLAttr( $data ) . '>';
 		$this->data = $data;
 		$this->instance = $this;
 	}
 	public function __destruct()
 	{
+		$this->close();
+	}
+	public function close()
+	{
 		echo '</form>';
 	}
-
-	public function input($data = array(), $type = 'text')
+	public function input($data = array(), $type = NULL, $label = NULL)
 	{
+		if( $type == NULL )
+		{
+			$type = 'text';
+		}
 		$type = ucfirst( $type );
 		if( !class_exists( $type . 'Input', false ) )
 		{
 			throw New InputException( 'This input type does not exists' );
 		}
 		$className = $type . 'Input';
-		$this->input[] = new $className( $data, $this->instance );
-		return $this->input[count( $this->input ) - 1];
+		$new_input = $this->input[]
+		$new_input = new $className( $data, $this->instance );
+		if( $label != NULL )
+		{
+			$new_input->label( $label );
+		}
+		return $new_input;
 	}
 }
 
 class Input
 {
-	private $data,
-		$form;
+	private $attr,
+		$form,
+		$label;
 
 	public function __construct($data = array(), $form = NULL)
 	{
@@ -86,6 +108,10 @@ class Input
 		{
 			$this->form = $form;
 		}
+		if( !isset( $data['name'] ) )
+		{
+			throw new InputException( 'The name of the input must be specified' );
+		}
 		if( $data == NULL)
 		{
 			$data = array();
@@ -94,17 +120,61 @@ class Input
 		{
 			unset( $data['type'] );
 		}
+		if( isset( $data['_take_from'] ) )
+		{
+			$data['_take_from'] = strtoupper( $data['_take_from'] );
+			if( ( $data['_take_from'] == 'GET' || $data['_take_from'] == 'POST' ) &&  isset( $_{$data['_take_from']}[$data['name']] ) )
+			{
+				$data['value'] = $_{$data['_take_from']}[$data['name']];
+			}
+			unset( $data['_take_from'] );
+		}
 		$this->attr = $data;
 	}
 	public function __toString()
 	{
-		$data = '<input';
+		$data = '<label' .toHTMLAttr( array( 'for' => $this->attr['name'] ) ) . '>
+		' . $this->label . '
+		</label><input';
+		if( !isset( $this->attr['id'] ) )
+		{
+			$this->attr['id'] = $this->attr['name'];
+		}
 		$data .= toHTMLAttr( $this->attr );
-		return $data . '>' . "\n";
+		return $data . ' />' . "\n";
 	}
 	public function close()
 	{
 		$this->form->__destruct();
+	}
+	public function attr()
+	{
+		switch( func_num_args() )
+		{
+			//On veut tout récupérer
+			case 0:
+				return $this->attr;
+				break;
+			//On veut récupérer une clef
+			case 1:
+				return $this->attr[func_get_arg( 0 )];
+				break;
+			default:
+				$this->attr[func_get_arg( 0 )] = func_get_arg( 1 );
+		}
+	}
+	public function label()
+	{
+		switch( func_num_args() )
+		{
+			//On veut tout récupérer
+			case 0:
+				return $this->label;
+				break;
+			//On veut récupérer une clef
+			case 1:
+				$this->label = func_get_arg( 1 );
+		}
 	}
 }
 
@@ -132,11 +202,23 @@ class PasswordInput extends Input
 
 class SubmitInput extends Input
 {
-	public function __construct( $data, $form )
+	public function __construct( $data, $form, $autoClose = true )
 	{
 		parent::__construct( $data, $form );
 		$this->attr['type'] = 'submit';
 		$this->attr['value'] = 'Envoyer';
-		$this->close();
+		if( $autoClose )
+		{
+			$form->close();
+		}
 	}
+}
+
+class SelectInput
+{
+	public function __construct($data = array(), $form)
+		{
+			parent::__construct( $data, $form );
+			$this->attr['type'] = 'select';
+		}
 }

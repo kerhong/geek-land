@@ -1,12 +1,8 @@
 <?php 
-	define('BLOCK','0');
-	if (BLOCK == 1) 
-		exit('Page bloquée.');
-	session_start();
-	include('haut.php'); 
-	if (isset($_GET['erreur'])) {
-		$erreur = $_GET['erreur'];
-		if (preg_match('#1#',$erreur))
+	if (isset($_SESSION['erreur']))
+	{
+		$erreur = $_SESSION['erreur'];
+//		if( in_array( 1, $_SESSION['erreur'] ) )
 			echo '<li>Le pseudo est déjà pris</li>';
 		if (preg_match('#2#',$erreur))
 			echo '<li>Le pseudo doit faire moins de 15 caractères.</li>';
@@ -28,24 +24,37 @@
 			echo '<li>Le captcha n\'est pas bon';
 	}
 ?>
-
 <div id="corps">
 	<p>Inscription :</p>
-	<form action="traitement.php"  method="post">
-		<p>
-			<label for="pseudo">Votre pseudo :</label> <br /> <input type="text" name="pseudo" maxlength="15" value="<?php if (isset($_GET['pseudo'])) echo $_GET['pseudo']; ?>" /> <br />
-			<label for="pass">Votre mot de pass :</label> <br /> <input type="password" name="pass" maxlength="20" value="<?php if (isset($_GET['pass'])) echo $_GET['pass']; ?>"/> <br />
-			<label for="passconf">Veuillez retapez votre mot de pass :</label> <br /> <input type="password" name="passconf" maxlength="20" /> <br />
-			<label for="email">Votre E-Mail :</label> <br /> <input type="text" name="email" maxlength="40" value="<?php if (isset($_GET['email'])) echo $_GET['email']; ?>" /> <br />
-			<label for="date">Votre date de naissance : <i>(format jj/mm/aaaa)</i> </label> <br /> <input type="text" name="date" maxlength="10" value="<?php if (isset($_GET['date'])) echo $_GET['date']; ?>"/> <br />
-			<br /><label for="secure">Veuillez rentrez les caracteres de l'image :</label><br />
-			<img src="securite.php" alt="Code de sécurité" /><input name="secure" type="text" size="10" />
-			<input type="submit" value="Envoyer !" />
-		<p>
-	</form>
+	<?php
+	$form_insc = new Form( array( 'form' => 'traitement' . PHP_EXT ) );
+	echo $form_insc->input( array(
+			'name' => 'pseudo',
+			'_take_from' => 'GET',
+		), NULL, 'Votre pseudo :' ) . '<br />';
+	echo $form_insc->input( array(
+			'name' => 'pass',
+			'maxlength' => 20,
+			'_take_from' => 'GET',
+		), 'password', 'Votre mot de passe :' ) . '<br />';
+	echo $form_insc->input( array(
+			'name' => 'passconf',
+			'maxlength' => 20,
+		), 'password', 'Veuillez retaper votre mot de passe :' ) . '<br />';
+	echo $form_insc->input( array(
+			'name' => 'email',
+			'maxlength' => 40,
+			'_take_from' => 'GET',
+		), NULL, 'Votre E-Mail :' ) . '<br />';
+	echo $form_insc->input( array(
+			'name' => 'date',
+			'maxlength' => 10,
+			'_take_from' => 'GET',
+		), NULL, 'Votre date de naissance <i>(format jj/mm/aaaa)</i> :' ) . '<br />';
+	echo $form_insc->input( array(
+			'name' => 'secure',
+			'size' => 10,
+		), 'password', 'Veillez rentrer les caract&egrave;res de l\'image :<br /><img src="securite.php" alt="Code de sécurité" />' ) . '<br />';
+	echo $form_insc->input( NULL, 'submit' );
+	?>
 </div>
-<script type="text/javascript">
-document.title = ".:Geek-Land:.:Inscription:.";
-</script>
-<?php include('bas.php'); ?>
-
