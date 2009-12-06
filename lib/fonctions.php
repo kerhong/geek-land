@@ -20,7 +20,7 @@ function toHTMLAttr( $attr, $for_CSS = false )
 	$formattedElem = '';
 	foreach( $attr as $key => $value )
 	{
-		if( $value != NULL)
+		if( $value != NULL )
 		{
 			$formattedElem .= ' ' . $key . ( !$for_CSS ? '="' : ': ' ) . $value . ( !$for_CSS ? '"' : ";\n" );
 		}
@@ -70,13 +70,13 @@ class Form
 	{
 		echo '</form>';
 	}
-	public function input($data = array(), $type = NULL, $label = NULL)
+	public function input($data = array(), $type_ = NULL, $label = NULL, $opt = NULL )
 	{
-		if( $type == NULL )
+		if( $type_ == NULL )
 		{
-			$type = 'text';
+			$type_ = 'text';
 		}
-		$type = ucfirst( $type );
+		$type_ = ucfirst( $type );
 		if( !class_exists( $type . 'Input', false ) )
 		{
 			throw New InputException( 'This input type does not exists' );
@@ -84,6 +84,8 @@ class Form
 		$className = $type . 'Input';
 		$new_input = $this->input[]
 		$new_input = new $className( $data, $this->instance );
+		$new_input->attr( 'type', $type_ );
+		$new_input->load( $opt );
 		if( $label != NULL )
 		{
 			$new_input->label( $label );
@@ -98,6 +100,7 @@ class Input
 		$form,
 		$label;
 
+	public function load() {}
 	public function __construct($data = array(), $form = NULL)
 	{
 		if( !$form instanceof Form )
@@ -180,19 +183,16 @@ class Input
 
 class TextInput extends Input
 {
-	public function __construct($data = array(), $form)
-	{
-		parent::__construct( $data, $form );
-		$this->attr['type'] = 'text';
-	}
+}
+
+class SelectInput
+{
 }
 
 class PasswordInput extends Input
 {
-	public function __construct($data = array(), $form)
+	public function load()
 	{
-		parent::__construct( $data, $form );
-		$this->attr['type'] = 'password';
 		if( !isset( $this->attr['value'] ) )
 		{
 			$this->attr['value'] = '*******';
@@ -202,23 +202,12 @@ class PasswordInput extends Input
 
 class SubmitInput extends Input
 {
-	public function __construct( $data, $form, $autoClose = true )
+	public function load( $opt )
 	{
-		parent::__construct( $data, $form );
-		$this->attr['type'] = 'submit';
 		$this->attr['value'] = 'Envoyer';
-		if( $autoClose )
+		if( isset( $opt['autoClose'] ) && $opt['autoClose'] )
 		{
 			$form->close();
 		}
 	}
-}
-
-class SelectInput
-{
-	public function __construct($data = array(), $form)
-		{
-			parent::__construct( $data, $form );
-			$this->attr['type'] = 'select';
-		}
 }
