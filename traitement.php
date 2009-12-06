@@ -2,6 +2,7 @@
 	session_start();
 	define( 'ROOT_URL', 'http://geek-land.zxq.net' );
 	define( 'BLOCK', '0' );
+	include( 'lib/haut.php' );
 	if( BLOCK == 1 )
 		{
 			exit( 'Page bloquée.' );
@@ -12,7 +13,7 @@
 	$passconf = $_POST['passconf'];
 	$email = $_POST['email'];
 	$date = $_POST['date'];
-	require_once 'lib/haut' . PHP_EXT;
+	require_once 'lib/haut.php';
 	$erreur = array();
 	if( !isset( $_POST['pseudo'] ) || !isset( $_POST['pass'] ) || !isset( $_POST['passconf'] ) || !isset( $_POST['email'] ) || !isset( $_POST['date'] ) )
 	{
@@ -78,7 +79,7 @@
 	//Validation
 	if( $erreur == array() )
 	{
-		include( 'haut' . PHP_EXT );
+	
 		$pass = md5( $pass );
 		mysql_query( 'INSERT INTO coordonees(`id`,`pseudo`,`mot de pass`,`email`,`date`,`banni`)
 		 VALUES(\'\',\'' . $pseudo . '\',\'' . $pass . '\', \'' . $email . '\', \'' . $date . '\', \'' . 0 . '\')');
@@ -88,9 +89,9 @@
 	}
 	else
 	{
-		header( 'Location: ' . ROOT_URL . '/?inscription?pseudo=' . $pseudo . '&pass=' . $pass . '&mail=' . $email . '&date=' . $date );
+		echo '<script type="javascript/text">window.location="'.ROOT_URL . '/?inscription?pseudo=' . $pseudo . '&pass=' . $pass . '&mail=' . $email . '&date=' . $date.'";</script>' );
 		$_SESSION['erreur'] = $erreur;
 //		'&erreur=' . $erreur );
 	}
-	require_once 'bas' . PHP_EXT;
+	require_once 'lib/bas.php';
 	?>

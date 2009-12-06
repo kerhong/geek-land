@@ -1,7 +1,6 @@
 <?php
-defined( 'PHP_EXT' ) || exit();
 
-require_once 'lib/class_bdd' . PHP_EXT;
+require_once 'class_bdd.php';
 
 bdd::init();
 //Ici je vais mettre toutes les fonctions qui reviennent souvent sur le sites=?
@@ -87,7 +86,7 @@ class Form
 			throw New InputException( 'This input type does not exists' );
 		}
 		$className = $type . 'Input';
-		$new_input = $this->input[]
+		$new_input = $this->input();
 		$new_input = new $className( $data, $this->instance );
 		$new_input->attr( 'type', $type_ );
 		$new_input->load( $opt );
