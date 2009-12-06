@@ -1,51 +1,43 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" >
-<head>
-<title>.:: GeeK-LanD ::.:: Inscription ::.</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<link rel="stylesheet" media="screen" type="text/css" title="Design" href="geek.css" />
-</head>
-<body>
-<div id="en_tete"><!--Header basique...-->
-<h1>GeeK-LanD</h1><p style="font-size: 12px; font-family: verdana;"><em>Le site communautaire de tous les GeeKs</em></p>
-</div>
-<!--La colonne du menu.-->
-<div id="colonne">
-<div class="bloc"><!--Les fameux blocs ^^-->
-<h3>Connection</h3>
-<form method="post" action="#">
-<input type="text" name="pseudo" value="Pseudo" size=15 /><br />
-<input type="password" name="password" value="*******" size=15 /><br />
-<input type="submit" value="submit"/>
-<a href="inscription.php">Inscription</a>
-</div>
-
-<div class="bloc"><!--Le menu-->
-<h3>Menu</h3>
-<ul>
-<li><a href="#">Accueil</a></li>
-<li><a href="#">Forum</a></li>
-<li><a href="#">Tutoriaux</a></li>
-<li><a href="#">News</a></li>
-<li><a href="#">Contact</a></li>
-</ul>
-</div>
-</div>
+<?php 
+	include('haut.php'); 
+	if (isset($_GET['erreur'])) {
+		$erreur = $_GET['erreur'];
+		if (preg_match('#1#',$erreur))
+			echo '<li>Le pseudo est déjà pris</li>';
+		if (preg_match('#2#',$erreur))
+			echo '<li>Le pseudo doit faire moins de 15 caractères.</li>';
+		if (preg_match('#3#',$erreur))
+			echo '<li>Le mot de pass doit faire moins de 15 caractères.</li>';
+		if (preg_match('#4#',$erreur))
+			echo '<li>Les mots de pass ne correspondent pas.</li>';
+		if (preg_match('#5#',$erreur))
+			echo '<li>Le format de l\'addresse email est incorrecte</li>';
+		if (preg_match('#6#',$erreur))
+			echo '<li>L\'adresse email doit faire moins de 40 caractères.</li>';
+		if (preg_match('#7#',$erreur))
+			echo '<li>La date est trop longue.</li>';
+		if (preg_match('#8#',$erreur))
+			echo '<li>La date n\'est pas au bon format.</li>';
+		if (preg_match('#9#',$erreur))	
+			echo '<li>L\'email est déjà utilisée';
+	}
+?>
 
 <div id="corps">
-<h1>Les News, etc...</h1>
-<em style="font-size: 10px;">La date, style "Le 05/12/2009"</em><br />
-<p>
-La news.
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-</p>
+	<p>Inscription :</p>
+	<form action="traitement.php"  method="post">
+		<p>
+			<label for="pseudo">Votre pseudo :</label> <br /> <input type="text" name="pseudo" maxlength="15" value="<?php if (isset($_GET['pseudo'])) echo $_GET['pseudo']; ?>" /> <br />
+			<label for="pass">Votre mot de pass :</label> <br /> <input type="password" name="pass" maxlength="20" value="<?php if (isset($_GET['pass'])) echo $_GET['pass']; ?>"/> <br />
+			<label for="passconf">Veuillez retapez votre mot de pass :</label> <br /> <input type="password" name="passconf" maxlength="20" /> <br />
+			<label for="email">Votre E-Mail :</label> <br /> <input type="text" name="email" maxlength="40" value="<?php if (isset($_GET['email'])) echo $_GET['email']; ?>" /> <br />
+			<label for="date">Votre date de naissance : <i>(format jj/mm/aaaa)</i> </label> <br /> <input type="text" name="date" maxlength="10" value="<?php if (isset($_GET['date'])) echo $_GET['date']; ?>"/> <br />
+			<input type="submit" value="Envoyer !" />
+		<p>
+	</form>
 </div>
-
-<div id="pied_page">
-<p style="font-size: 12px; color: grey;">Â©GeeK-LanD, 2000-2010, etc...</p>
-
-</div>
-
-</body>
-</html>
+<script type="text/javascript">
+document.title = ".:Geek-Land:.:Inscription:.";
+</script>
+<?php include('bas.php'); ?>
 
