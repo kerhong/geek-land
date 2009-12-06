@@ -1,7 +1,8 @@
 <?php 
-	define('BLOCK','1');
+	define('BLOCK','0');
 	if (BLOCK == 1) 
 		exit('Page bloquée.');
+	session_start();
 	include('haut.php'); 
 	if (isset($_GET['erreur'])) {
 		$erreur = $_GET['erreur'];
@@ -22,7 +23,9 @@
 		if (preg_match('#8#',$erreur))
 			echo '<li>La date n\'est pas au bon format.</li>';
 		if (preg_match('#9#',$erreur))	
-			echo '<li>L\'email est déjà utilisée';
+			echo '<li>L\'email est déjà utilisée</li>';
+		if (preg_match('#c#',$erreur))	
+			echo '<li>Le captcha n\'est pas bon';
 	}
 ?>
 
@@ -35,6 +38,8 @@
 			<label for="passconf">Veuillez retapez votre mot de pass :</label> <br /> <input type="password" name="passconf" maxlength="20" /> <br />
 			<label for="email">Votre E-Mail :</label> <br /> <input type="text" name="email" maxlength="40" value="<?php if (isset($_GET['email'])) echo $_GET['email']; ?>" /> <br />
 			<label for="date">Votre date de naissance : <i>(format jj/mm/aaaa)</i> </label> <br /> <input type="text" name="date" maxlength="10" value="<?php if (isset($_GET['date'])) echo $_GET['date']; ?>"/> <br />
+			<br /><label for="secure">Veuillez rentrez les caracteres de l'image :</label><br />
+			<img src="securite.php" alt="Code de sécurité" /><input name="secure" type="text" size="10" />
 			<input type="submit" value="Envoyer !" />
 		<p>
 	</form>

@@ -1,8 +1,9 @@
 <?php
-	define('BLOCK','1');
+	define('BLOCK','0');
 	if (BLOCK == 1) 
 		exit('Page bloquée.');
 //Ici je vais mettre toutes les fonctions qui reviennent souvent sur le site.
+	session_start();
 	include('fonctions.php');
 	$erreur = '';
 	$pseudo = $_POST['pseudo'];
@@ -38,6 +39,10 @@
 		$erreur .= 7;
 	if (!preg_match('#^[0-9]{2}/[0-9]{2}/[0-9]{4}$#is',$date)) 
 		$erreur .= 8;
+	//Verification captcha
+	if ($_SESSION['securecode'] != $_POST['secure']) 
+		$erreur .= 'c'.$_SESSION['securecode'];
+	//Validation
 	if ($erreur == '') {
 		include('haut.php');
 		$pass = md5($pass);
