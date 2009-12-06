@@ -31,3 +31,4 @@
 	imagedestroy($image);
 
 	$_SESSION['securecode'] = $code;
+?>

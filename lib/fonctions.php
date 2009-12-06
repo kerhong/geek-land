@@ -4,6 +4,11 @@ defined( 'PHP_EXT' ) || exit();
 require_once 'lib/class_bdd' . PHP_EXT;
 
 bdd::init();
+//Ici je vais mettre toutes les fonctions qui reviennent souvent sur le sites=?
+define('LOGINMYSQL', '64018_site');
+define('PASSMYSQL','jesuislesite');
+define('ADDRESSEMYSQL','hosting.zymic.com');
+session_start();
 
 //Répète un certain nombre de fois la balise <br />
 function doBR($i = 1)

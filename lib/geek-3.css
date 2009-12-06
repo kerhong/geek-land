@@ -1,0 +1,100 @@
+/*
+Design by lechienkitu.
+06/12/2009
+GeeK-LanD.
+*/
+body
+{
+	width: 75%;
+	margin-left: 12.5%;
+	margin-right: 12.5%;
+	background: black;
+}
+#en_tete
+{
+	width: 100%;
+	color: #888a8a;
+	border: 1px solid #888a8a;
+	margin-bottom: 30px;
+	font-family: "trebuchet ms";
+	font-size: 30px;
+	text-align: center;
+}
+#onglets
+{
+	width: 100%;
+	text-align: center;
+	font-family: "trebuchet ms";
+}
+#onglets h4
+{
+	font-size: 20px;
+	text-align: center;
+	color: #888a8a;
+}
+#onglets a
+{
+	font-size: 20px;
+	text-align: center;
+	text-decoration: none;
+	color: #d1d3d6;
+}
+#onglets a:hover{text-decoration:underline;}
+#colonne
+{
+	width: 215px;
+	float: left;
+	border-top: 1px solid #888a8a;
+	border-left: 1px solid #888a8a;
+}
+.bloc
+{
+	width: 200px;
+	font-family: "trebuchet ms";
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+}
+.bloc h3
+{
+	font-size: 20px;
+	text-decoration: underline;
+	color: #888a8a;
+
+}
+.bloc a
+{
+	color: #d1d3d6;
+	text-decoration: none;
+	text-align: center;
+}
+.bloc a:hover{text-decoration: underline;}
+
+#corps
+{
+	margin-left: 0px;
+	border: 1px solid #888a8a;
+	font-family: 'trebuchet ms';
+	min-height: 350px;
+}
+#corps h1
+{
+	font-size: 25px;
+	text-align: center;
+	text-decoration: underline;
+	color: #888a8a
+}
+#corps p
+{
+	font-size: 13px;
+	text-align: center;
+	color: #d1d3d6;
+}
+#pied_page
+{
+	font-size: 11px;
+	text-align: center;
+	color: #d1d3d6;
+}
+
+

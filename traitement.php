@@ -6,8 +6,13 @@
 		{
 			exit( 'Page bloquée.' );
 		}
-//Ici je vais mettre toutes les fonctions qui reviennent souvent sur le site.
-	require_once 'lib/fonctions' . PHP_EXT;
+	$erreur = '';
+	$pseudo = $_POST['pseudo'];
+	$pass = $_POST['pass'];
+	$passconf = $_POST['passconf'];
+	$email = $_POST['email'];
+	$date = $_POST['date'];
+	require_once 'lib/haut' . PHP_EXT;
 	$erreur = array();
 	if( !isset( $_POST['pseudo'] ) || !isset( $_POST['pass'] ) || !isset( $_POST['passconf'] ) || !isset( $_POST['email'] ) || !isset( $_POST['date'] ) )
 	{
@@ -68,7 +73,7 @@
 	//Verification captcha
 	if( !isset($_POST['secure']) || $_SESSION['securecode'] != $_POST['secure'] )
 	{
-		$erreur[] = 'c'.$_SESSION['securecode'];
+		$erreur[] = 'c';
 	}
 	//Validation
 	if( $erreur == array() )
@@ -88,3 +93,4 @@
 //		'&erreur=' . $erreur );
 	}
 	require_once 'bas' . PHP_EXT;
+	?>
