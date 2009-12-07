@@ -1,8 +1,10 @@
 <?php 
+	defined( 'PHP_EXT' ) || exit();
 	if (isset($_SESSION['erreur']))
 	{
 		$erreur = $_SESSION['erreur'];
 //		if( in_array( 1, $_SESSION['erreur'] ) )
+//		echo '<li>' . implode('</li><li>', $_SESSION['erreur']) . '</li>';
 			echo '<li>Le pseudo est déjà pris</li>';
 		if (preg_match('#2#',$erreur))
 			echo '<li>Le pseudo doit faire moins de 15 caractères.</li>';
@@ -56,5 +58,6 @@
 			'size' => 10,
 		), 'password', 'Veillez rentrer les caract&egrave;res de l\'image :<br /><img src="securite.php" alt="Code de sécurité" />' ) . '<br />';
 	$form_insc->input( NULL, 'submit' );
+	echo $form_insc;
 	?>
 </div>

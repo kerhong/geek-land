@@ -1,7 +1,9 @@
-
-<div id="pied_page">
-<p style="font-size: 12px; color: grey;">©GeeK-LanD, 2000-2010, etc...</p>
+<?php defined( 'PHP_EXT' ) || exit(); ?>
+		<div id="pied_page">
+			<p style="font-size: 12px; color: grey;">
+				&copy; GeeK-LanD, 2009-2010.
+			</p>
 <?php bdd::close(); ?>
-</div>
-</body>
+		</div>
+	</body>
 </html>

@@ -1,3 +1,4 @@
+<?php defined( 'PHP_EXT' ) || exit(); ?>
 <h1>
 	Les News, etc...
 </h1>

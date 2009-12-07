@@ -25,4 +25,3 @@
 	{
 		echo '<p class="erreur">Erreur veuillez rentrez un pseudo et un mot de pass.</p>';
 	}
- 		}
