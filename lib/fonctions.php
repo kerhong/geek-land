@@ -1,29 +1,28 @@
 <?php
+defined( 'PHP_EXT' ) || exit();
 
-require_once 'class_bdd.php';
+require_once 'lib/class_bdd' . PHP_EXT;
 
 bdd::init();
-//Ici je vais mettre toutes les fonctions qui reviennent souvent sur le sites=?
-define('LOGINMYSQL', '64018_site');
-define('PASSMYSQL','jesuislesite');
-define('ADDRESSEMYSQL','hosting.zymic.com');
-session_start();
 
 //Répète un certain nombre de fois la balise <br />
 function doBR($i = 1)
 {
 	return str_repeat( '<br />', $i );
 }
-//Tranforme un array() en attribut HTML
+//Tranforme un array() en attributs HTML/CSS
 function toHTMLAttr( $attr, $for_CSS = false )
 {
+	//Ce n'est pas un array ?
 	if( !is_array( $attr ) )
 	{
-		var_dump( $attr );
+		throw new Exception( __FUNCTION__ . '(' . var_dump( $attr, true ) . ') -> first parameter must be an array' );
 	}
+	//[STRING]Ce que contiendra le résultat
 	$formattedElem = '';
 	foreach( $attr as $key => $value )
 	{
+		//Si la valeur n'est pas vide (ignorage forcé)
 		if( $value != NULL )
 		{
 			$formattedElem .= ' ' . $key . ( !$for_CSS ? '="' : ': ' ) . $value . ( !$for_CSS ? '"' : ";\n" );
@@ -32,16 +31,30 @@ function toHTMLAttr( $attr, $for_CSS = false )
 	return $formattedElem;
 }
 
+//La classe de gestion d'Exception pour les Form | Input
 class InputException extends Exception { }
 
+//La classe de formulaire
 class Form
 {
+	/***
+	 * $data		::	[ARRAY]		::	Les données du formulaire
+	 * $instance	::	[OBJECT]	::	L'instance du formulaire
+	 * $input		::	[ARRAY]		::	Les inputs du formulaire
+	 * $is_closer	::	[BOOLEAN]	::	Le formulaire est-il clos ?
+	 * $outputed	::	[BOOL|INT]	::	Le formulaire à-t-il déjà été passé par __toString() ?
+	 * $boundary	::	[STRING]	::	La clef de hashage
+	***/
 	private $data,
 		$instance,
-		$input = array();
+		$input		= array(),
+		$is_closed	= false,
+		$outputed	= 0,
+		$boundary;
 
 	public function __construct($data = array())
 	{
+		$this->boundary = rand( 0, 99999 );
 		if( !isset( $data['action'] ) )
 		{
 			$data['action'] = '#';
@@ -62,17 +75,20 @@ class Form
 		{
 			$data['maxlength'] = $data['size'];
 		}
-		$str = '<form' . toHTMLAttr( $data ) . '>';
 		$this->data = $data;
 		$this->instance = $this;
 	}
 	public function __destruct()
 	{
-		$this->close();
+		return $this->close();
 	}
 	public function close()
 	{
-		echo '</form>';
+		if( !$this->is_closed )
+		{
+			$this->is_closed = true;
+			return '</form>';
+		}
 	}
 	public function input($data = array(), $type_ = NULL, $label = NULL, $opt = NULL )
 	{
@@ -80,13 +96,12 @@ class Form
 		{
 			$type_ = 'text';
 		}
-		$type_ = ucfirst( $type );
+		$type = ucfirst( $type_ );
 		if( !class_exists( $type . 'Input', false ) )
 		{
 			throw New InputException( 'This input type does not exists' );
 		}
 		$className = $type . 'Input';
-		$new_input = $this->input();
 		$new_input = new $className( $data, $this->instance );
 		$new_input->attr( 'type', $type_ );
 		$new_input->load( $opt );
@@ -94,7 +109,26 @@ class Form
 		{
 			$new_input->label( $label );
 		}
+		$this->input[] = $new_input;
 		return $new_input;
+	}
+	public function __toString()
+	{
+		return $this->__toString_();
+	}
+	public function __toString_($force = false)
+	{
+		if( !$force && $this->outputed < 1 )
+		{
+			++$this->outputed;
+			$str = '<form' . toHTMLAttr( $this->data ) . '>';
+			foreach( $this->input as $input )
+			{
+				$str .= $input;
+			}
+			$str .= $this->close();
+			return $str;
+		}
 	}
 }
 
@@ -102,7 +136,8 @@ class Input
 {
 	private $attr,
 		$form,
-		$label;
+		$label,
+		$outputed = 0;
 
 	public function load() {}
 	public function __construct($data = array(), $form = NULL)
@@ -114,10 +149,6 @@ class Input
 		else
 		{
 			$this->form = $form;
-		}
-		if( !isset( $data['name'] ) )
-		{
-			throw new InputException( 'The name of the input must be specified' );
 		}
 		if( $data == NULL)
 		{
@@ -140,15 +171,30 @@ class Input
 	}
 	public function __toString()
 	{
-		$data = '<label' .toHTMLAttr( array( 'for' => $this->attr['name'] ) ) . '>
-		' . $this->label . '
-		</label><input';
-		if( !isset( $this->attr['id'] ) )
+		return $this->__toString_();
+	}
+	public function __toString_($force = false)
+	{
+		if( !$force )
 		{
-			$this->attr['id'] = $this->attr['name'];
+			++$this->outputed;
+			$data = '';
+			if( isset( $this->attr['name'] ) && $this->label != NULL && $this->label != '' )
+			{
+				$data .= '<label' .toHTMLAttr( array( 'for' => $this->attr['name'] ) ) . '>
+				' . $this->label . '
+				</label>';
+			}
+			$data .= '<input';
+			if( !isset( $this->attr['id'] ) && isset( $this->attr['name'] ) )
+			{
+				$this->attr['id'] = $this->attr['name'];
+			}
+			$data .= toHTMLAttr( $this->attr );
+			return $data . ' />' . "\n";
 		}
-		$data .= toHTMLAttr( $this->attr );
-		return $data . ' />' . "\n";
+		else
+			return '';
 	}
 	public function close()
 	{
@@ -180,19 +226,13 @@ class Input
 				break;
 			//On veut récupérer une clef
 			case 1:
-				$this->label = func_get_arg( 1 );
+				$this->label = func_get_arg( 0 );
 		}
 	}
 }
 
-class TextInput extends Input
-{
-}
-
-class SelectInput
-{
-}
-
+class TextInput extends Input { }
+class SelectInput { }
 class PasswordInput extends Input
 {
 	public function load()
@@ -203,12 +243,18 @@ class PasswordInput extends Input
 		}
 	}
 }
-
 class SubmitInput extends Input
 {
-	public function load( $opt )
+	public function load( $opt = array())
 	{
-		$this->attr['value'] = 'Envoyer';
+		if( !isset( $this->attr['value'] ) )
+		{
+			$this->attr['value'] = 'Envoyer';
+		}
+		if( !isset( $this->attr['name'] ) )
+		{
+			$this->attr['name'] = 'submit';
+		}
 		if( isset( $opt['autoClose'] ) && $opt['autoClose'] )
 		{
 			$form->close();

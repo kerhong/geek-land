@@ -27,10 +27,11 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 					Connexion
 				</h3>
 				<?php 
-				$form = new Form();
-				echo $form->input( array( 'name' => 'pseudo', 'value' => 'Pseudo' ) ) . '<br />';
-				echo $form->input( array( 'name' => 'password' ), 'password' ) . '<br />';
-				echo $form->input( NULL, 'submit' );
+				$form = new Form( array( 'action' => '?page=inscription' ) );
+				$form->input( array( 'name' => 'pseudo', 'value' => 'Pseudo' ) ) . '<br />';
+				$form->input( array( 'name' => 'password' ), 'password' ) . '<br />';
+				$form->input( NULL, 'submit' );
+				echo $form;
 				?><br />
 				<a href="?inscription">Inscription</a>
 			</div>
@@ -40,7 +41,7 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 				</h3>
 				<ul>
 					<li>
-						<a href="#">Accueil</a>
+						<a href="?">Accueil</a>
 					</li>
 					<li>
 						<a href="#">Forum</a>
