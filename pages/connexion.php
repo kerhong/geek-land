@@ -3,10 +3,10 @@
 	{
 		$pass = bdd::secure( md5( $_POST['pass'] ) );
 		$pseudo = bdd::secure( $_POST['pseudo'] );
-		$sql = 'SELECT id, pseudo, `mot de pass`, email
-			FROM coordonees WHERE pseudo = \'' . $pseudo . '\'
-			GROUP BY id';
-		$requete = bdd::query( $sql );
+		$requete = bdd::query( 'SELECT id, pseudo, `mot de pass`, email
+			FROM {coord}
+			WHERE pseudo = \'' . $pseudo . '\'
+			GROUP BY id' );
 		$resultat = bdd::fetch( $requete, 'array' );
 		if( $pass == $resultat['mot de pass'] )
 		{

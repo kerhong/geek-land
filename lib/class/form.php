@@ -36,14 +36,6 @@
 			{
 				$data['method'] = strtoupper( $data['method'] );
 			}
-			if( !isset( $data['size'] ) )
-			{
-				$data['size'] = 15;
-			}
-			if( !isset( $data['maxlength'] ) )
-			{
-				$data['maxlength'] = $data['size'];
-			}
 			$this->data = $data;
 			$this->instance = $this;
 		}
@@ -104,9 +96,32 @@
 	class Input
 	{
 		private $attr,
-			$form,
-			$label,
-			$outputed = 0;
+				$label_attr,
+				$form,
+				$label,
+				$outputed = 0,
+				$margin = false,
+				$addHTML = array(
+						'before'		=> '',
+						'after'			=> '',
+						'before_label'	=> '',
+						'after_label'	=> '',
+					);
+
+		public function __call($func_name, $args)
+		{
+			if( method_exists( $this, $func_name ) )
+			{
+				return call_user_func_array( array( &$this, $func_name), $args );
+			}
+			$type = substr( $func_name, 0, 4 );
+			$name = substr( $func_name, 4 );
+			if( $type == 'set' || $type == 'get' ||$type == 'all' )
+			{
+				return call_user_func_array( array( &$this, $type ), $args );
+			}
+			throw new ExceptionForm( __METHOD__ . '() - You must pass a valid method name' );
+		}
 
 		public function load() {}
 		public function __construct($data = array(), $form = NULL)
@@ -119,13 +134,18 @@
 			{
 				$this->form = $form;
 			}
-			if( $data == NULL)
+			if( $data == NULL )
 			{
 				$data = array();
 			}
 			if( isset( $data['type'] ) )
 			{
 				unset( $data['type'] );
+			}
+			if( isset( $data['_add_HTML'] ) )
+			{
+				$this->addHTML = $data['_add_HTML'];
+				unset( $data['_add_HTML'] );
 			}
 			if( isset( $data['_take_from'] ) )
 			{
@@ -136,7 +156,16 @@
 				}
 				unset( $data['_take_from'] );
 			}
+			if( !isset( $data['size'] ) )
+			{
+				$data['size'] = 15;
+			}
+			if( !isset( $data['maxlength'] ) )
+			{
+				$data['maxlength'] = $data['size'];
+			}
 			$this->attr = $data;
+			return $this;
 		}
 		public function __toString()
 		{
@@ -150,17 +179,32 @@
 				$data = '';
 				if( isset( $this->attr['name'] ) && $this->label != NULL && $this->label != '' )
 				{
-					$data .= '<label' .toHTMLAttr( array( 'for' => $this->attr['name'] ) ) . '>
+					$data .= ( isset( $this->addHTML['before_label'] ) ? $this->addHTML['before_label'] : '' ) .
+					'<label' .toHTMLAttr( 	array_merge( ( is_array( $this->label_attr )? $this->label_attr : array() ),
+						array( 'for' => $this->attr['name'] ) ) ) . '>
 					' . $this->label . '
-					</label>';
+					</label>' . ( isset( $this->addHTML['after_label'] ) ? $this->addHTML['after_label'] : '' ) . "\n";
+					if( $this->margin )
+					{
+						$data .= '<br />';
+						$add_margin_left = ' margin-left: 20px;';
+						if( !isset( $this->attr['style'] ) )
+						{
+							$this->attr['style'] = $add_margin_left;
+						}
+						else
+						{
+							$this->attr['style'] .= $add_margin_left;
+						}
+					}
 				}
-				$data .= '<input';
+				$data .= ( isset( $this->addHTML['before'] ) ? $this->addHTML['before'] : '' ) . '<input';
 				if( !isset( $this->attr['id'] ) && isset( $this->attr['name'] ) )
 				{
 					$this->attr['id'] = $this->attr['name'];
 				}
 				$data .= toHTMLAttr( $this->attr );
-				return $data . ' />' . "\n";
+				return $data . ' />' . ( isset( $this->addHTML['after'] ) ? $this->addHTML['after'] : '' ) . '<br />' . "\n";
 			}
 			else
 				return '';
@@ -183,20 +227,41 @@
 					break;
 				default:
 					$this->attr[func_get_arg( 0 )] = func_get_arg( 1 );
+					return $this;
 			}
 		}
-		public function label()
+		public function margin()
 		{
 			switch( func_num_args() )
 			{
-				//On veut tout récupérer
 				case 0:
-					return $this->label;
+					return $this->margin;
 					break;
-				//On veut récupérer une clef
-				case 1:
-					$this->label = func_get_arg( 0 );
+				default:
+					$this->margin = func_get_arg( 0 );
+					return $this;
+					break;
 			}
+		}
+		public function label( $title = NULL, $opt = NULL, $get = NULL )
+		{
+			if( $title == NULL && $get == 'title' )
+			{
+				return $this->label;
+			}
+			if( $opt == NULL && $get == 'attr' )
+			{
+				return $this->label_attr;
+			}
+			if( $title != NULL )
+			{
+				$this->label = $title;
+			}
+			if( $opt != NULL && is_array( $opt ) )
+			{
+				$this->label_attr = $opt;
+			}
+			return $this;
 		}
 	}
 

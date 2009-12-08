@@ -4,7 +4,7 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
 	<head>
 		<title>
-			.:: GeeK-LanD &bull; <?php echo ucfirst( $page ); ?> ::.
+			.:: GeeK-LanD &bull; {page} ::.
 		</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<link rel="stylesheet" media="screen" type="text/css" title="Design" href="geek.css" />
@@ -28,12 +28,17 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 				</h3>
 				<?php 
 				$form = new Form( array( 'action' => '?page=inscription' ) );
-				$form->input( array( 'name' => 'pseudo', 'value' => 'Pseudo' ) ) . '<br />';
-				$form->input( array( 'name' => 'password' ), 'password' ) . '<br />';
-				$form->input( NULL, 'submit' );
+				$form->input( array( 'name' => 'pseudo', 'value' => 'Pseudo' ) )
+						->label( 'Pseudo' )
+						->margin( true ). '<br />';
+				$form->input( array( 'name' => 'password' ), 'password' )
+						->label( 'Mot de passe' )
+						->margin( true ). '<br />';
+				$form->input( NULL, 'submit' )
+						->margin( true );
 				echo $form;
 				?><br />
-				<a href="?inscription">Inscription</a>
+				<a href="?page=inscription">Inscription</a>
 			</div>
 			<div class="bloc"><!--Le menu-->
 				<h3 align="center">

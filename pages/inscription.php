@@ -26,38 +26,43 @@
 			echo '<li>Le captcha n\'est pas bon';
 	}
 ?>
-<div id="corps">
 	<p>Inscription :</p>
-	<?php
+<?php
 	$form_insc = new Form( array( 'form' => 'traitement' . PHP_EXT ) );
 	$form_insc->input( array(
 			'name' => 'pseudo',
 			'_take_from' => 'GET',
-		), NULL, 'Votre pseudo :' ) . '<br />';
+		), NULL )
+				->label( 'Votre pseudo :', array( 'class' => 'form_align' ) ) . '<br />';
 	$form_insc->input( array(
 			'name' => 'pass',
 			'maxlength' => 20,
 			'_take_from' => 'GET',
-		), 'password', 'Votre mot de passe :' ) . '<br />';
+		), 'password' )
+				->label( 'Votre mot de passe :', array( 'class' => 'form_align' ) ) . '<br />';
 	$form_insc->input( array(
 			'name' => 'passconf',
 			'maxlength' => 20,
-		), 'password', 'Veuillez retaper votre mot de passe :' ) . '<br />';
+		), 'password' )
+				->label( 'Veuillez_retaper_votre_mot_de_passe :', array( 'class' => 'form_align' ) ) . '<br />';
 	$form_insc->input( array(
 			'name' => 'email',
 			'maxlength' => 40,
 			'_take_from' => 'GET',
-		), NULL, 'Votre E-Mail :' ) . '<br />';
+		), NULL )
+				->label( 'Votre E-Mail :', array( 'class' => 'form_align' ) ) . '<br />';
 	$form_insc->input( array(
 			'name' => 'date',
 			'maxlength' => 10,
 			'_take_from' => 'GET',
-		), NULL, 'Votre date de naissance <i>(format jj/mm/aaaa)</i> :' ) . '<br />';
+			'_add_HTML' => array( 'before' => '<br />' ),
+		), NULL )
+				->label( 'Votre date de naissance <i>(format jj/mm/aaaa)</i> :', array( 'class' => 'form_align' ) ) . '<br />';
 	$form_insc->input( array(
 			'name' => 'secure',
 			'size' => 10,
-		), 'password', 'Veillez rentrer les caract&egrave;res de l\'image :<br /><img src="securite.php" alt="Code de sécurité" />' ) . '<br />';
+		), 'password' )
+				->label( 'Veillez rentrer les caract&egrave;res de l\'image :<br /><img src="securite.php" alt="Code de sécurité" />',
+					array( 'class' => 'form_align' ) ) . '<br />';
 	$form_insc->input( NULL, 'submit' );
 	echo $form_insc;
-	?>
-</div>

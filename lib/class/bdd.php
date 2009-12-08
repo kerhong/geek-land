@@ -21,10 +21,16 @@ defined( 'PHP_EXT' ) || exit();
 //Tables
 define( 'T_NEWS', 'news' );
 
+class ExceptionBdd extends Exception {}
+
 abstract class bdd
 {
 	// contient les informations sur la connexion courante
 	public static $data = array();
+
+	private $tables = array(
+			'coord'		=> 'coordonees',
+		);
 
 	/*
 	** déconnection de la base de donnée
@@ -35,7 +41,8 @@ abstract class bdd
 	*/
 	public static function close()
 	{
-		return mysql_close( self::$data['link'] ) or trigger_error(mysql_error(), E_USER_ERROR);
+		return mysql_close( self::$data['link'] )
+			or trigger_error( mysql_error(), E_USER_ERROR );
 	}
 
 	/*
@@ -145,6 +152,7 @@ abstract class bdd
 
 		if ( !( self::$data['link'] = mysql_connect( self::$data['serveur'], self::$data['utilisateur'], self::$data['motPasse'], $newLink, $clientFlags ) ) )
 		{
+			var_dump( self::$data['link'] );
 			trigger_error(mysql_error(), E_USER_ERROR);
 
 			return false;
@@ -182,6 +190,7 @@ abstract class bdd
 	*/
 	public static function query( $sql )
 	{
+		$sql = str_replace( array_map( 'addBracket' , array_keys( self::$tables ) ), array_values( self::$tables ), $sql );
 		self::$data['last_sql'] = $sql;
 		if( ( $resultat = mysql_query( $sql, self::$data['link'] ) ) )
 		{

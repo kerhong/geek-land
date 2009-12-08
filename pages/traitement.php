@@ -18,7 +18,9 @@
         $email = bdd::secure( $_POST['email'] );
         $date = bdd::secure( $_POST['date'] );
         //verification pseudo
-        $result = bdd::query('SELECT COUNT(*) AS nbr FROM coordonees WHERE pseudo = \'' . $pseudo . '\'');
+        $result = bdd::query('SELECT COUNT(*) AS nbr
+			FROM {coord}
+			WHERE pseudo = \'' . $pseudo . '\'');
         $donnees = bdd::fetch( $result, 'array' );
         $nombre = $donnees['nbr'];
         if( $nombre > 0 )
@@ -43,7 +45,7 @@
         {
                 $erreur[] = 5;
         }
-        $resultmail = bdd::query( 'SELECT COUNT(*) AS nbr FROM coordonees WHERE email = \'' . $email . '\'' );
+        $resultmail = bdd::query( 'SELECT COUNT(*) AS nbr FROM {coord} WHERE email = \'' . $email . '\'' );
         $donneesmail = bdd::fetch( $resultmail, 'array' );
         $nombremail = $donneesmail['nbr'];
         if( $nombremail > 0 )
@@ -73,7 +75,7 @@
         {
         
                 $pass = md5( $pass );
-                bdd::query( 'INSERT INTO coordonees(`id`,`pseudo`,`mot de pass`,`email`,`date`,`banni`)
+                bdd::query( 'INSERT INTO {coord}(`id`,`pseudo`,`mot de pass`,`email`,`date`,`banni`)
                  VALUES(\'\',\'' . $pseudo . '\',\'' . $pass . '\', \'' . $email . '\', \'' . $date . '\', \'' . 0 . '\')');
                 echo '<center>Inscription r&eacute;ussie !</center>';
         }

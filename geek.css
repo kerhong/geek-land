@@ -17,7 +17,7 @@ body
 	width: 200px;
 	float: left;
 	border: 1px solid black;
-	margin-left: 10px;
+	margin-left: 150px;
 }
 .bloc
 {
@@ -34,7 +34,7 @@ body
 }
 .bloc li
 {
-/*	text-align: center;	*/
+/*      text-align: center;     */
 	font-size: 12px;
 }
 .bloc a
@@ -48,7 +48,7 @@ body
 #corps
 {
 	width: 700px;
-	margin-left: 10px;
+	margin-left: 350px;
 	border: 1px solid black;
 	font-family: "trebuchet ms";
 }
@@ -62,5 +62,9 @@ body
 	font-size: 12px;
 	text-align: center;
 }
-	
-
+.form_align
+{
+	display: block;
+	float: left;
+	width: 300px;
+}

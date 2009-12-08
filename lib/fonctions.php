@@ -1,6 +1,29 @@
 <?php
 defined( 'PHP_EXT' ) || exit();
 
+if( !function_exists( 'lcfirst' ) )
+{
+	function lcfirst( $name )
+	{
+		$name[0] = strtolower( $name[0] );
+		return $name;
+	}
+}
+
+function addBracket($str)
+{
+	$return = array();
+	if( is_array( $str ) )
+	{
+		foreach( $str as $k )
+		{
+			$return[] = addBracket( $k );
+		}
+		return $return;
+	}
+	return '{' . $str . '}';
+}
+
 function inc( $class_name_ )
 {
 	$class_name = str_replace( array( '_', '\\', ), '/', $class_name_ );

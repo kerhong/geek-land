@@ -3,7 +3,7 @@
 			<p style="font-size: 12px; color: grey;">
 				&copy; GeeK-LanD, 2009-2010.
 			</p>
-<?php bdd::close(); ?>
 		</div>
 	</body>
-</html>
+</html><?php
+bdd::close();
