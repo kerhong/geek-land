@@ -202,7 +202,7 @@ abstract class bdd
 		{
 			trigger_error( $sql . ' --- ' . mysql_error() . ' --- Erreur n' . mysql_errno(), E_USER_ERROR );
 
-			return false;
+		return false;
 		}
 	}
 

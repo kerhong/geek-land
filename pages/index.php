@@ -8,5 +8,3 @@
 <p>
 	La news.
 </p>
-<?php
-echo doBR( 24 );

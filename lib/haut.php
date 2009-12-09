@@ -27,18 +27,30 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 					Connexion
 				</h3>
 				<?php 
-				$form = new Form( array( 'action' => '?page=inscription' ) );
+				if (!isset($_SESSION['id'])) {
+				$form = new Form( array( 'action' => '?page=connexion' ) );
 				$form->input( array( 'name' => 'pseudo', 'value' => 'Pseudo' ) )
 						->label( 'Pseudo' )
 						->margin( true ). '<br />';
-				$form->input( array( 'name' => 'password' ), 'password' )
+				$form->input( array( 'name' => 'pass' ), 'password' )
 						->label( 'Mot de passe' )
 						->margin( true ). '<br />';
 				$form->input( NULL, 'submit' )
 						->margin( true );
 				echo $form;
 				?><br />
+				<script type="text/javascript">
+					getElementByName('pseudo').onClick = function() {
+						this.value = '';
+					}
+				</script>
 				<a href="?page=inscription">Inscription</a>
+				<?php
+				}
+				else {
+				echo 'Vous êtes connecté';
+				}
+				?>
 			</div>
 			<div class="bloc"><!--Le menu-->
 				<h3 align="center">

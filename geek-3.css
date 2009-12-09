@@ -43,10 +43,9 @@ body
 #onglets a:hover{text-decoration:underline;}
 #colonne
 {
-	width: 215px;
+	width: 220px;
 	float: left;
-	border-top: 1px solid #888a8a;
-	border-left: 1px solid #888a8a;
+	border: 1px solid #888a8a;
 }
 .bloc
 {
@@ -55,6 +54,7 @@ body
 	margin-top: 10px;
 	margin-bottom: 10px;
 	margin-left: 10px;
+	border: 1px solid #888a8a;
 }
 .bloc h3
 {
@@ -73,10 +73,9 @@ body
 
 #corps
 {
-	margin-left: 0px;
 	border: 1px solid #888a8a;
 	font-family: 'trebuchet ms';
-	min-height: 350px;
+	min-height: 500px ;
 }
 #corps h1
 {
@@ -87,7 +86,7 @@ body
 }
 #corps p
 {
-	font-size: 13px;
+	font-size: 12px;
 	text-align: center;
 	color: #d1d3d6;
 }
