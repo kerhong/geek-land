@@ -1,6 +1,6 @@
 <?php
 defined( 'PHP_EXT' ) || exit();
-
+session_start();
 if( !function_exists( 'lcfirst' ) )
 {
 	function lcfirst( $name )

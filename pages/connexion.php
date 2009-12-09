@@ -14,8 +14,8 @@
 			$_SESSION['pseudo'] = $resultat['pseudo'];
 			$_SESSION['pass'] = $resultat['mot de pass'];
 			$_SESSION['mail'] = $resultat['email'];
-			echo 'Tu est boen connecté.';
-			//header( 'Location: http://geek-land.zxq.net/');
+			echo 'Tu est bien connecté. '.$_SESSION['id'];
+			header( 'Location: http://geek-land.zxq.net/');
 		}
  		else
 		{

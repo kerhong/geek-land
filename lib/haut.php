@@ -48,7 +48,10 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 				<?php
 				}
 				else {
-				echo 'Vous êtes connecté';
+				?>
+				
+				Vous êtes bien connécté.<br /><img src="no-avatar.gif"><a href="?page=deconnexion">Déconnection</a>
+				<?php
 				}
 				?>
 			</div>
