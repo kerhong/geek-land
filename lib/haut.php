@@ -27,31 +27,29 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 					Connexion
 				</h3>
 				<?php 
-				if (!isset($_SESSION['id'])) {
-				$form = new Form( array( 'action' => '?page=connexion' ) );
-				$form->input( array( 'name' => 'pseudo', 'value' => 'Pseudo' ) )
-						->label( 'Pseudo' )
-						->margin( true ). '<br />';
-				$form->input( array( 'name' => 'pass' ), 'password' )
-						->label( 'Mot de passe' )
-						->margin( true ). '<br />';
-				$form->input( NULL, 'submit' )
-						->margin( true );
-				echo $form;
-				?><br />
-				<script type="text/javascript">
-					getElementByName('pseudo').onClick = function() {
-						this.value = '';
-					}
-				</script>
-				<a href="?page=inscription">Inscription</a>
-				<?php
+				if( !isset($_SESSION['id'] ) )
+				{
+					$form = new Form( array( 'action' => '?page=connexion' ) );
+					$form->input( array(
+							'name' => 'pseudo',
+							'value' => 'Pseudo',
+							'onclick' => 'this.value = \'\';',
+						) )
+							->label( 'Pseudo' )
+							->margin( true ). '<br />';
+					$form->input( array( 'name' => 'pass' ), 'password' )
+							->label( 'Mot de passe' )
+							->margin( true ). '<br />';
+					$form->input( NULL, 'submit' )
+							->margin( true );
+					echo $form;
+					?><br />
+					<a href="?page=inscription">Inscription</a>
+					<?php
 				}
-				else {
-				?>
-				
-				Vous êtes bien connécté.<br /><img src="no-avatar.gif"><a href="?page=deconnexion">Déconnection</a>
-				<?php
+				else
+				{
+					echo 'Vous &ecirc;tes bien connécté.<br /><img src="no-avatar.gif"><a href="?page=deconnexion">Déconnexion</a>';
 				}
 				?>
 			</div>

@@ -4,30 +4,41 @@
 	defined( 'PHP_EXT' ) || exit();
 	if (isset($_SESSION['erreur']))
 	{
-		$erreur = $_SESSION['erreur'];
-//		if( in_array( 1, $_SESSION['erreur'] ) )
-//		echo '<li>' . implode('</li><li>', $_SESSION['erreur']) . '</li>';
-		foreach ($erreur as $erreur) {
-			if (preg_match('#1#',$erreur))
-				echo '<li>Le pseudo est déjà pris</li>';
-			if (preg_match('#2#',$erreur))
-				echo '<li>Le pseudo doit faire moins de 15 caractères.</li>';
-			if (preg_match('#3#',$erreur))
-				echo '<li>Le mot de pass doit faire moins de 15 caractères.</li>';
-			if (preg_match('#4#',$erreur))
-				echo '<li>Les mots de pass ne correspondent pas.</li>';
-			if (preg_match('#5#',$erreur))
-				echo '<li>Le format de l\'addresse email est incorrecte</li>';
-			if (preg_match('#6#',$erreur))
-				echo '<li>L\'adresse email doit faire moins de 40 caractères.</li>';
-			if (preg_match('#7#',$erreur))
-				echo '<li>La date est trop longue.</li>';
-			if (preg_match('#8#',$erreur))
-				echo '<li>La date n\'est pas au bon format.</li>';
-			if (preg_match('#9#',$erreur))	
-				echo '<li>L\'email est déjà utilisée</li>';
-			if (preg_match('#c#',$erreur))	
-				echo '<li>Le captcha n\'est pas bon';
+		foreach( $_SESSION['erreur'] as $erreur )
+		{
+			switch( $erreur )
+			{
+				case 1:
+					echo '<li>Le pseudo est déjà pris</li>';
+					break;
+				case 2:
+					echo '<li>Le pseudo doit faire moins de 15 caractères.</li>';
+					break;
+				case 3:
+					echo '<li>Le mot de pass doit faire moins de 15 caractères.</li>';
+					break;
+				case 4:
+					echo '<li>Les mots de pass ne correspondent pas.</li>';
+					break;
+				case 5:
+					echo '<li>Le format de l\'addresse email est incorrecte</li>';
+					break;;
+				case 6:
+					echo '<li>L\'adresse email doit faire moins de 40 caractères.</li>';
+					break;
+				case 7:
+					echo '<li>La date est trop longue.</li>';
+					break;
+				case 8:
+					echo '<li>La date n\'est pas au bon format.</li>';
+					break;
+				case 9:
+					echo '<li>L\'email est déjà utilisée</li>';
+					break;
+				case 'c':
+					echo '<li>Le captcha n\'est pas bon';
+					break;
+			}
 		}
 	}
 ?>

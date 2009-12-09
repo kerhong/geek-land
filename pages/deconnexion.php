@@ -3,4 +3,4 @@
 	$_SESSION = array();
 	session_unset();
 	session_destroy();
-header( 'Location: http://geek-land.zxq.net/');
+	header( 'Location: ' . ROOT_URL );

@@ -19,7 +19,7 @@
 defined( 'PHP_EXT' ) || exit();
 
 //Tables
-define( 'T_NEWS', 'news' );
+define( 'T_COORD', 'coordonnees' );
 
 class ExceptionBdd extends Exception {}
 
@@ -27,6 +27,7 @@ abstract class bdd
 {
 	// contient les informations sur la connexion courante
 	public static $data = array();
+					//$driver;
 
 	private $tables = array(
 			'coord'		=> 'coordonees',
@@ -41,6 +42,7 @@ abstract class bdd
 	*/
 	public static function close()
 	{
+		//return $this->driver->close() or trigger_error( $this->driver->error() )
 		return mysql_close( self::$data['link'] )
 			or trigger_error( mysql_error(), E_USER_ERROR );
 	}
@@ -81,11 +83,13 @@ abstract class bdd
 		{
 			$result_type = ( func_num_args() >= 3 ) ? func_get_arg( 2 ) : MYSQL_BOTH;
 
+			//$this->driver->fetch_array()
 			return mysql_fetch_array( $sql, $result_type );
 		}
 		// lit une ligne de résultat mysql dans un tableau associatif
 		else if ( $return == 'assoc' )
 		{
+			//$this->driver->fetch_assoc()
 			return mysql_fetch_assoc( $sql );
 		}
 		// retourne les données enregistrées dans une colonne mysql sous forme d'objet
@@ -95,11 +99,13 @@ abstract class bdd
 			// cf. http://fr3.php.net/manual/fr/function.mysql-fetch-field.php
 			$field_offset = ( func_num_args() >= 3 ) ? func_get_arg( 2 ) : 0;
 
+			//$this->driver->fetch_field()
 			return mysql_fetch_field( $sql, $field_offset );
 		}
 		// retourne la taille de chaque colonne d'une ligne de résultat mysql
 		else if ( $return == 'lengths' )
 		{
+			//$this->driver->fetch_lengths()
 			return mysql_fetch_lengths( $sql );
 		}
 		// retourne une ligne de résultat mysql sous la forme d'un objet
@@ -113,16 +119,19 @@ abstract class bdd
 
 			if ( $params )
 			{
+			//$this->driver->fetch_object()
 				return mysql_fetch_object( $sql, $class_name, $params );
 			}
 			else
 			{
+			//$this->driver->fetch_object()
 				return mysql_fetch_object( $sql, $class_name );
 			}
 		}
 		// retourne une ligne de résultat mysql sous la forme d'un tableau
 		else if ( $return == 'row' )
 		{
+			//$this->driver->fetch_row()
 			return mysql_fetch_row( $sql );
 		}
 	}
@@ -150,22 +159,28 @@ abstract class bdd
 
 		unset($bdd);
 
+			//$this->driver->connect()
 		if ( !( self::$data['link'] = mysql_connect( self::$data['serveur'], self::$data['utilisateur'], self::$data['motPasse'], $newLink, $clientFlags ) ) )
 		{
 			var_dump( self::$data['link'] );
+			//$this->driver->error()
 			trigger_error(mysql_error(), E_USER_ERROR);
 
 			return false;
 		}
 
+			//$this->driver->select_db()
 		if ( !( self::$data['bdd_link'] = mysql_select_db( self::$data['bdd'], self::$data['link'] ) ) )
 		{
+			//$this->driver->error()
 			trigger_error(mysql_error(), E_USER_ERROR);
+			//$this->driver->close() || .................. || $this->driver->error()
 			mysql_close( self::$data['link'] ) or trigger_error(mysql_error(), E_USER_ERROR);
 
 			return false;
 		}
 
+		//$this->driver->set_charset()
 		mysql_set_charset( 'utf8', self::$data['link'] ); //On définit l'encodage des valeurs d'échange PHP <=> SQL
 	}
 
@@ -192,6 +207,7 @@ abstract class bdd
 	{
 		$sql = str_replace( array_map( 'addBracket' , array_keys( self::$tables ) ), array_values( self::$tables ), $sql );
 		self::$data['last_sql'] = $sql;
+			//$this->driver->query()
 		if( ( $resultat = mysql_query( $sql, self::$data['link'] ) ) )
 		{
 			self::$data['queryNbr']++;
@@ -200,6 +216,7 @@ abstract class bdd
 		}
 		else
 		{
+			//$this->driver->error() || ............................... || $this->driver->errno()
 			trigger_error( $sql . ' --- ' . mysql_error() . ' --- Erreur n' . mysql_errno(), E_USER_ERROR );
 
 		return false;
@@ -222,6 +239,7 @@ abstract class bdd
 		}
 		else
 		{
+			//$this->driver->real_escape_string()
 			return mysql_real_escape_string( trim( $var ) );
 		}
 	}

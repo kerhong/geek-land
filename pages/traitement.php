@@ -2,28 +2,25 @@
 	defined( 'PHP_EXT' ) || exit();
 	if( isset( $_POST['pseudo'] ) && isset( $_POST['pass'] ) && isset( $_POST['passconf'] ) && isset( $_POST['date'] ) )
 	{
-        $pseudo = $_POST['pseudo'];
-        $pass = $_POST['pass'];
-        $passconf = $_POST['passconf'];
-        $email = $_POST['email'];
-        $date = $_POST['date'];
         $erreur = array();
-        if( !isset( $_POST['pseudo'] ) || !isset( $_POST['pass'] ) || !isset( $_POST['passconf'] ) || !isset( $_POST['email'] ) || !isset( $_POST['date'] ) )
-        {
-                $erreur[] = 0;
-        }
         $pseudo = bdd::secure( $_POST['pseudo'] );
         $pass = bdd::secure( $_POST['pass'] );
         $passconf = bdd::secure( $_POST['passconf'] );
         $email = bdd::secure( $_POST['email'] );
         $date = bdd::secure( $_POST['date'] );
         //verification pseudo
-        $result = bdd::query('SELECT COUNT(*) AS nbr
-			FROM {coord}
-			WHERE pseudo = \'' . $pseudo . '\'');
-        $donnees = bdd::fetch( $result, 'array' );
-        $nombre = $donnees['nbr'];
-        if( $nombre > 0 )
+		/*
+		$result = Doctrine_Query::create()
+								->select( 'COUNT(*) as nbr' )
+								->from( 'Coordonnees' )
+								->where( 'pseudo = :pseudo', array( ':pseudo' => $pseudo ) )
+		foreach( $result as $resultat )
+		*/
+        $result = bdd::query( 'SELECT COUNT(*) AS nbr
+			FROM ' . T_COORD . '
+			WHERE pseudo = \'' . $pseudo . '\'' );
+        $donnees = bdd::fetch( 'array', $result );
+        if( $donnees['nbr'] > 0 )
         {
                 $erreur[] = 1;
         }
@@ -45,10 +42,18 @@
         {
                 $erreur[] = 5;
         }
-        $resultmail = bdd::query( 'SELECT COUNT(*) AS nbr FROM {coord} WHERE email = \'' . $email . '\'' );
-        $donneesmail = bdd::fetch( $resultmail, 'array' );
-        $nombremail = $donneesmail['nbr'];
-        if( $nombremail > 0 )
+		/*
+		$result = Doctrine_Query::create()
+								->select( 'COUNT(*) as nbr' )
+								->from( 'Coordonnees' )
+								->where( 'email = ?', $email )
+		if( count( $result ) )
+		*/
+        $resultmail = bdd::query( 'SELECT COUNT(*) AS nbr
+				FROM ' . T_COORD . '
+				WHERE email = \'' . $email . '\'' );
+        $donneesmail = bdd::fetch( 'array', $resultmail );
+        if( $donneesmail['nbr']; > 0 )
         {
                 $erreur[] = 9;
         }
@@ -65,18 +70,21 @@
         {
                 $erreur[] = 8;
         }
-        //Verification captcha
-        if( !isset($_POST['secure']) || $_SESSION['securecode'] != $_POST['secure'] )
-        {
-                $erreur[] = 'c';
-        }
         //Validation
         if( $erreur == array() )
         {
         
                 $pass = md5( $pass );
-                bdd::query( 'INSERT INTO {coord}(`id`,`pseudo`,`mot de pass`,`email`,`date`,`banni`)
-                 VALUES(\'\',\'' . $pseudo . '\',\'' . $pass . '\', \'' . $email . '\', \'' . $date . '\', \'' . 0 . '\')');
+				/*
+					$coord = new Coordonnees();
+					$coord->pseudo = $pseudo;
+					$coord->mot_de_pass = $pass;
+					$coord->email = $email;
+//					$coord->date = new Doctrine_Expression( 'NOW()' ); //PreInsert
+//					$coord->banni = 0; //Default value
+				*/
+                bdd::query( 'INSERT INTO ' . T_COORD . ' (`id`,`pseudo`,`mot de pass`,`email`,`date`,`banni`)
+                 VALUES(\'\',\'' . $pseudo . '\',\'' . $pass . '\', \'' . $email . '\', \'' . $date . '\', 0)');
                 echo '<center>Inscription r&eacute;ussie !</center>';
         }
         else
@@ -91,5 +99,5 @@
 		<h1>
 			Vous devez remplir les champs obligatoire
 		</h1>';
-		//header( 'Location: /index.php?page=inscription&pseudo=' . $pseudo . '&pass=' . $pass . '&mail=' . $email . '&date=' . $date );
+		header( 'Location: /index.php?page=inscription&pseudo=' . $pseudo . '&pass=' . $pass . '&mail=' . $email . '&date=' . $date );
 	}

@@ -4,10 +4,10 @@
 		$pass = bdd::secure( md5( $_POST['pass'] ) );
 		$pseudo = bdd::secure( $_POST['pseudo'] );
 		$requete = mysql_query( 'SELECT id, pseudo, `mot de pass`, email
-			FROM `coordonees`
+			FROM `' . T_COORD . '`
 			WHERE pseudo = \'' . $pseudo . '\'
 			GROUP BY id' );
-		$resultat = mysql_fetch_array($requete,MYSQL_ASSOC);
+		$resultat = bdd::fetch( 'array', $requete, MYSQL_ASSOC );
 		if( $pass == $resultat['mot de pass'] )
 		{
 			$_SESSION['id'] = $resultat['id'];
@@ -15,7 +15,7 @@
 			$_SESSION['pass'] = $resultat['mot de pass'];
 			$_SESSION['mail'] = $resultat['email'];
 			echo 'Tu est bien connecté. '.$_SESSION['id'];
-			header( 'Location: http://geek-land.zxq.net/');
+			header( 'Location: ' . ROOT_URL );
 		}
  		else
 		{

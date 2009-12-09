@@ -24,6 +24,15 @@ function addBracket($str)
 	return '{' . $str . '}';
 }
 
+function addDoubleDot($str)
+{
+	if( $str[0] != ':' )
+		{
+			$str = ':' . $str;
+		}
+	return $str;
+}
+
 function inc( $class_name_ )
 {
 	$class_name = str_replace( array( '_', '\\', ), '/', $class_name_ );

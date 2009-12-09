@@ -13,6 +13,25 @@
 		public	$page = NULL,
 				$page_ = NULL,
 				$vars;
+		public function parse($str)
+		{
+			return str_replace( addBracket( array_keys( $view->vars ) ), array_values( $this->vars ), $str );
+		}
+		public function vars()
+		{
+			$args = func_get_args();
+			switch( count( $args ) )
+			{
+				case 0:
+					return $this->vars;
+					break;
+				case 1:
+					return $this->vars[func_get_arg( 0 )];
+					break;
+				default:
+					$this->vars[func_get_arg( 0 )] = func_get_arg( 1 );
+			}
+		}
 		private function __construct()
 		{
 			require_once $this->p_lib . 'haut' . PHP_EXT;
