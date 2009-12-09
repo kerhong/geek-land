@@ -44,7 +44,7 @@
 			'name' => 'passconf',
 			'maxlength' => 20,
 		), 'password' )
-				->label( 'Veuillez_retaper_votre_mot_de_passe :', array( 'class' => 'form_align' ) ) . '<br />';
+				->label( 'Veuillez retaper votre mot de passe :', array( 'class' => 'form_align' ) ) . '<br />';
 	$form_insc->input( array(
 			'name' => 'email',
 			'maxlength' => 40,

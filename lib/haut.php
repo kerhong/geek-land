@@ -7,7 +7,7 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 			.:: GeeK-LanD &bull; {page} ::.
 		</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-		<link rel="stylesheet" media="screen" type="text/css" title="Design" href="geek.css" />
+		<link rel="stylesheet" media="screen" type="text/css" title="Design" href="geek-3.css" />
 	</head>
 	<body>
 		<div id="en_tete"><!--Header basique ...-->

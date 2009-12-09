@@ -32,7 +32,7 @@
 			else
 			{
 				$this->to_end = false;
-				exit( 'PREMIERE FOIS :D' );
+				exit( '' );
 				require_once $this->p_lib . 'bas' . PHP_EXT;
 			}
 		}
