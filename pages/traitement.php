@@ -81,7 +81,7 @@
         }
         else
         {
-                header( 'Location: ' . ROOT_URL . '?page=inscription&pseudo=' . $pseudo . '&pass=' . $pass . '&mail=' . $email . '&date=' . $date );
+               //header( 'Location: /index.php?page=inscription&pseudo=' . $pseudo . '&pass=' . $pass . '&mail=' . $email . '&date=' . $date );
                 $_SESSION['erreur'] = $erreur;
         }
 	}
@@ -91,5 +91,5 @@
 		<h1>
 			Vous devez remplir les champs obligatoire
 		</h1>';
-		header( 'Location: ' . ROOT_URL );
+		//header( 'Location: /index.php?page=inscription&pseudo=' . $pseudo . '&pass=' . $pass . '&mail=' . $email . '&date=' . $date );
 	}

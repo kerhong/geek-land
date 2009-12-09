@@ -1,34 +1,39 @@
 <?php 
+	$cryptinstall="./lib/cryptographp.fct.php";
+	include $cryptinstall;  
 	defined( 'PHP_EXT' ) || exit();
 	if (isset($_SESSION['erreur']))
 	{
 		$erreur = $_SESSION['erreur'];
 //		if( in_array( 1, $_SESSION['erreur'] ) )
 //		echo '<li>' . implode('</li><li>', $_SESSION['erreur']) . '</li>';
-			echo '<li>Le pseudo est déjà pris</li>';
-		if (preg_match('#2#',$erreur))
-			echo '<li>Le pseudo doit faire moins de 15 caractères.</li>';
-		if (preg_match('#3#',$erreur))
-			echo '<li>Le mot de pass doit faire moins de 15 caractères.</li>';
-		if (preg_match('#4#',$erreur))
-			echo '<li>Les mots de pass ne correspondent pas.</li>';
-		if (preg_match('#5#',$erreur))
-			echo '<li>Le format de l\'addresse email est incorrecte</li>';
-		if (preg_match('#6#',$erreur))
-			echo '<li>L\'adresse email doit faire moins de 40 caractères.</li>';
-		if (preg_match('#7#',$erreur))
-			echo '<li>La date est trop longue.</li>';
-		if (preg_match('#8#',$erreur))
-			echo '<li>La date n\'est pas au bon format.</li>';
-		if (preg_match('#9#',$erreur))	
-			echo '<li>L\'email est déjà utilisée</li>';
-		if (preg_match('#c#',$erreur))	
-			echo '<li>Le captcha n\'est pas bon';
+		foreach ($erreur as $erreur) {
+			if (preg_match('#1#',$erreur))
+				echo '<li>Le pseudo est déjà pris</li>';
+			if (preg_match('#2#',$erreur))
+				echo '<li>Le pseudo doit faire moins de 15 caractères.</li>';
+			if (preg_match('#3#',$erreur))
+				echo '<li>Le mot de pass doit faire moins de 15 caractères.</li>';
+			if (preg_match('#4#',$erreur))
+				echo '<li>Les mots de pass ne correspondent pas.</li>';
+			if (preg_match('#5#',$erreur))
+				echo '<li>Le format de l\'addresse email est incorrecte</li>';
+			if (preg_match('#6#',$erreur))
+				echo '<li>L\'adresse email doit faire moins de 40 caractères.</li>';
+			if (preg_match('#7#',$erreur))
+				echo '<li>La date est trop longue.</li>';
+			if (preg_match('#8#',$erreur))
+				echo '<li>La date n\'est pas au bon format.</li>';
+			if (preg_match('#9#',$erreur))	
+				echo '<li>L\'email est déjà utilisée</li>';
+			if (preg_match('#c#',$erreur))	
+				echo '<li>Le captcha n\'est pas bon';
+		}
 	}
 ?>
 	<p>Inscription :</p>
 <?php
-	$form_insc = new Form( array( 'form' => 'traitement' . PHP_EXT ) );
+	$form_insc = new Form( array( 'form' => 'index.php?page=traitement' . PHP_EXT ) );
 	$form_insc->input( array(
 			'name' => 'pseudo',
 			'_take_from' => 'GET',
