@@ -3,8 +3,8 @@
 	{
 		$pass = bdd::secure( md5( $_POST['pass'] ) );
 		$pseudo = bdd::secure( $_POST['pseudo'] );
-		$requete = mysql_query( 'SELECT id, pseudo, `mot de pass`, email
-			FROM `' . T_COORD . '`
+		$requete = bdd::query( 'SELECT id, pseudo, `mot de pass`, email
+			FROM ' . T_COORD . '
 			WHERE pseudo = \'' . $pseudo . '\'
 			GROUP BY id' );
 		$resultat = bdd::fetch( 'array', $requete, MYSQL_ASSOC );

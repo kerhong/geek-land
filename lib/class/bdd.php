@@ -19,7 +19,7 @@
 defined( 'PHP_EXT' ) || exit();
 
 //Tables
-define( 'T_COORD', 'coordonnees' );
+define( 'T_COORD', 'coordonees' );
 
 class ExceptionBdd extends Exception {}
 
@@ -205,7 +205,7 @@ abstract class bdd
 	*/
 	public static function query( $sql )
 	{
-		$sql = str_replace( array_map( 'addBracket' , array_keys( self::$tables ) ), array_values( self::$tables ), $sql );
+		//$sql = str_replace( array_map( 'addBracket' , array_keys( self::$tables ) ), array_values( self::$tables ), $sql );
 		self::$data['last_sql'] = $sql;
 			//$this->driver->query()
 		if( ( $resultat = mysql_query( $sql, self::$data['link'] ) ) )

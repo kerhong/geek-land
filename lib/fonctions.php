@@ -1,5 +1,6 @@
 <?php
 defined( 'PHP_EXT' ) || exit();
+define( 'ROOT_URL', 'http://geek-land.zxq.net' );
 session_start();
 if( !function_exists( 'lcfirst' ) )
 {
