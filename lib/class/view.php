@@ -96,3 +96,8 @@
 			return self::$instance;
 		}
 	}
+
+	function var($var)
+	{
+		return View::$vars[$var];
+	}

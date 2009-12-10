@@ -4,7 +4,7 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
 	<head>
 		<title>
-			.:: GeeK-LanD &bull; {page} ::.
+			.:: GeeK-LanD &bull; <?php var( 'page' ); ?> ::.
 		</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<link rel="stylesheet" media="screen" type="text/css" title="Design" href="geek-3.css" />
@@ -64,7 +64,7 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 						var pseudo = toURI( elem_pseudo );
 						var pass = toURI( elem_pass );
 						elem_connexion.html( 'Initialisation de la connexion ...' );
-						xhr.open( 'POST', 'pages/ajax/connexion.php',true);
+						xhr.open( 'POST', 'pages/ajax/connexion.php', true);
 						xhr.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
 						xhr.send( 'pseudo=' + pseudo + '&pass=' + pass );
 						xhr.onreadystatechange = function()

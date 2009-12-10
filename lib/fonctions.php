@@ -32,13 +32,14 @@ function relative_or_external($name)
 	return $added . $name;
 }
 
-function has_extension($file, $ext)
+function has_extension($file, $ext, $return_file_too = false)
 {
+	$f = ( $return_file_too ) ? $file : '';
 	if( substr( $file, - strlen( $ext ) ) != $ext )
 	{
-		return $file . $ext;
+		return $f . $ext;
 	}
-	return $file;
+	return $f;
 }
 
 function require_js()
