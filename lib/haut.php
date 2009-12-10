@@ -22,8 +22,9 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 		</div>
 		<!--La colonne du menu.-->
 		<div id="colonne">
-			<span id="connexion">
+			
 			<div class="bloc"><!--Les fameux blocs ^^-->
+			<span id="connexion">
 				<h3>
 					Connexion
 				</h3>
@@ -46,36 +47,33 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 							->label( 'Mot de passe' )
 							->margin( true ). '<br />';
 					$form->input(array(
-							//'onclick' => 'connection();',
-							//'value' => 'Envoyer !'
+							'onclick' => 'connection();',
+							'value' => 'Envoyer !'
 							)
-							//, 'button' )
-							, 'submit' )
+							, 'button' )
+							//, 'submit' )
 							->margin( true );
 					echo $form;
 					?><br />
 					<a href="?page=inscription">Inscription</a>
 				<script type="text/javascript">
 					function connection() {
-					alert('Connection');
+					var pseudo = encodeURIComponent(document.getElementById('pseudo').value);
+					var pass = encodeURIComponent(document.getElementById('pass').value);
 					var xhr = initxhr();
 					document.getElementById("connexion").innerHTML="Initialisation...";
 					xhr.open("POST","pages/connexionajax.php",true);
 					xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-					var pseudo = document.connexion.getElementById('pseudo').value;
-					alert(pseudo);
-					var pass = encodeURIComponent(document.getElementById('pass').value);
-					alert(pseudo+pass);
 					xhr.send("pseudo="+pseudo+"&pass="+pass);
 					xhr.onreadystatechange = function() {
 						if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-							document.getElementById("connexion").innerHTML=xhr.responseText; 
+							document.getElementById("connexion").innerHTML=utf8_decode(xhr.responseText); 
 						}
 						if (xhr.readyState == 2) {
 							document.getElementById("connexion").innerHTML='Connection en cours...';
 						}
 						if (xhr.readyState == 3) {
-							document.getElementById("connexion").innerHTML='Connécté...';
+							document.getElementById("connexion").innerHTML='Verification des identifiants...';
 						}
 					};
 					};
@@ -106,8 +104,9 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 					echo 'Vous &ecirc;tes bien connécté.<br /><img src="no-avatar.gif"><a href="?page=deconnexion">Déconnexion</a>';
 				}
 				?>
-			</div>
 			</span>
+			</div>
+			
 			<div class="bloc"><!--Le menu-->
 				<h3 align="center">
 					Menu
