@@ -43,7 +43,7 @@ function has_extension($file, $ext)
 
 function require_js()
 {
-	foreach( func_get_args as $fichier_js )
+	foreach( func_get_args() as $fichier_js )
 	{
 		echo '<script type="text/javascript" src="' . relative_or_external( $fichier_js, 'lib/' ) . has_extension( $fichier_js, '.js' ) .'?'
 		 . rand( 0, 99999 ) . '"></script>' . "\n";
