@@ -1,13 +1,52 @@
 <?php
-defined( 'PHP_EXT' ) || exit('Erreur');
+defined( 'PHP_EXT' ) || exit();
 define( 'ROOT_URL', 'http://geek-land.zxq.net' );
 session_start();
+
 if( !function_exists( 'lcfirst' ) )
 {
 	function lcfirst( $name )
 	{
 		$name[0] = strtolower( $name[0] );
 		return $name;
+	}
+}
+
+function inc( $class_name_ )
+{
+	$class_name = str_replace( array( '_', '\\', ), '/', $class_name_ );
+	require_once ROOT . 'lib/class/' . lcfirst( $class_name ) . PHP_EXT;
+}
+
+spl_autoload_register( 'inc' );
+
+Bdd::init();
+
+function relative_or_external($name)
+{
+	$added = '';
+	if( substr( $name, 0, 7 ) != 'http://' )
+	{
+		$added = ROOT_URL . '/';
+	}
+	return $added . $name;
+}
+
+function has_extension($file, $ext)
+{
+	if( substr( $file, - strlen( $ext ) ) != $ext )
+	{
+		return $file . $ext;
+	}
+	return $file;
+}
+
+function require_js()
+{
+	foreach( func_get_args as $fichier_js )
+	{
+		echo '<script type="text/javascript" src="' . relative_or_external( $fichier_js, 'lib/' ) . has_extension( $fichier_js, '.js' ) .'?'
+		 . rand( 0, 99999 ) . '"></script>' . "\n";
 	}
 }
 
@@ -24,7 +63,6 @@ function addBracket($str)
 	}
 	return '{' . $str . '}';
 }
-
 function addDoubleDot($str)
 {
 	if( $str[0] != ':' )
@@ -34,15 +72,14 @@ function addDoubleDot($str)
 	return $str;
 }
 
-function inc( $class_name_ )
+function isAjaxRequest()
 {
-	$class_name = str_replace( array( '_', '\\', ), '/', $class_name_ );
-	require_once 'lib/class/' . lcfirst( $class_name ) . PHP_EXT;
+	if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ):
+		return true;
+	endif;
+	return false;
 }
 
-spl_autoload_register( 'inc' );
-
-bdd::init();
 
 //Répète un certain nombre de fois la balise <br />
 function doBR($i = 1)

@@ -1,7 +1,7 @@
 <?php
 	defined( 'PHP_EXT' ) || exit();
 	//La classe de gestion d'Exception pour les Form | Input
-	class InputException extends Exception { }
+	class Form_Exception extends Exception { }
 
 	//La classe de formulaire
 	class Form
@@ -58,12 +58,13 @@
 				$type_ = 'text';
 			}
 			$type = ucfirst( $type_ );
-			if( !class_exists( $type . 'Input', false ) )
+			$cname = 'Form_Input_' . $type;
+			if( !class_exists( $cname, false ) )
 			{
-				throw New InputException( 'This input type does not exists' );
+				throw New Form_Exception( 'The input type `' . $type . '` does not exists' );
 			}
 			$className = $type . 'Input';
-			$new_input = new $className( $data, $this->instance );
+			$new_input = new $cname( $data, $this->instance );
 			$new_input->attr( 'type', $type_ );
 			$new_input->load( $opt );
 			if( $label != NULL )
@@ -93,12 +94,12 @@
 		}
 	}
 
-	class Input
+	class Form_Input
 	{
 		private $attr,
 				$label_attr,
 				$form,
-				$label,
+				$label = '',
 				$outputed = 0,
 				$margin = false,
 				$addHTML = array(
@@ -120,7 +121,7 @@
 			{
 				return call_user_func_array( array( &$this, $type ), $args );
 			}
-			throw new ExceptionForm( __METHOD__ . '() - You must pass a valid method name' );
+			throw new Form_Exception( __METHOD__ . '() - You must pass a valid method name' );
 		}
 
 		public function load() {}
@@ -128,7 +129,7 @@
 		{
 			if( !$form instanceof Form )
 			{
-				throw new InputException( 'This is not a valid form instance' );
+				throw new Form_Exception( 'This is not a valid form instance' );
 			}
 			else
 			{
@@ -176,29 +177,7 @@
 			if( !$force )
 			{
 				++$this->outputed;
-				$data = '';
-				if( isset( $this->attr['name'] ) && $this->label != NULL && $this->label != '' )
-				{
-					$data .= ( isset( $this->addHTML['before_label'] ) ? $this->addHTML['before_label'] : '' ) .
-					'<label' .toHTMLAttr( 	array_merge( ( is_array( $this->label_attr )? $this->label_attr : array() ),
-						array( 'for' => $this->attr['name'] ) ) ) . '>
-					' . $this->label . '
-					</label>' . ( isset( $this->addHTML['after_label'] ) ? $this->addHTML['after_label'] : '' ) . "\n";
-					if( $this->margin )
-					{
-						$data .= '<br />';
-						$add_margin_left = ' margin-left: 20px;';
-						if( !isset( $this->attr['style'] ) )
-						{
-							$this->attr['style'] = $add_margin_left;
-						}
-						else
-						{
-							$this->attr['style'] .= $add_margin_left;
-						}
-					}
-				}
-				$data .= ( isset( $this->addHTML['before'] ) ? $this->addHTML['before'] : '' ) . '<input';
+				$data = $this->label . ( isset( $this->addHTML['before'] ) ? $this->addHTML['before'] : '' ) . '<input';
 				if( !isset( $this->attr['id'] ) && isset( $this->attr['name'] ) )
 				{
 					$this->attr['id'] = $this->attr['name'];
@@ -243,31 +222,20 @@
 					break;
 			}
 		}
-		public function label( $title = NULL, $opt = NULL, $get = NULL )
+		public function label($title = NULL, $opt = NULL, $get = NULL)
 		{
-			if( $title == NULL && $get == 'title' )
+			if( $this->label == '' )
 			{
-				return $this->label;
+				$this->label = new Form_Label( $title, $opt, $get, &$this );
 			}
-			if( $opt == NULL && $get == 'attr' )
-			{
-				return $this->label_attr;
-			}
-			if( $title != NULL )
-			{
-				$this->label = $title;
-			}
-			if( $opt != NULL && is_array( $opt ) )
-			{
-				$this->label_attr = $opt;
-			}
-			return $this;
+			return $this->label;
 		}
 	}
 
-	class TextInput extends Input { }
-	class SelectInput { }
-	class PasswordInput extends Input
+	class Form_Input_Text extends Form_Input { }
+	class Form_Input_Select extends Form_Input { }
+	class Form_Input_Button extends Form_Input { }
+	class Form_Input_Password extends Form_Input
 	{
 		public function load()
 		{
@@ -277,7 +245,7 @@
 			}
 		}
 	}
-	class SubmitInput extends Input
+	class Form_Input_Submit extends Form_Input
 	{
 		public function load( $opt = array())
 		{
@@ -295,4 +263,68 @@
 			}
 		}
 	}
-	class ButtonInput extends Input { }
+
+	class Form_Label
+	{
+		private $label_attr,
+				$label_title,
+				$input;
+		public function __construct($title = NULL, $opt = NULL, $get = NULL, Form_Input $inputRef)
+		{
+			$this->param($title, $opt, $get);
+		}
+		public function param($title = NULL, $opt = NULL, $get = NULL)
+		{
+			if( $title == NULL && $get == 'title' )
+			{
+				return $this->label_title;
+			}
+			if( $opt == NULL && $get == 'attr' )
+			{
+				return $this->label_attr;
+			}
+			if( $title != NULL )
+			{
+				$this->label_title = $title;
+			}
+			if( $opt != NULL && is_array( $opt ) )
+			{
+				$this->label_attr = $opt;
+			}
+			return $this;
+		}
+		public function title($title = NULL)
+		{
+			if( $title == NULL )
+			{
+				return $this->label_title;
+			}
+			else
+			{
+				$this->label_title = $title;
+			}
+		}
+		public function __toString_()
+		{
+			if( isset( $this->input->attr('name') ) && $this->label != '' )
+				{
+					$data .= ( isset( $this->input->addHTML['before_label'] ) ? $this->input->addHTML['before_label'] : '' ) .
+					'<label' .toHTMLAttr( array_merge( ( is_array( $this->label_attr )? $this->label_attr : array() ),
+						array( 'for' => $this->attr['name'] ) ) ) . '>
+					' . $this->label_title . '
+					</label>' . ( isset( $this->addHTML['after_label'] ) ? $this->addHTML['after_label'] : '' ) . "\n";
+					if( $this->title->margin )
+					{
+						$data .= '<br />';
+						$add_margin_left = ' margin-left: 20px;';
+						if( !isset( $this->input->attr('style') ) )
+						{
+							$this->input->attr( 'style', $add_margin_left);
+						}
+						else
+						{
+							$this->input->attr('style', $this->input->attr( 'style' ) . $add_margin_left);
+						}
+					}
+				}
+		}

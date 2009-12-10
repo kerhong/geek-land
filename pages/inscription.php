@@ -1,8 +1,6 @@
-<?php 
-	$cryptinstall="./lib/cryptographp.fct.php";
-	include $cryptinstall;  
+<?php
 	defined( 'PHP_EXT' ) || exit();
-	if (isset($_SESSION['erreur']))
+	if( isset( $_SESSION['erreur'] ) )
 	{
 		foreach( $_SESSION['erreur'] as $erreur )
 		{
@@ -41,9 +39,7 @@
 			}
 		}
 	}
-?>
-	<p>Inscription :</p>
-<?php
+echo '<p>Inscription :</p>';
 	$form_insc = new Form( array( 'form' => 'index.php?page=traitement' . PHP_EXT ) );
 	$form_insc->input( array(
 			'name' => 'pseudo',

@@ -21,9 +21,9 @@ defined( 'PHP_EXT' ) || exit();
 //Tables
 define( 'T_COORD', 'coordonees' );
 
-class ExceptionBdd extends Exception {}
+class Bdd_Exception extends Exception {}
 
-abstract class bdd
+abstract class Bdd
 {
 	// contient les informations sur la connexion courante
 	public static $data = array();
@@ -164,7 +164,7 @@ abstract class bdd
 		{
 			var_dump( self::$data['link'] );
 			//$this->driver->error()
-			trigger_error(mysql_error(), E_USER_ERROR);
+			throw new Bdd_Exception(mysql_error(), E_USER_ERROR);
 
 			return false;
 		}
@@ -173,9 +173,10 @@ abstract class bdd
 		if ( !( self::$data['bdd_link'] = mysql_select_db( self::$data['bdd'], self::$data['link'] ) ) )
 		{
 			//$this->driver->error()
-			trigger_error(mysql_error(), E_USER_ERROR);
+			throw new Bdd_Exception(mysql_error(), E_USER_ERROR);
 			//$this->driver->close() || .................. || $this->driver->error()
-			mysql_close( self::$data['link'] ) or trigger_error(mysql_error(), E_USER_ERROR);
+			mysql_close( self::$data['link'] )
+				or trigger_error(mysql_error(), E_USER_ERROR);
 
 			return false;
 		}
@@ -205,7 +206,6 @@ abstract class bdd
 	*/
 	public static function query( $sql )
 	{
-		//$sql = str_replace( array_map( 'addBracket' , array_keys( self::$tables ) ), array_values( self::$tables ), $sql );
 		self::$data['last_sql'] = $sql;
 			//$this->driver->query()
 		if( ( $resultat = mysql_query( $sql, self::$data['link'] ) ) )
@@ -217,9 +217,9 @@ abstract class bdd
 		else
 		{
 			//$this->driver->error() || ............................... || $this->driver->errno()
-			trigger_error( $sql . ' --- ' . mysql_error() . ' --- Erreur n' . mysql_errno(), E_USER_ERROR );
+			throw new Bdd_Exception( $sql . ' --- ' . mysql_error(), mysql_errno(), E_USER_ERROR );
 
-		return false;
+			return false;
 		}
 	}
 

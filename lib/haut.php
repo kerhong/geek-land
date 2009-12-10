@@ -8,6 +8,7 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 		</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<link rel="stylesheet" media="screen" type="text/css" title="Design" href="geek-3.css" />
+		<?php require_js( 'http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js', 'fonctions' ); ?>
 	</head>
 	<body>
 		<div id="en_tete"><!--Header basique ...-->
@@ -25,7 +26,6 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 			
 			<div class="bloc"><!--Les fameux blocs ^^-->
 			<span id="connexion">
-
 				<?php 
 				if( !isset($_SESSION['id'] ) )
 				{
@@ -45,57 +45,45 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 						), 'password' )
 							->label( 'Mot de passe' )
 							->margin( true ). '<br />';
-					$form->input(array(
-							'onclick' => 'connection();',
+					$form->input( array(
+							'onclick' => 'connection(); return false;',
 							'value' => 'Envoyer !'
-							)
-							, 'button' )
+						), 'button' )
 							//, 'submit' )
 							->margin( true );
 					echo $form;
 					?><br />
 					<a href="?page=inscription">Inscription</a>
 				<script type="text/javascript">
-					function connection() {
-					var pseudo = encodeURIComponent(document.getElementById('pseudo').value);
-					var pass = encodeURIComponent(document.getElementById('pass').value);
-					var xhr = initxhr();
-					document.getElementById("connexion").innerHTML="Initialisation...";
-					xhr.open("POST","pages/connexionajax.php",true);
-					xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-					xhr.send("pseudo="+pseudo+"&pass="+pass);
-					xhr.onreadystatechange = function() {
-						if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-							document.getElementById("connexion").innerHTML=xhr.responseText; 
-						}
-						if (xhr.readyState == 2) {
-							document.getElementById("connexion").innerHTML='Connection en cours...';
-						}
-						if (xhr.readyState == 3) {
-							document.getElementById("connexion").innerHTML='Verification des identifiants...';
-						}
-					};
-					};
-					function initxhr() {
-						var xhr = null;
-						if (window.XMLHttpRequest || window.ActiveXObject) {
-							if (window.ActiveXObject) {
-								try {
-									xhr = new ActiveXObject("Msxml2.XMLHTTP");
-								} catch(e) {
-									xhr = new ActiveXObject("Microsoft.XMLHTTP");
-								}
-							} else {
-								xhr = new XMLHttpRequest(); 
+					var xhr,
+						elem_pseudo = jQuery( '#pseudo' ),
+						elem_pass = jQuery( '#pass' ),
+						elem_connexion = jQuery( '#connexion' );
+					function connection()
+					{
+						var pseudo = toURI( elem_pseudo );
+						var pass = toURI( elem_pass );
+						elem_connexion.html( 'Initialisation de la connexion ...' );
+						xhr.open( 'POST', 'pages/ajax/connexion.php',true);
+						xhr.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+						xhr.send( 'pseudo=' + pseudo + '&pass=' + pass );
+						xhr.onreadystatechange = function()
+						{
+							if( xhr.readyState == 4 && ( xhr.status == 200 || xhr.status == 0 ) )
+							{
+								elem_connexion.innerHTML = xhr.responseText;
 							}
-						} else {
-							alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest...");
-							return null;
+							if( xhr.readyState == 2 )
+							{
+								elem_connexion.innerHTML = 'Connexion en cours ...';
+							}
+							if( xhr.readyState == 3 )
+							{
+								elem_connexion.innerHTML = 'Verification des identifiants ...';
+							}
 						}
-						return xhr;
 					}
 				</script>
-				
 					<?php
 				}
 				else

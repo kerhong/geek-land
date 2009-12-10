@@ -3,23 +3,23 @@
 	if( isset( $_POST['pseudo'] ) && isset( $_POST['pass'] ) && isset( $_POST['passconf'] ) && isset( $_POST['date'] ) )
 	{
         $erreur = array();
-        $pseudo = bdd::secure( $_POST['pseudo'] );
-        $pass = bdd::secure( $_POST['pass'] );
-        $passconf = bdd::secure( $_POST['passconf'] );
-        $email = bdd::secure( $_POST['email'] );
-        $date = bdd::secure( $_POST['date'] );
+        $pseudo = Bdd::secure( $_POST['pseudo'] );
+        $pass = Bdd::secure( $_POST['pass'] );
+        $passconf = Bdd::secure( $_POST['passconf'] );
+        $email = Bdd::secure( $_POST['email'] );
+        $date = Bdd::secure( $_POST['date'] );
         //verification pseudo
 		/*
 		$result = Doctrine_Query::create()
 								->select( 'COUNT(*) as nbr' )
 								->from( 'Coordonnees' )
-								->where( 'pseudo = :pseudo', array( ':pseudo' => $pseudo ) )
-		foreach( $result as $resultat )
+								->where( 'pseudo = :pseudo', array( ':pseudo' => $_POST['pseudo'] ) )
+		if( $result->count() > 0 )
 		*/
-        $result = bdd::query( 'SELECT COUNT(*) AS nbr
+        $result = Bdd::query( 'SELECT COUNT(*) AS nbr
 			FROM ' . T_COORD . '
 			WHERE pseudo = \'' . $pseudo . '\'' );
-        $donnees = bdd::fetch( 'array', $result );
+        $donnees = Bdd::fetch( 'array', $result );
         if( $donnees['nbr'] > 0 )
         {
                 $erreur[] = 1;
@@ -46,14 +46,14 @@
 		$result = Doctrine_Query::create()
 								->select( 'COUNT(*) as nbr' )
 								->from( 'Coordonnees' )
-								->where( 'email = ?', $email )
-		if( count( $result ) )
+								->where( 'email = ?', $_POST['email'] );
+		if( count( $result ) > 0 )
 		*/
-        $resultmail = bdd::query( 'SELECT COUNT(*) AS nbr
+        $resultmail = Bdd::query( 'SELECT COUNT(*) AS nbr
 				FROM ' . T_COORD . '
 				WHERE email = \'' . $email . '\'' );
-        $donneesmail = bdd::fetch( 'array', $resultmail );
-        if( $donneesmail['nbr']; > 0 )
+        $donneesmail = Bdd::fetch( 'array', $resultmail );
+        if( $donneesmail['nbr'] > 0 )
         {
                 $erreur[] = 9;
         }
@@ -83,7 +83,7 @@
 //					$coord->date = new Doctrine_Expression( 'NOW()' ); //PreInsert
 //					$coord->banni = 0; //Default value
 				*/
-                bdd::query( 'INSERT INTO ' . T_COORD . ' (`id`,`pseudo`,`mot de pass`,`email`,`date`,`banni`)
+                Bdd::query( 'INSERT INTO ' . T_COORD . ' (`id`,`pseudo`,`mot de pass`,`email`,`date`,`banni`)
                  VALUES(\'\',\'' . $pseudo . '\',\'' . $pass . '\', \'' . $email . '\', \'' . $date . '\', 0)');
                 echo '<center>Inscription r&eacute;ussie !</center>';
         }
