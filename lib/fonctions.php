@@ -22,12 +22,12 @@ spl_autoload_register( 'inc' );
 
 Bdd::init();
 
-function relative_or_external($name)
+function relative_or_external($name, $add)
 {
 	$added = '';
 	if( substr( $name, 0, 7 ) != 'http://' )
 	{
-		$added = ROOT_URL . '/';
+		$added = ROOT_URL . '/' . $add;
 	}
 	return $added . $name;
 }
