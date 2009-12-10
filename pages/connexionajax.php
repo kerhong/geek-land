@@ -19,7 +19,7 @@ if( isset( $_POST['pseudo'] ) && isset( $_POST['pass'] ) )
 			$_SESSION['pseudo'] = $resultat['pseudo'];
 			$_SESSION['pass'] = $resultat['mot de pass'];
 			$_SESSION['mail'] = $resultat['email'];
-			echo 'Tu est bien connecté.';
+			echo utf8_encode('Tu est bien connectÃ©.');
 		}
  		else
 		{

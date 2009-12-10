@@ -25,12 +25,11 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 			
 			<div class="bloc"><!--Les fameux blocs ^^-->
 			<span id="connexion">
-				<h3>
-					Connexion
-				</h3>
+
 				<?php 
 				if( !isset($_SESSION['id'] ) )
 				{
+					echo '<h3>Connexion</h2>';
 					$form = new Form( array( 'action' => '?page=connexion' ) );
 					$form->input( array(
 							'name' => 'pseudo',
@@ -67,7 +66,7 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 					xhr.send("pseudo="+pseudo+"&pass="+pass);
 					xhr.onreadystatechange = function() {
 						if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-							document.getElementById("connexion").innerHTML=utf8_decode(xhr.responseText); 
+							document.getElementById("connexion").innerHTML=xhr.responseText; 
 						}
 						if (xhr.readyState == 2) {
 							document.getElementById("connexion").innerHTML='Connection en cours...';
