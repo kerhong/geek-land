@@ -22,6 +22,7 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 		</div>
 		<!--La colonne du menu.-->
 		<div id="colonne">
+			<span id="connexion">
 			<div class="bloc"><!--Les fameux blocs ^^-->
 				<h3>
 					Connexion
@@ -32,19 +33,72 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 					$form = new Form( array( 'action' => '?page=connexion' ) );
 					$form->input( array(
 							'name' => 'pseudo',
+							'id' => 'pseudo',
 							'value' => 'Pseudo',
 							'onclick' => 'this.value = \'\';',
 						) )
 							->label( 'Pseudo' )
 							->margin( true ). '<br />';
-					$form->input( array( 'name' => 'pass' ), 'password' )
+					$form->input( array(
+							'name' => 'pass',
+							'id' => 'pass'
+						), 'password' )
 							->label( 'Mot de passe' )
 							->margin( true ). '<br />';
-					$form->input( NULL, 'submit' )
+					$form->input(array(
+							//'onclick' => 'connection();',
+							//'value' => 'Envoyer !'
+							)
+							//, 'button' )
+							, 'submit' )
 							->margin( true );
 					echo $form;
 					?><br />
 					<a href="?page=inscription">Inscription</a>
+				<script type="text/javascript">
+					function connection() {
+					alert('Connection');
+					var xhr = initxhr();
+					document.getElementById("connexion").innerHTML="Initialisation...";
+					xhr.open("POST","pages/connexionajax.php",true);
+					xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+					var pseudo = document.connexion.getElementById('pseudo').value;
+					alert(pseudo);
+					var pass = encodeURIComponent(document.getElementById('pass').value);
+					alert(pseudo+pass);
+					xhr.send("pseudo="+pseudo+"&pass="+pass);
+					xhr.onreadystatechange = function() {
+						if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+							document.getElementById("connexion").innerHTML=xhr.responseText; 
+						}
+						if (xhr.readyState == 2) {
+							document.getElementById("connexion").innerHTML='Connection en cours...';
+						}
+						if (xhr.readyState == 3) {
+							document.getElementById("connexion").innerHTML='Connécté...';
+						}
+					};
+					};
+					function initxhr() {
+						var xhr = null;
+						if (window.XMLHttpRequest || window.ActiveXObject) {
+							if (window.ActiveXObject) {
+								try {
+									xhr = new ActiveXObject("Msxml2.XMLHTTP");
+								} catch(e) {
+									xhr = new ActiveXObject("Microsoft.XMLHTTP");
+								}
+							} else {
+								xhr = new XMLHttpRequest(); 
+							}
+						} else {
+							alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest...");
+							return null;
+						}
+						return xhr;
+					}
+				</script>
+				
 					<?php
 				}
 				else
@@ -53,6 +107,7 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 				}
 				?>
 			</div>
+			</span>
 			<div class="bloc"><!--Le menu-->
 				<h3 align="center">
 					Menu

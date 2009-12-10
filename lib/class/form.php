@@ -295,3 +295,4 @@
 			}
 		}
 	}
+	class ButtonInput extends Input { }
