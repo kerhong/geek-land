@@ -69,12 +69,13 @@ echo '<p>Inscription :</p>';
 			'_take_from' => 'GET',
 			'_add_HTML' => array( 'before' => '<br />' ),
 		), NULL )
-				->label( 'Votre date de naissance <i>(format jj/mm/aaaa)</i> :', array( 'class' => 'form_align' ) ) . '<br />';
+				->label( 'Votre date de naissance,<br /><i>(format jj/mm/aaaa)</i> :', array( 'class' => 'form_align' ) ) . '<br />';
 	$form_insc->input( array(
 			'name' => 'secure',
+			'class' => '_hide_me',
 			'size' => 10,
 		), 'password' )
-				->label( 'Veillez rentrer les caract&egrave;res de l\'image :<br /><img src="securite.php" alt="Code de sécurité" />',
-					array( 'class' => 'form_align' ) ) . '<br />';
+				->label( 'Veuillez laisser ce champ vide :',
+					array( 'class' => 'form_align _hide_me' ) ) . '<br />';
 	$form_insc->input( NULL, 'submit' );
 	echo $form_insc;

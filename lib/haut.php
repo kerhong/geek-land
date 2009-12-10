@@ -4,11 +4,17 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
 	<head>
 		<title>
-			.:: GeeK-LanD &bull; <?php out( 'page' ); ?> ::.
+			.:: GeeK-LanD &bull; {page} ::.
 		</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<link rel="stylesheet" media="screen" type="text/css" title="Design" href="geek-3.css" />
 		<?php require_js( 'http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js', 'fonctions' ); ?>
+		<script type="text/javascript">
+			a(function ($)
+			{
+				$( '._hide_me' ).hide();
+			} );
+		</script>
 	</head>
 	<body>
 		<div id="en_tete"><!--Header basique ...-->
@@ -36,20 +42,21 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 							'id' => 'pseudo',
 							'value' => 'Pseudo',
 							'onclick' => 'this.value = \'\';',
+							'_add_HTML' => array( 'after' => '<br />' ),
 						) )
-							->label( 'Pseudo' )
-							->margin( true ). '<br />';
+							->margin( true )
+							->label( 'Pseudo' );
 					$form->input( array(
 							'name' => 'pass',
-							'id' => 'pass'
+							'id' => 'pass',
+							'_add_HTML' => array( 'after' => '<br />', ),
 						), 'password' )
-							->label( 'Mot de passe' )
-							->margin( true ). '<br />';
+							->margin( true )
+							->label( 'Mot de passe' );
 					$form->input( array(
 							'onclick' => 'connection(); return false;',
-							'value' => 'Envoyer !'
-						), 'button' )
-							//, 'submit' )
+							'value' => 'Se connecter !'
+						), 'submit' )
 							->margin( true );
 					echo $form;
 					?><br />

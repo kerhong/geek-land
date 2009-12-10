@@ -8,14 +8,22 @@
 		private $p_lib = 'lib/',
 				$p_pages = 'pages/',
 				$file_by_def = 'index',
-				$to_end = false;
-		private static $instance;
-		public	$page = NULL,
-				$page_ = NULL,
-				$vars;
+				$to_end = false,
+				$page = NULL,
+				$page_ = NULL;
+		public static $vars;
+		public function helper($key = ':all')
+		{
+			if( $key == ':all' )
+			{
+				require_once $this->p_lib . 'helpers/all' . PHP_EXT;
+			}
+		}
 		public function parse($str)
 		{
-			return str_replace( addBracket( array_keys( $view->vars ) ), array_values( $this->vars ), $str );
+			$from = addBracket( array_keys( $this->vars ) );
+			$to = array_values( $this->vars );
+			return str_replace( $from, $to, $str );
 		}
 		public function vars()
 		{
@@ -32,9 +40,12 @@
 					$this->vars[func_get_arg( 0 )] = func_get_arg( 1 );
 			}
 		}
-		private function __construct()
+		public function __construct()
 		{
-			require_once $this->p_lib . 'haut' . PHP_EXT;
+			$this->init();
+		}
+		public function init()
+		{
 			$page = isset( $_GET['page'] )?str_replace( array( '/', '\\', '..', ), '', $_GET['page'] ):$this->file_by_def;
 			$this->page = ucfirst( strtolower( $page ) );
 			$this->page_ = $this->p_pages . $page . PHP_EXT;
@@ -46,12 +57,9 @@
 		private function __clone() {}
 		public function end()
 		{
-			if( !$this->to_end )
-			{ }
-			else
+			if( $this->to_end )
 			{
 				$this->to_end = false;
-				exit( '' );
 				require_once $this->p_lib . 'bas' . PHP_EXT;
 			}
 		}
@@ -87,17 +95,4 @@
 			$this->to_end = true;
 			$this->end();
 		}
-		public static function getInstance()
-		{
-			if( !self::$instance instanceof self )
-			{
-				self::$instance = new self();
-			}
-			return self::$instance;
-		}
-	}
-
-	function out($var)
-	{
-		return View::$vars[$var];
 	}

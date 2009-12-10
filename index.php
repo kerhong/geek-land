@@ -7,7 +7,8 @@ try
 	define( 'PHP_EXT', strrchr( __FILE__, '.' ) );
 	require_once 'lib/fonctions' . PHP_EXT;
 	( BLOCK != 1 ) || exit( 'Page bloquée.' );
-	$view = View::getInstance();
+	$view = new View();
+	$view->helper( ':all' );
 	$view->fullPage();
 }
 catch( Exception_Form $e )
@@ -22,5 +23,6 @@ catch( Exception $e )
 {
 	exit( 'Erreur de type inconnue: ' . $e->getMessage() );
 }
-echo $view->parse( substr( ob_get_flush(), 0, -1 ) );
+echo $view->parse( ob_get_contents() );
+ob_end_flush();
 exit();

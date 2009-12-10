@@ -81,7 +81,6 @@ function isAjaxRequest()
 	return false;
 }
 
-
 //Répète un certain nombre de fois la balise <br />
 function doBR($i = 1)
 {

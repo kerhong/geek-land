@@ -202,7 +202,11 @@
 					break;
 				//On veut récupérer une clef
 				case 1:
-					return $this->attr[func_get_arg( 0 )];
+					if( isset( $this->attr[func_get_arg( 0 )] ) )
+					{
+						return $this->attr[func_get_arg( 0 )];
+					}
+					return NULL;
 					break;
 				default:
 					$this->attr[func_get_arg( 0 )] = func_get_arg( 1 );
@@ -226,9 +230,27 @@
 		{
 			if( $this->label == '' )
 			{
-				$this->label = new Form_Label( $title, $opt, $get, &$this );
+				$this->label = new Form_Label( $title, $opt, $get, $this );
 			}
 			return $this->label;
+		}
+		public function addHTML()
+		{
+			$args = func_get_args();
+			switch( count( $args ) )
+			{
+				case 0:
+					return $this->addHTML;
+					break;
+				case 1:
+					if( isset( $this->addHTML[$args[0]] ) )
+						return $this->addHTML[$args[0]];
+					return '';
+					break;
+				default:
+					$this->addHTML[$args[0]] = $args[1];
+					return;
+			}
 		}
 	}
 
@@ -272,6 +294,7 @@
 		public function __construct($title = NULL, $opt = NULL, $get = NULL, Form_Input $inputRef)
 		{
 			$this->param($title, $opt, $get);
+			$this->input = $inputRef;
 		}
 		public function param($title = NULL, $opt = NULL, $get = NULL)
 		{
@@ -304,27 +327,33 @@
 				$this->label_title = $title;
 			}
 		}
+		public function __toString()
+		{
+			return $this->__toString_();
+		}
 		public function __toString_()
 		{
-			if( isset( $this->input->attr('name') ) && $this->label != '' )
-				{
-					$data .= ( isset( $this->input->addHTML['before_label'] ) ? $this->input->addHTML['before_label'] : '' ) .
+			if( $this->input->attr( 'name' ) && $this->label_title != '' )
+			{
+				$data = $this->input->addHTML( 'before_label' ) .
 					'<label' .toHTMLAttr( array_merge( ( is_array( $this->label_attr )? $this->label_attr : array() ),
-						array( 'for' => $this->attr['name'] ) ) ) . '>
+						array( 'for' => $this->input->attr( 'name' ) ) ) ) . '>
 					' . $this->label_title . '
-					</label>' . ( isset( $this->addHTML['after_label'] ) ? $this->addHTML['after_label'] : '' ) . "\n";
-					if( $this->title->margin )
+					</label>' . $this->input->addHTML( 'after_label' ) . "\n";
+				if( $this->input->margin() )
+				{
+					$data .= '<br />';
+					$add_margin_left = ' margin-left: 20px;';
+					if( $this->input->attr( 'style' ) === NULL )
 					{
-						$data .= '<br />';
-						$add_margin_left = ' margin-left: 20px;';
-						if( !isset( $this->input->attr('style') ) )
-						{
-							$this->input->attr( 'style', $add_margin_left);
-						}
-						else
-						{
-							$this->input->attr('style', $this->input->attr( 'style' ) . $add_margin_left);
-						}
+						$this->input->attr( 'style', $add_margin_left);
+					}
+					else
+					{
+						$this->input->attr('style', $this->input->attr( 'style' ) . $add_margin_left);
 					}
 				}
+				return $data;
+			}
 		}
+	}

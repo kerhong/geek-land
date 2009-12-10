@@ -66,5 +66,9 @@ a:hover
 	font-size: 12px;
 	margin-left: 200px;
 }
-	
-
+.form_align
+{
+	display: block;
+	float: left;
+	width: 300px;
+}

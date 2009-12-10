@@ -97,4 +97,9 @@ body
 	color: #d1d3d6;
 }
 
-
+.form_align
+{
+	display: block;
+	float: left;
+	width: 300px;
+}
