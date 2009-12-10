@@ -97,7 +97,7 @@
 		}
 	}
 
-	function var($var)
+	function out($var)
 	{
 		return View::$vars[$var];
 	}
