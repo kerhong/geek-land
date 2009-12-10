@@ -23,6 +23,6 @@ catch( Exception $e )
 {
 	exit( 'Erreur de type inconnue: ' . $e->getMessage() );
 }
-echo $view->parse( ob_get_contents() );
+echo ob_get_contents();
 ob_end_flush();
 exit();

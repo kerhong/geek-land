@@ -10,7 +10,9 @@
 				$file_by_def = 'index',
 				$to_end = false,
 				$page = NULL,
-				$page_ = NULL;
+				$page_ = NULL,
+				$init = false,
+				$fullpage = false;
 		public static $vars;
 		public function helper($key = ':all')
 		{
@@ -42,17 +44,21 @@
 		}
 		public function __construct()
 		{
-			$this->init();
+			return $this->init();
 		}
-		public function init()
+		private function init()
 		{
-			$page = isset( $_GET['page'] )?str_replace( array( '/', '\\', '..', ), '', $_GET['page'] ):$this->file_by_def;
-			$this->page = ucfirst( strtolower( $page ) );
-			$this->page_ = $this->p_pages . $page . PHP_EXT;
-			$this->vars = array(
-					'page' => $this->page,
-					'page_' => $this->page_,
-				);
+			if( !$this->init )
+			{
+				$this->init = true;
+				$page = isset( $_GET['page'] )?str_replace( array( '/', '\\', '..', ), '', $_GET['page'] ):$this->file_by_def;
+				$this->page = ucfirst( strtolower( $page ) );
+				$this->page_ = $this->p_pages . $page . PHP_EXT;
+				$this->vars = array(
+						'page' => $this->page,
+						'page_' => $this->page_,
+					);
+			}
 		}
 		private function __clone() {}
 		public function end()
@@ -90,9 +96,14 @@
 		}
 		public function fullPage()
 		{
-			$this->head();
-			$this->page();
-			$this->to_end = true;
-			$this->end();
+			if( !$this->fullpage )
+			{
+				$this->init();
+				$this->head();
+				$this->page();
+				$this->to_end = true;
+				$this->end();
+				exit();
+			}
 		}
 	}
