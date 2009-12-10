@@ -20,14 +20,14 @@ if( isset( $_POST['pseudo'] ) && isset( $_POST['pass'] ) )
 		$_SESSION['pseudo'] = $resultat['pseudo'];
 		$_SESSION['pass'] = $resultat['mot de pass'];
 		$_SESSION['mail'] = $resultat['email'];
-		echo utf8_encode( htmlentities( 'Tu est bien connecté.', ENT_QUOTES ) );
+		echo encode( 'Tu est bien connecté.' );
 	}
  	else
 	{
-		echo '<p class="erreur">Erreur le mot de pass et/ou le pseudo ne sont pas bon</p>';
+		echo '<p class="error">' . encode( 'Erreur: le mot de passe et/ou le pseudo ne sont pas bons !' ) . '</p>';
 	}
 }
 else
 {
-	echo '<p class="erreur">Erreur veuillez rentrez un pseudo et un mot de pass.</p>';
+	echo '<p class="error">' . encode( 'Erreur: veuillez rentrez un pseudo et un mot de passe !' ) . '</p>';
 }

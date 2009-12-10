@@ -58,7 +58,7 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 					?>
 					<a href="?page=inscription">Inscription</a>
 					<script type="text/javascript">
-						var xhr,
+						var xhr_active_request,
 							elem_pseudo = jQuery( '#pseudo' ),
 							elem_pass = jQuery( '#pass' ),
 							elem_connexion = jQuery( '#connexion' );
@@ -66,19 +66,25 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 						{
 							var pseudo = toURI( elem_pseudo );
 							var pass = toURI( elem_pass );
+							if( pass == '' || pseudo == '' )
+							{
+								elem_connexion.html( '<p align="center" class="error">Vous devez donner un pseudo et un mot de passe</p>' + elem_connexion.html() );
+								return false;
+							}
 							elem_connexion.html( 'Initialisation de la connexion ...' );
 							jQuery.ajax(
 							{
-								'method': 'POST',
+								'type': 'POST',
 								'url': 'pages/ajax/connexion.php',
-								'params': { 'pseudo': pseudo, 'pass': pass },
+								'data': { 'pseudo': pseudo, 'pass': pass },
 								'beforeSend': function(xhr)
 								{
 									elem_connexion.html( 'Connexion en cours ...' );
+									xhr_active_request++;
 								},
 								'complete': function(xhr, text)
 								{
-									elem_connexion.html( 'Verification des identifiants ...' );
+									xhr_active_request--;
 								},
 								'error': function(xhr, text, info)
 								{

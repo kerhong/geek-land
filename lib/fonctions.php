@@ -12,6 +12,11 @@ if( !function_exists( 'lcfirst' ) )
 	}
 }
 
+function encode($str)
+{
+	return utf8_encode( htmlentities( $str, ENT_QUOTES ) );
+}
+
 function inc( $class_name_ )
 {
 	$class_name = str_replace( array( '_', '\\', ), '/', $class_name_ );
