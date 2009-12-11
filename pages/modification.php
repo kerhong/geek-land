@@ -56,18 +56,25 @@
 		{
 				$erreur[] = 6;
 		}
+		if (!isset($_POST['avatar'])) {
+			$avatar = 'no-avatar.gif';
+		}
+		else {
+			$avatar = Bdd::secure( $_POST['avatar']);
+		}
 		if( $erreur == array() )
 		{
 			Bdd::query( 'UPDATE ' . T_COORD . '
 				SET pseudo=\'' . $pseudo . '\',
-					email=\'' . $email . '\',
-					`mot de pass`=\'' . $pass . '\'
-				WHERE pseudo=\'' . Bdd::escape( $_SESSION['pseudo'] ) . '\'');
+					email=\'' . $email . '\',           
+					`mot de pass`=\'' . $pass . '\',
+					avatar=\''. $avatar .'\'
+				WHERE pseudo=\'' . str_replace(' ','_', $_SESSION['pseudo'] ) . '\'');
 			$_SESSION = array(
 					'pseudo' => $pseudo,
 					'pass' => $pass,
 					'mail' => $email,
-					'avatar' => 'no-avatar.gif',
+					'avatar' => $avatar,
 				);
 			echo 'Vos informations ont bien été modifiées.';
 		}
