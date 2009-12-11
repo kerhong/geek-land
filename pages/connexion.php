@@ -14,6 +14,7 @@
 			$_SESSION['pseudo'] = $resultat['pseudo'];
 			$_SESSION['pass'] = $resultat['mot de pass'];
 			$_SESSION['mail'] = $resultat['email'];
+			$_SESSION['avatar'] = 'no-avatar.gif';
 			echo 'Tu est bien connecté.'; //.$_SESSION['id'];
 			header( 'Location: ' . ROOT_URL );
 		}

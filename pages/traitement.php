@@ -1,5 +1,7 @@
 <?php
 	defined( 'PHP_EXT' ) || exit();
+	 $cryptinstall="crypt/cryptographp.fct.php";
+ include $cryptinstall;  
 	if( isset( $_POST['pseudo'] ) && isset( $_POST['pass'] ) && isset( $_POST['passconf'] ) && isset( $_POST['date'] ) )
 	{
         $erreur = array();
@@ -70,6 +72,10 @@
         {
                 $erreur[] = 8;
         }
+		//verification captcha
+		if (!chk_crypt($_POST['code'])) {
+			$erreur[] = 'c';
+		}
         //Validation
         if( $erreur == array() )
         {
@@ -83,13 +89,13 @@
 //					$coord->date = new Doctrine_Expression( 'NOW()' ); //PreInsert
 //					$coord->banni = 0; //Default value
 				*/
-                Bdd::query( 'INSERT INTO ' . T_COORD . ' (`id`,`pseudo`,`mot de pass`,`email`,`date`,`banni`)
-                 VALUES(\'\',\'' . $pseudo . '\',\'' . $pass . '\', \'' . $email . '\', \'' . $date . '\', 0)');
+                Bdd::query( 'INSERT INTO ' . T_COORD . ' (`id`,`pseudo`,`mot de pass`,`email`,`datenaissance`,`date`,`banni`)
+                 VALUES(\'\',\'' . $pseudo . '\',\'' . $pass . '\', \'' . $email . '\', \'' . $date . '\',\'\', 0)');
                 echo '<center>Inscription r&eacute;ussie !</center>';
         }
         else
         {
-               //header( 'Location: /index.php?page=inscription&pseudo=' . $pseudo . '&pass=' . $pass . '&mail=' . $email . '&date=' . $date );
+               header( 'Location: /index.php?page=inscription&pseudo=' . $pseudo . '&pass=' . $pass . '&mail=' . $email . '&date=' . $date );
                 $_SESSION['erreur'] = $erreur;
         }
 	}

@@ -285,7 +285,7 @@
 			}
 		}
 	}
-
+	class Form_Input_img extends Form_Input { }
 	class Form_Label
 	{
 		private $label_attr,

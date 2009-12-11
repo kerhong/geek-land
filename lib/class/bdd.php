@@ -217,8 +217,8 @@ abstract class Bdd
 		else
 		{
 			//$this->driver->error() || ............................... || $this->driver->errno()
-			throw new Bdd_Exception( $sql . ' --- ' . mysql_error(), mysql_errno(), E_USER_ERROR );
-
+			//throw new Bdd_Exception( $sql . ' --- ' . mysql_error(), mysql_errno(), E_USER_ERROR );
+			die('Erreur mysql : '.mysql_error());
 			return false;
 		}
 	}

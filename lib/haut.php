@@ -34,19 +34,21 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 				<?php 
 				if( !isset($_SESSION['id'] ) )
 				{
-					echo '<h3>Connexion</h3>';
+					echo '<img src="connection.png"><span class="MiseEnValeur">Connexion</span>';
 					$form = new Form( array( 'action' => '?page=connexion', 'onsubmit' => 'connection(); return false;' ) );
 					$form->input( array(
 							'name' => 'pseudo',
 							'id' => 'pseudo',
 							'value' => 'Pseudo',
-							'onclick' => 'this.value = \'\';',
+							'onclick' => 'if (this.value == \'Pseudo\') this.value = \'\';',
 						) )
 							->margin( true )
 							->label( 'Pseudo' );
 					$form->input( array(
 							'name' => 'pass',
 							'id' => 'pass',
+							'value' => '*****',
+							'onclick' => 'if (this.value == \'*****\') this.value = \'\';'
 						), 'password' )
 							->margin( true )
 							->label( 'Mot de passe' );
@@ -79,7 +81,7 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 								'data': { 'pseudo': pseudo, 'pass': pass },
 								'beforeSend': function(xhr)
 								{
-									elem_connexion.html( 'Connexion en cours ...' );
+									elem_connexion.html( '<center>Connexion en cours ...<br /><img src="loader.gif"></center>' );
 									xhr_active_request++;
 								},
 								'complete': function(xhr, text)
@@ -101,15 +103,19 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 					}
 					else
 					{
-						echo 'Vous &ecirc;tes connecté.<br /><img src="no-avatar.gif"><a href="?page=deconnexion">Déconnexion</a>';
+					?>
+					<br /><img src="<?php echo $_SESSION['avatar']; ?>"> <br />Bienvenue, <?php echo $_SESSION['pseudo']; ?><br />
+					<li><a href="?page=deconnexion">Déconnexion</a></li>
+					<li><a href="?page=profil">Profil</a></li>
+					<?php
 					}
 					?>
 				</span>
 			</div>
 			<div class="bloc"><!--Le menu-->
-				<h3 align="center">
+				<img src="navigation.png"><span class="MiseEnValeur">
 					Menu
-				</h3>
+				</span>
 				<ul>
 					<li>
 						<a href="?">Accueil</a>

@@ -9,7 +9,7 @@ try
 	( BLOCK != 1 ) || exit( 'Page bloquée.' );
 	$view = new View();
 	$view->helper( ':all' );
-	$view->fullPage();
+	$view->fullPage(); 
 }
 catch( Exception_Form $e )
 {

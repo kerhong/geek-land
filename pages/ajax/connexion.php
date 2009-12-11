@@ -20,7 +20,10 @@ if( isset( $_POST['pseudo'] ) && isset( $_POST['pass'] ) )
 		$_SESSION['pseudo'] = $resultat['pseudo'];
 		$_SESSION['pass'] = $resultat['mot de pass'];
 		$_SESSION['mail'] = $resultat['email'];
-		echo encode( 'Tu est bien connecté.' );
+		$_SESSION['avatar'] = 'no-avatar.gif';
+		echo '<br /><img src="' . $_SESSION['avatar'] . '"> <br />Bienvenue, ' . $_SESSION['pseudo'] . '<br />
+					<li><a href="?page=deconnexion">Déconnexion</a></li>
+					<li><a href="?page=profil">Profil</a></li>';
 	}
  	else
 	{

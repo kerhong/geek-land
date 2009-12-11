@@ -1,5 +1,7 @@
 <?php
 	defined( 'PHP_EXT' ) || exit();
+ $cryptinstall="crypt/cryptographp.fct.php";
+ include $cryptinstall;  
 	if( isset( $_SESSION['erreur'] ) )
 	{
 		foreach( $_SESSION['erreur'] as $erreur )
@@ -40,7 +42,7 @@
 		}
 	}
 echo '<p>Inscription :</p>';
-	$form_insc = new Form( array( 'form' => 'index.php?page=traitement' . PHP_EXT ) );
+	$form_insc = new Form( array( 'action' => 'index.php?page=traitement&PHPSESSID=' . session_id() ) );
 	$form_insc->input( array(
 			'name' => 'pseudo',
 			'_take_from' => 'GET',
@@ -77,5 +79,14 @@ echo '<p>Inscription :</p>';
 		), 'password' )
 				->label( 'Veuillez laisser ce champ vide :',
 					array( 'class' => 'form_align _hide_me' ) ) . '<br />';
+
+	$form_insc->input( array(
+			'name' => 'code',
+			'maxlength' => 15,
+		), NULL )
+				->label( '<img src="pages/'.$_SESSION['cryptdir'].'/cryptographp.php?cfg=0&PHPSESSID='.session_id().'"><br />Veuillez taper les lettres de l\'image :', array( 'class' => 'form_align' ) ) . '<br />';
+	
+
+		
 	$form_insc->input( NULL, 'submit' );
 	echo $form_insc;
