@@ -47,13 +47,12 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 					$form->input( array(
 							'name' => 'pass',
 							'id' => 'pass',
-							'value' => '*****',
-							'onclick' => 'if (this.value == \'*****\') this.value = \'\';'
+							'onclick' => 'if (this.value == \'*******\') this.value = \'\';'
 						), 'password' )
 							->margin( true )
 							->label( 'Mot de passe' );
 					$form->input( array(
-							'value' => 'Se connecter !'
+							'value' => 'Se connecter !',
 						), 'submit' )
 							->margin( true );
 					echo $form;

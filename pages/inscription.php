@@ -1,47 +1,43 @@
 <?php
 	defined( 'PHP_EXT' ) || exit();
- $cryptinstall="crypt/cryptographp.fct.php";
- include $cryptinstall;  
+	require_once 'crypt/cryptographp.fct' . PHP_EXT;
 	if( isset( $_SESSION['erreur'] ) )
 	{
-		foreach( $_SESSION['erreur'] as $erreur )
+		echo '<b>Des erreurs sont survenues</b><ul class="error">';
+		in_array( 1, $_SESSION['erreur'] )
 		{
-			switch( $erreur )
-			{
-				case 1:
-					echo '<li>Le pseudo est déjà pris</li>';
-					break;
-				case 2:
-					echo '<li>Le pseudo doit faire moins de 15 caractères.</li>';
-					break;
-				case 3:
-					echo '<li>Le mot de pass doit faire moins de 15 caractères.</li>';
-					break;
-				case 4:
-					echo '<li>Les mots de pass ne correspondent pas.</li>';
-					break;
-				case 5:
-					echo '<li>Le format de l\'addresse email est incorrecte</li>';
-					break;;
-				case 6:
-					echo '<li>L\'adresse email doit faire moins de 40 caractères.</li>';
-					break;
-				case 7:
-					echo '<li>La date est trop longue.</li>';
-					break;
-				case 8:
-					echo '<li>La date n\'est pas au bon format.</li>';
-					break;
-				case 9:
-					echo '<li>L\'email est déjà utilisée</li>';
-					break;
-				case 'c':
-					echo '<li>Le captcha n\'est pas bon';
-					break;
-			}
+			echo '<li>Le pseudo est déjà pris</li>';
 		}
+		in_array( 2, $_SESSION['erreur'] )
+		{
+			echo '<li>Le pseudo doit faire moins de 15 caractères.</li>';
+		}
+		in_array( 3, $_SESSION['erreur'] )
+		{
+			echo '<li>Le mot de pass doit faire moins de 15 caractères.</li>';
+		}
+		in_array( 4, $_SESSION['erreur'] )
+		{
+			echo '<li>Les mots de pass ne correspondent pas.</li>';
+		}
+		in_array( 5, $_SESSION['erreur'] )
+		{
+			echo '<li>Le format de l\'addresse email est incorrecte</li>';
+		}
+		in_array( 6, $_SESSION['erreur'] )
+		{
+			echo '<li>L\'adresse email doit faire moins de 40 caractères.</li>';
+		}
+		in_array( 9, $_SESSION['erreur'] )
+		{
+			echo '<li>L\'email est déjà utilisée</li>';
+		}
+		in_array( 'c', $_SESSION['erreur'] )
+		{
+		}
+		echo '</ul>';
 	}
-echo '<p>Inscription :</p>';
+	echo '<p>Inscription :</p>';
 	$form_insc = new Form( array( 'action' => 'index.php?page=traitement&PHPSESSID=' . session_id() ) );
 	$form_insc->input( array(
 			'name' => 'pseudo',

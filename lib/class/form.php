@@ -151,7 +151,8 @@
 			if( isset( $data['_take_from'] ) )
 			{
 				$data['_take_from'] = strtoupper( $data['_take_from'] );
-				if( ( $data['_take_from'] == 'GET' || $data['_take_from'] == 'POST' ) &&  isset( $_{$data['_take_from']}[$data['name']] ) )
+				if( ( $data['_take_from'] == 'GET' || $data['_take_from'] == 'POST' || $data['_take_from'] == 'SESSION' )
+				 &&  isset( $_{$data['_take_from']}[$data['name']] ) )
 				{
 					$data['value'] = $_{$data['_take_from']}[$data['name']];
 				}
@@ -254,10 +255,11 @@
 		}
 	}
 
-	class Form_Input_Text extends Form_Input { }
-	class Form_Input_Select extends Form_Input { }
-	class Form_Input_Button extends Form_Input { }
-	class Form_Input_Password extends Form_Input
+//	class Form_Input_Img		extends Form_Input { }
+	class Form_Input_Text		extends Form_Input { }
+	class Form_Input_Select		extends Form_Input { }
+	class Form_Input_Button		extends Form_Input { }
+	class Form_Input_Password	extends Form_Input
 	{
 		public function load()
 		{
@@ -285,7 +287,6 @@
 			}
 		}
 	}
-	class Form_Input_img extends Form_Input { }
 	class Form_Label
 	{
 		private $label_attr,
