@@ -148,9 +148,9 @@ abstract class Bdd
 	public static function init($newLink = false, $clientFlags = false)
 	{
 		self::$data = array(
-			'serveur'		=> 'hosting.zymic.com',
-			'utilisateur'	=> '64018_site',
-			'motPasse'		=> 'jesuislesite',
+			'serveur'		=> 'localost',
+			'utilisateur'	=> 'geekland_site',
+			'motPasse'		=> 'jU95unj5dhJr',
 			'bdd'			=> 'geek-land_zxq_membres',
 			'link'			=> false,
 			'bdd_link'		=> false,

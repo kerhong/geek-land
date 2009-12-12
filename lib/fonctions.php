@@ -1,6 +1,6 @@
 <?php
 defined( 'PHP_EXT' ) || exit();
-define( 'ROOT_URL', 'http://geek-land.zxq.net' );
+define( 'ROOT_URL', 'http://geek-land.redheberg.com' );
 session_start();
 
 if( !function_exists( 'lcfirst' ) )
@@ -32,7 +32,7 @@ function relative_or_external($name, $add)
 	$added = '';
 	if( substr( $name, 0, 7 ) != 'http://' )
 	{
-		$added = ROOT_URL . '/' . $add;
+		$added = ROOT . '/' . $add;
 	}
 	return $added . $name;
 }
@@ -80,9 +80,10 @@ function addDoubleDot($str)
 
 function isAjaxRequest()
 {
-	if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ):
+	if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' )
+	{
 		return true;
-	endif;
+	}
 	return false;
 }
 
