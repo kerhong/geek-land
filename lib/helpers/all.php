@@ -3,3 +3,4 @@
 	{
 		echo View::$vars[$var];
 	}
+	
