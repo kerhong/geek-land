@@ -33,6 +33,17 @@ abstract class Bdd
 			'coord'		=> 'coordonees',
 		);
 
+	public function getColumns($table_name, $delimiter = ', ')
+	{
+		//N'existe pas sous Doctrine, Doctrine sait le faire ...
+		if( $table_name == T_COORD )
+		{
+			implode( $delimiter, array(
+					
+				) );
+		}
+	}
+
 	/*
 	** déconnection de la base de donnée
 	** -----
@@ -151,7 +162,7 @@ abstract class Bdd
 			'serveur'		=> 'localost',
 			'utilisateur'	=> 'geekland_site',
 			'motPasse'		=> 'jU95unj5dhJr',
-			'bdd'			=> 'geek-land_zxq_membres',
+			'bdd'			=> 'geek-land_membres',
 			'link'			=> false,
 			'bdd_link'		=> false,
 			'queryNbr'		=> 0,

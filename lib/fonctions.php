@@ -12,11 +12,6 @@ if( !function_exists( 'lcfirst' ) )
 	}
 }
 
-function encode($str)
-{
-	return utf8_encode( htmlentities( $str, ENT_QUOTES ) );
-}
-
 function inc( $class_name_ )
 {
 	$class_name = str_replace( array( '_', '\\', ), '/', $class_name_ );
@@ -27,12 +22,27 @@ spl_autoload_register( 'inc' );
 
 Bdd::init();
 
+define( 'LEVEL_BANNED', -1 );
+define( 'LEVEL_NORMAL_USER', 0 );
+define( 'LEVEL_REDACTOR', 1 );
+define( 'LEVEL_MODERATOR', 2 );
+define( 'LEVEL_ADMINISTRATOR', 3 );
+
+function check_auth( $auth_have, $auth_needed, $strict = false )
+{
+	return ( $strict )?( $auth_have > $auth_needed ):( $auth_have >= $auth_needed );
+}
+
+function encode($str)
+{
+	return utf8_encode( htmlentities( $str, ENT_QUOTES ) );
+}
 function relative_or_external($name, $add)
 {
 	$added = '';
 	if( substr( $name, 0, 7 ) != 'http://' )
 	{
-		$added = ROOT . '/' . $add;
+		$added = ROOT . $add;
 	}
 	return $added . $name;
 }

@@ -151,14 +151,24 @@
 			if( isset( $data['_take_from'] ) )
 			{
 				$data['_take_from'] = strtoupper( $data['_take_from'] );
-				if( ( $data['_take_from'] == 'GET' || $data['_take_from'] == 'POST' || $data['_take_from'] == 'SESSION' )
-				 &&  isset( $_{$data['_take_from']}[$data['name']] ) )
+				if( is_string( $data['_take_from'] ) )
 				{
-					$data['value'] = $_{$data['_take_from']}[$data['name']];
+					if( ( $data['_take_from'] == 'GET' || $data['_take_from'] == 'POST' || $data['_take_from'] == 'SESSION' || $data['_take_from'] == 'COOKIE' )
+					 &&  isset( $_{$data['_take_from']}[$data['name']] ) )
+					{
+						$data['value'] = $_{$data['_take_from']}[$data['name']];
+					}
+					else
+					{
+						var_dump( $data['_take_from'] );
+					}
 				}
 				else
 				{
-					var_dump( $data['_take_from'] );
+					if( isset( $data['_take_from'][$data['name']] ) )
+					{
+						$data['value'] = $data['_take_from'][$data['name']];
+					}
 				}
 				unset( $data['_take_from'] );
 			}
