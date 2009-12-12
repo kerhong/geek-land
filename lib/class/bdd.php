@@ -159,7 +159,7 @@ abstract class Bdd
 	public static function init($newLink = false, $clientFlags = false)
 	{
 		self::$data = array(
-			'serveur'		=> 'localost',
+			'serveur'		=> 'localhost',
 			'utilisateur'	=> 'geekland_site',
 			'motPasse'		=> 'jU95unj5dhJr',
 			'bdd'			=> 'geek-land_membres',
