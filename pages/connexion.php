@@ -7,6 +7,7 @@
 			FROM ' . T_COORD . '
 			WHERE pseudo = \'' . $pseudo . '\'
 			GROUP BY id' );
+		$query = Doctrine_Core::getTable()->findBy..And...
 		$resultat = Bdd::fetch( 'array', $requete, MYSQL_ASSOC );
 		if( $pass == $resultat['mot de pass'] )
 		{

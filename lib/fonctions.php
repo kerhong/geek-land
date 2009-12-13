@@ -19,6 +19,12 @@ function inc( $class_name_ )
 }
 
 spl_autoload_register( 'inc' );
+inc( 'Doctrine_Core' );
+spl_autoload_register( array( 'Doctrine_Core', 'autoload' ) );
+Doctrine_Core::generateModelsFromDb( ROOT . 'models' );
+Doctrine_Core::loadModels( ROOT . 'models/generated');
+Doctrine_Core::loadModels( ROOT . 'models/');
+$connexion = Doctrine_Manager::connection('mysql://root:pass@localhost/bdd');
 
 Bdd::init();
 
