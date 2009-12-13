@@ -1,43 +1,12 @@
 <?php
 	defined( 'PHP_EXT' ) || exit();
 	require_once 'crypt/cryptographp.fct' . PHP_EXT;
-if( isset( $_SESSION['erreur'] ) )
-{
-	echo '<b>Des erreurs sont survenues</b><ul>';
-	if (in_array( 1, $_SESSION['erreur'] ))
+	if( isset( $_SESSION['erreur'] ) )
 	{
-		echo '<li>Le pseudo est déjà pris</li>';
+		echo '<b>Des erreurs sont survenues</b><ul>'
+			 . checkUserParams( $_SESSION['erreur'] )
+			 . '</ul>';
 	}
-	if (in_array( 2, $_SESSION['erreur'] ))
-	{
-		echo '<li>Le pseudo doit faire moins de 15 caractères.</li>';
-	}
-	if (in_array( 3, $_SESSION['erreur'] ))
-	{
-		echo '<li>Le mot de pass doit faire moins de 15 caractères.</li>';
-	}
-	if (in_array( 4, $_SESSION['erreur'] ))
-	{
-		echo '<li>Les mots de pass ne correspondent pas.</li>';
-	}
-	if (in_array( 5, $_SESSION['erreur'] ))
-	{
-		echo '<li>Le format de l\'addresse email est incorrecte</li>';
-	}
-	if (in_array( 6, $_SESSION['erreur'] ))
-	{
-		echo '<li>L\'adresse email doit faire moins de 40 caractères.</li>';
-	}
-	if (in_array( 9, $_SESSION['erreur'] ))
-	{
-		echo '<li>L\'email est déjà utilisée</li>';
-	}
-	if (in_array( 'c', $_SESSION['erreur'] ))
-	{
-		echo '<li>Le captcha n\'est pas bon</li>';
-	}
-	echo '</ul>';
-}
 	echo '<p>Inscription :</p>';
 	$form_insc = new Form( array( 'action' => 'index.php?page=traitement&PHPSESSID=' . session_id() ) );
 	$form_insc->input( array(

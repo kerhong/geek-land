@@ -50,10 +50,6 @@
 		{
 			$avatar = 'no-avatar.gif';
 		}
-		else
-		{
-			$avatar = Bdd::secure( $_POST['avatar']);
-		}
 		if( $erreur == array() )
 		{
 			$user = Doctrine_Core::getTable( T_COORD )->findOneByPseudo( str_replace(' ','_', $_SESSION['pseudo'] ) );
@@ -64,12 +60,7 @@
 				$user->pass = $_POST['pass'];
 				$user->avatar = $avatar;
 				$user->save();
-				$_SESSION = array(
-						'pseudo' => $pseudo,
-						'pass' => $pass,
-						'mail' => $email,
-						'avatar' => $avatar,
-					);
+				$_SESSION = $user->toArray( false ); //False: ne pas inclure les relations ;)
 				echo 'Vos informations ont bien été modifiées.';
 			}
 			else

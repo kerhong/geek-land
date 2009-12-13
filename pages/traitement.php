@@ -4,11 +4,6 @@
 	if( isset( $_POST['pseudo'] ) && isset( $_POST['pass'] ) && isset( $_POST['passconf'] ) && isset( $_POST['date'] ) )
 	{
 		$erreur = array();
-		$pseudo = Bdd::secure( $_POST['pseudo'] );
-		$pass = Bdd::secure( $_POST['pass'] );
-		$passconf = Bdd::secure( $_POST['passconf'] );
-		$email = Bdd::secure( $_POST['email'] );
-		$date = Bdd::secure( $_POST['date'] );
 		//verification pseudo
 		$result = Doctrine_Core::getTable( T_COORD )->findOneByPseudo( $_POST['pseudo'] );
 		if( $result != NULL )
@@ -68,8 +63,7 @@
 			$coord->date_insc = $_POST['date_insc'];
 			$coord->level = 0;
 //			$coord->date = new Doctrine_Expression( 'NOW()' ); //PreInsert, dans model
-				VALUES(\'\',\'' . $pseudo . '\',\'' . $pass . '\', \'' . $email . '\', \'' . $date . '\',\'\', 0)');
-				echo '<center>Inscription r&eacute;ussie !</center>';
+			echo '<center>Inscription r&eacute;ussie !</center>';
 		}
 		else
 		{

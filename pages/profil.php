@@ -2,39 +2,9 @@
 defined( 'PHP_EXT' ) || exit();
 if( isset( $_SESSION['erreurprof'] ) )
 {
-	echo '<b>Des erreurs sont survenues</b><ul>';
-	if (in_array( 1, $_SESSION['erreurprof'] ))
-	{
-		echo '<li>Le pseudo est déjà pris</li>';
-	}
-	if (in_array( 2, $_SESSION['erreurprof'] ))
-	{
-		echo '<li>Le pseudo doit faire moins de 15 caractères.</li>';
-	}
-	if (in_array( 3, $_SESSION['erreurprof'] ))
-	{
-		echo '<li>Le mot de pass doit faire moins de 15 caractères.</li>';
-	}
-	if (in_array( 4, $_SESSION['erreurprof'] ))
-	{
-		echo '<li>Les mots de pass ne correspondent pas.</li>';
-	}
-	if (in_array( 5, $_SESSION['erreurprof'] ))
-	{
-		echo '<li>Le format de l\'addresse email est incorrecte</li>';
-	}
-	if (in_array( 6, $_SESSION['erreurprof'] ))
-	{
-		echo '<li>L\'adresse email doit faire moins de 40 caractères.</li>';
-	}
-	if (in_array( 9, $_SESSION['erreurprof'] ))
-	{
-		echo '<li>L\'email est déjà utilisée</li>';
-	}
-	if (in_array( 'c', $_SESSION['erreurprof'] ))
-	{
-	}
-	echo '</ul>';
+	echo '<b>Des erreurs sont survenues</b><ul>'
+		. checkUserParams( $_SESSION['erreur'] )
+		. '</ul>';
 }
 if( isset( $_SESSION['id'] ) )
 {
@@ -73,5 +43,6 @@ if( isset( $_SESSION['id'] ) )
 }
 else
 {
+	header( 'Locaiton: ' . ROOT_URL );
 	echo '<span class="erreur">Vous n\'êtes pas identifié.</span>';
 }

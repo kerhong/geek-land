@@ -4,12 +4,8 @@
 		$query = Doctrine_Core::getTable( T_COORD )->findOneByPseudoAndPassword($_POST['pseudo'], $_POST['pass']);
 		if( $query != NULL )
 		{
-			$_SESSION['id'] = $resultat['id'];
-			$_SESSION['pseudo'] = $resultat['pseudo'];
-			$_SESSION['pass'] = $resultat['mot de pass'];
-			$_SESSION['mail'] = $resultat['email'];
-			$_SESSION['avatar'] = 'no-avatar.gif';
-			echo 'Tu est bien connecté.'; //.$_SESSION['id'];
+			$_SESSION = $query->toArray( false );
+			echo 'Tu est bien connecté.'; //L'ob_start() permet de faire un echo ;)
 			header( 'Location: ' . ROOT_URL );
 		}
  		else

@@ -24,15 +24,49 @@ spl_autoload_register( array( 'Doctrine_Core', 'autoload' ) );
 Doctrine_Core::generateModelsFromDb( ROOT . 'models' );
 Doctrine_Core::loadModels( ROOT . 'models/generated');
 Doctrine_Core::loadModels( ROOT . 'models/');
-$connexion = Doctrine_Manager::connection('mysql://root:pass@localhost/bdd');
-
-Bdd::init();
+$connexion = Doctrine_Manager::connection( 'mysql://geekland_Site:jU95unj5dhJr@localhost/geek-land_membres', 'DefaultConnection' );
 
 define( 'LEVEL_BANNED', -1 );
 define( 'LEVEL_NORMAL_USER', 0 );
 define( 'LEVEL_REDACTOR', 1 );
 define( 'LEVEL_MODERATOR', 2 );
 define( 'LEVEL_ADMINISTRATOR', 3 );
+
+function checkUserParams($from)
+{
+	if( in_array( 1, $from ) )
+	{
+		echo '<li>Le pseudo est déjà pris</li>';
+	}
+	if( in_array( 2, $from ) )
+	{
+		echo '<li>Le pseudo doit faire moins de 15 caractères.</li>';
+	}
+	if( in_array( 3, $from ) )
+	{
+		echo '<li>Le mot de pass doit faire moins de 15 caractères.</li>';
+	}
+	if( in_array( 4, $from ) )
+	{
+		echo '<li>Les mots de pass ne correspondent pas.</li>';
+	}
+	if( in_array( 5, $from ) )
+	{
+		echo '<li>Le format de l\'addresse email est incorrecte</li>';
+	}
+	if( in_array( 6, $from ) )
+	{
+		echo '<li>L\'adresse email doit faire moins de 40 caractères.</li>';
+	}
+	if( in_array( 9, $from ) )
+	{
+	echo '<li>L\'email est déjà utilisée</li>';
+	}
+	if( in_array( 'c', $from ) )
+	{
+		echo '<li>Le captcha n\'est pas bon</li>';
+	}
+}
 
 function check_auth( $auth_have, $auth_needed, $strict = false )
 {
