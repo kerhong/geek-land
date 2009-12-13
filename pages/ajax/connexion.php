@@ -9,18 +9,21 @@ if( isset( $_POST['pseudo'] ) && isset( $_POST['pass'] ) )
 {
 	$pass = bdd::secure( md5( $_POST['pass'] ) );
 	$pseudo = bdd::secure( $_POST['pseudo'] );
-	$requete = bdd::query( 'SELECT id, pseudo, `mot de pass`, email
+	$requete = bdd::query( 'SELECT id, pseudo, `pass`, mail, date_insc, date_birth, avatar, level
 		FROM ' . T_COORD . '
 		WHERE pseudo = \'' . $pseudo . '\'
 			GROUP BY id' );
 	$resultat = bdd::fetch( 'array', $requete, MYSQL_ASSOC );
-	if( $pass == $resultat['mot de pass'] )
+	if( $pass == $resultat['pass'] )
 	{
 		$_SESSION['id'] = $resultat['id'];
 		$_SESSION['pseudo'] = $resultat['pseudo'];
-		$_SESSION['pass'] = $resultat['mot de pass'];
-		$_SESSION['mail'] = $resultat['email'];
-		$_SESSION['avatar'] = 'no-avatar.gif';
+		$_SESSION['pass'] = $resultat['pass'];
+		$_SESSION['mail'] = $resultat['mail'];
+		$_SESSION['avatar'] = $resultat['avatar'];
+		$_SESSION['date_insc'] = $resultat['date_insc'];
+		$_SESSION['date_birth'] = $resultat['date_birth'];
+		$_SESSION['level'] = $resultat['level'];
 		echo '<br /><img src="' . $_SESSION['avatar'] . '"> <br />Bienvenue, ' . $_SESSION['pseudo'] . '<br />
 					<li><a href="?page=deconnexion">Déconnexion</a></li>
 					<li><a href="?page=profil">Profil</a></li>';

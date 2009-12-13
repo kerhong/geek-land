@@ -34,6 +34,7 @@ if( isset( $_SESSION['erreur'] ) )
 	}
 	if (in_array( 'c', $_SESSION['erreur'] ))
 	{
+		echo '<li>Le captcha n\'est pas bon</li>';
 	}
 	echo '</ul>';
 }
@@ -80,7 +81,7 @@ if( isset( $_SESSION['erreur'] ) )
 			'name' => 'code',
 			'maxlength' => 15,
 		), NULL )
-				->label( '<img src="pages/'.$_SESSION['cryptdir'].'/cryptographp.php?cfg=0&PHPSESSID='.session_id().'"><br />Veuillez taper les lettres de l\'image :', array( 'class' => 'form_align' ) ) . '<br />';
+				->label( '<img src="pages/crypt/cryptographp.php?cfg=0&PHPSESSID='.session_id().'"><br />Veuillez taper les lettres de l\'image :', array( 'class' => 'form_align' ) ) . '<br />';
 	
 
 		

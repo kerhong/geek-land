@@ -158,10 +158,6 @@
 					{
 						$data['value'] = $_{$data['_take_from']}[$data['name']];
 					}
-					else
-					{
-						var_dump( $data['_take_from'] );
-					}
 				}
 				else
 				{
@@ -271,7 +267,6 @@
 
 	class Form_Input_Img		extends Form_Input { }
 	class Form_Input_Text		extends Form_Input { }
-	class Form_Input_Select		extends Form_Input { }
 	class Form_Input_Button		extends Form_Input { }
 	class Form_Input_Select		extends Form_Input
 	{
@@ -279,7 +274,7 @@
 		{
 			for($i = $begin; $i < $end; $i++)
 			{
-				echo '<option value="' . $i . '>' . $i . '</option>';
+				echo '<option value="' . $i . '">' . $i . '</option>';
 			}
 		}
 	}

@@ -2,8 +2,8 @@
 	defined( 'PHP_EXT' ) || exit();
 	if( !isset( $_POST['pass'] ) && !isset( $_POST['passconf'] ) )
 	{
-		$pass = $_SESSION['mot de pass'];
-		$passconf = $_SESSION['mot de pass'];
+		$pass = $_SESSION['pass'];
+		$passconf = $_SESSION['pass'];
 	}
 	else
 	{
@@ -46,7 +46,7 @@
 		}
 		$resultmail = Bdd::query( 'SELECT COUNT(*) AS nbr
 			FROM ' . T_COORD . '
-			WHERE email = \'' . $email . '\'' );
+			WHERE mail = \'' . $email . '\'' );
 		$donneesmail = Bdd::fetch( 'array', $resultmail );
 		if( $donneesmail['nbr'] > 0 && $_SESSION['mail'] != $email )
 		{
@@ -66,8 +66,8 @@
 		{
 			Bdd::query( 'UPDATE ' . T_COORD . '
 				SET pseudo=\'' . $pseudo . '\',
-					email=\'' . $email . '\',           
-					`mot de pass`=\'' . $pass . '\',
+					mail=\'' . $email . '\',           
+					`pass`=\'' . $pass . '\',
 					avatar=\''. $avatar .'\'
 				WHERE pseudo=\'' . str_replace(' ','_', $_SESSION['pseudo'] ) . '\'');
 			$_SESSION = array(

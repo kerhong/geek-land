@@ -19,7 +19,7 @@
 defined( 'PHP_EXT' ) || exit();
 
 //Tables
-define( 'T_COORD', 'coordonees' );
+define( 'T_COORD', 'user' );
 
 class Bdd_Exception extends Exception {}
 
@@ -30,7 +30,7 @@ abstract class Bdd
 					//$driver;
 
 	private $tables = array(
-			'coord'		=> 'coordonees',
+			'coord'		=> 'user',
 		);
 
 	public function getColumns($table_name, $delimiter = ', ')
@@ -160,7 +160,7 @@ abstract class Bdd
 	{
 		self::$data = array(
 			'serveur'		=> 'localhost',
-			'utilisateur'	=> 'geekland_site',
+			'utilisateur'	=> 'geekland_Site',
 			'motPasse'		=> 'jU95unj5dhJr',
 			'bdd'			=> 'geek-land_membres',
 			'link'			=> false,

@@ -1,6 +1,6 @@
 <?php
 	defined( 'PHP_EXT' ) || exit();
-	require_once ROOT . 'crypt/cryptographp.fct.php';
+	require_once 'crypt/cryptographp.fct.php';
 	if( isset( $_POST['pseudo'] ) && isset( $_POST['pass'] ) && isset( $_POST['passconf'] ) && isset( $_POST['date'] ) )
 	{
 		$erreur = array();
@@ -46,7 +46,7 @@
 		*/
 		$resultmail = Bdd::query( 'SELECT COUNT(*) AS nbr
 				FROM ' . T_COORD . '
-				WHERE email = \'' . $email . '\'' );
+				WHERE mail = \'' . $email . '\'' );
 		$donneesmail = Bdd::fetch( 'array', $resultmail );
 		if( $donneesmail['nbr'] > 0 )
 		{
@@ -82,7 +82,7 @@
 //			$coord->date = new Doctrine_Expression( 'NOW()' ); //PreInsert
 //			$coord->banni = 0; //Default value
 			*/
-			Bdd::query( 'INSERT INTO ' . T_COORD . ' (`id`,`pseudo`,`mot de pass`,`email`,`datenaissance`,`date`,`banni`)
+			Bdd::query( 'INSERT INTO ' . T_COORD . ' (`id`,`pseudo`,`pass`,`mail`,`date_birth`,`date_insc`,`level`)
 				VALUES(\'\',\'' . $pseudo . '\',\'' . $pass . '\', \'' . $email . '\', \'' . $date . '\',\'\', 0)');
 				echo '<center>Inscription r&eacute;ussie !</center>';
 		}
