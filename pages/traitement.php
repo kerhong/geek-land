@@ -10,15 +10,8 @@
 		$email = Bdd::secure( $_POST['email'] );
 		$date = Bdd::secure( $_POST['date'] );
 		//verification pseudo
-		/*
-		$result = Doctrine::getTable( T_COORD )->findOneByPseudo( $_POST['pseudo'] );
+		$result = Doctrine_Core::getTable( T_COORD )->findOneByPseudo( $_POST['pseudo'] );
 		if( $result != NULL )
-		*/
-		$result = Bdd::query( 'SELECT COUNT(*) AS nbr
-			FROM ' . T_COORD . '
-			WHERE pseudo = \'' . $pseudo . '\'' );
-		$donnees = Bdd::fetch( 'array', $result );
-		if( $donnees['nbr'] > 0 )
 		{
 			$erreur[] = 1;
 		}
@@ -40,15 +33,8 @@
 		{
 			$erreur[] = 5;
 		}
-		/*
 		$result = Doctrine::getTable( T_COORD )->findOnyByEmail( $_POST['email'] );
 		if( $result != NULL )
-		*/
-		$resultmail = Bdd::query( 'SELECT COUNT(*) AS nbr
-				FROM ' . T_COORD . '
-				WHERE mail = \'' . $email . '\'' );
-		$donneesmail = Bdd::fetch( 'array', $resultmail );
-		if( $donneesmail['nbr'] > 0 )
 		{
 			$erreur[] = 9;
 		}
@@ -74,15 +60,14 @@
 		if( $erreur == array() )
 		{
 			$pass = md5( $pass );
-			/*
-			$coord = new Coordonnees();
-			$coord->pseudo = $pseudo;
-			$coord->mot_de_pass = $pass;
-			$coord->email = $email;
-//			$coord->date = new Doctrine_Expression( 'NOW()' ); //PreInsert
-//			$coord->banni = 0; //Default value
-			*/
-			Bdd::query( 'INSERT INTO ' . T_COORD . ' (`id`,`pseudo`,`pass`,`mail`,`date_birth`,`date_insc`,`level`)
+			$coord = new User();
+			$coord->pseudo = $_POST['pseudo'];
+			$coord->pass = $_POST['pass'];
+			$coord->mail = $_POST['mail'];
+			$coord->date_birth = $_POST['date_birth'];
+			$coord->date_insc = $_POST['date_insc'];
+			$coord->level = 0;
+//			$coord->date = new Doctrine_Expression( 'NOW()' ); //PreInsert, dans model
 				VALUES(\'\',\'' . $pseudo . '\',\'' . $pass . '\', \'' . $email . '\', \'' . $date . '\',\'\', 0)');
 				echo '<center>Inscription r&eacute;ussie !</center>';
 		}

@@ -1,15 +1,8 @@
 <?php
 	if( !empty( $_POST['pseudo'] ) && !empty( $_POST['pass'] ) )
 	{
-		$pass = Bdd::secure( md5( $_POST['pass'] ) );
-		$pseudo = Bdd::secure( $_POST['pseudo'] );
-		$requete = Bdd::query( 'SELECT id, pseudo, `mot de pass`, email
-			FROM ' . T_COORD . '
-			WHERE pseudo = \'' . $pseudo . '\'
-			GROUP BY id' );
-		$query = Doctrine_Core::getTable()->findBy..And...
-		$resultat = Bdd::fetch( 'array', $requete, MYSQL_ASSOC );
-		if( $pass == $resultat['mot de pass'] )
+		$query = Doctrine_Core::getTable( T_COORD )->findOneByPseudoAndPassword($_POST['pseudo'], $_POST['pass']);
+		if( $query != NULL )
 		{
 			$_SESSION['id'] = $resultat['id'];
 			$_SESSION['pseudo'] = $resultat['pseudo'];

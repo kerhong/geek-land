@@ -13,16 +13,9 @@
 	if( isset( $_POST['pseudo'] ) && isset( $_POST['mail'] ) )
 	{
 		$erreur = array();
-		$pseudo = Bdd::secure( $_POST['pseudo'] );
-		$pass = Bdd::secure( $pass );
-		$passconf = Bdd::secure( $passconf );
-		$email = Bdd::secure( $_POST['mail'] );
 
-		$result = Bdd::query( 'SELECT COUNT(*) AS nbr
-			FROM ' . T_COORD . '
-			WHERE pseudo = \'' . $pseudo . '\'' );
-		$donnees = Bdd::fetch( 'array', $result );
-		if( $donnees['nbr'] > 0 && $_SESSION['pseudo'] != $pseudo)
+		$count_pseudo = Doctrine_Core::getTable( T_COORD )->findOneByPseudo( $_POST['pseudo'] );
+		if( $count_pseudo != NULL && $_SESSION['pseudo'] != $pseudo)
 		{
 			$erreur[] = 1;
 		}
@@ -44,11 +37,8 @@
 		{
 			$erreur[] = 5;
 		}
-		$resultmail = Bdd::query( 'SELECT COUNT(*) AS nbr
-			FROM ' . T_COORD . '
-			WHERE mail = \'' . $email . '\'' );
-		$donneesmail = Bdd::fetch( 'array', $resultmail );
-		if( $donneesmail['nbr'] > 0 && $_SESSION['mail'] != $email )
+		$count_mail = Doctrine_Core::getTable( T_COORD )->findOneByMail( $_POST['email'] );
+		if( $count_mail != NULL && $_SESSION['mail'] != $email )
 		{
 			$erreur[] = 9;
 		}
@@ -56,27 +46,36 @@
 		{
 				$erreur[] = 6;
 		}
-		if (!isset($_POST['avatar'])) {
+		if( !isset( $_POST['avatar'] ) )
+		{
 			$avatar = 'no-avatar.gif';
 		}
-		else {
+		else
+		{
 			$avatar = Bdd::secure( $_POST['avatar']);
 		}
 		if( $erreur == array() )
 		{
-			Bdd::query( 'UPDATE ' . T_COORD . '
-				SET pseudo=\'' . $pseudo . '\',
-					mail=\'' . $email . '\',           
-					`pass`=\'' . $pass . '\',
-					avatar=\''. $avatar .'\'
-				WHERE pseudo=\'' . str_replace(' ','_', $_SESSION['pseudo'] ) . '\'');
-			$_SESSION = array(
-					'pseudo' => $pseudo,
-					'pass' => $pass,
-					'mail' => $email,
-					'avatar' => $avatar,
-				);
-			echo 'Vos informations ont bien été modifiées.';
+			$user = Doctrine_Core::getTable( T_COORD )->findOneByPseudo( str_replace(' ','_', $_SESSION['pseudo'] ) );
+			if( $user != NULL )
+			{
+				$user->pseudo = $_POST['pseudo'];
+				$user->mail = $_POST['mail'];
+				$user->pass = $_POST['pass'];
+				$user->avatar = $avatar;
+				$user->save();
+				$_SESSION = array(
+						'pseudo' => $pseudo,
+						'pass' => $pass,
+						'mail' => $email,
+						'avatar' => $avatar,
+					);
+				echo 'Vos informations ont bien été modifiées.';
+			}
+			else
+			{
+				echo 'Erreur';
+			}
 		}
 		else
 		{
