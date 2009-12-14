@@ -1,5 +1,7 @@
 <?php
 	defined( 'PHP_EXT' ) || exit();
+	require_once( ROOT . '/lib/recaptchalib.php');
+	$publickey = "6Le_-gkAAAAAALtML9Y-goab40Q6JEqvM5FKwYF6";
 	if( isset( $_SESSION['erreur'] ) )
 	{
 		echo '<b>Des erreurs sont survenues</b><ul>'
@@ -42,7 +44,7 @@
 			'class' => '_hide_me',
 			'size' => 10,
 		), 'password' )
-				->label( 'Veuillez laisser ce champ vide :',
-					array( 'class' => 'form_align _hide_me' ) ) . '<br />';
+				->label('<br />'. recaptcha_get_html($publickey) ) . '<br />';
+
 	$form_insc->input( NULL, 'submit' );
 	echo $form_insc;
