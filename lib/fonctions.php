@@ -18,10 +18,12 @@ spl_autoload_register( array( 'Doctrine_Core', 'autoload' ) );
 $cnx = mysql_connect( 'sql.redheberg.com', 'geekland_Site', 'jU95unj5dhJr' ) || exit(mysql_error());
 mysql_select_db( 'geek-land_membre' ) || exit(mysql_error());
 exit();*/
+/*
+ *	It's better to pass the PDO object for some reasons ...
+ *	'mysql://geekland_Site:jU95unj5dhJr@localhost/geek-land_membres'var
+*/
 $pdo = new PDO('mysql:dbname=geekland_membre;host=localhost', 'geekland_root',  'g2qX3kYbLrYK' );
-$connexion = Doctrine_Manager::connection( $pdo, 'DefaultConnection' );	//It's better to pass the PDO object for some reasons ...
-																		//'mysql://geekland_Site:jU95unj5dhJr@localhost/geek-land_membres'
-Doctrine_Core::generateModelsFromDb( ROOT . 'models' );
+$connexion = Doctrine_Manager::connection( $pdo, 'DefaultConnection' );
 Doctrine_Core::loadModels( ROOT . 'models/generated');
 Doctrine_Core::loadModels( ROOT . 'models/');
 

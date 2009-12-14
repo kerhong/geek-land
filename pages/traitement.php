@@ -28,7 +28,7 @@
 		{
 			$erreur[] = 5;
 		}
-		$result = Doctrine::getTable( T_COORD )->findOnyByEmail( $_POST['email'] );
+		$result = Doctrine::getTable( T_COORD )->findOneByEmail( $_POST['email'] );
 		if( $result != NULL )
 		{
 			$erreur[] = 9;
