@@ -68,6 +68,7 @@ function checkUserParams($from)
 	{
 		$return .= '<li>Le captcha n\'est pas bon</li>';
 	}
+	return $return;
 }
 
 function check_auth( $auth_have, $auth_needed, $strict = false )
