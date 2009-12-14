@@ -2,7 +2,6 @@
 	defined( 'PHP_EXT' ) || exit();
 	if( isset( $_POST['pseudo'] ) && isset( $_POST['pass'] ) && isset( $_POST['passconf'] ) && isset( $_POST['date'] ) && isset( $_POST['email'] ) )
 	{
-		var_dump( $date );
 		$date = $_POST['date'];
 		$email = $_POST['mail'];
 		$erreur = array();
@@ -46,6 +45,9 @@
 		}
 		$_date = explode( '/', $date );
 		if( !checkdate( $_date[0], $_date[1], $_date[2] ) )
+		{
+			$erreur[] = 8;
+		}
 		//Validation
 		if( $erreur == array() )
 		{
