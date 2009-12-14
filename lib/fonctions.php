@@ -14,9 +14,13 @@ define( 'T_COORD', 'User' );
 spl_autoload_register( 'inc' );
 inc( 'Doctrine_Core' );
 spl_autoload_register( array( 'Doctrine_Core', 'autoload' ) );
-$pdo = new PDO('mysql:dbname=geek-land_membres;host=localhost', 'geekland_Site', 'jU95unj5dhJr');
-exit();
-$connexion = Doctrine_Manager::connection( $pdo, 'DefaultConnection' );////'mysql://geekland_Site:jU95unj5dhJr@localhost/geek-land_membres'
+/*Connexion used for test if PDO is the reason of issues ...
+$cnx = mysql_connect( 'sql.redheberg.com', 'geekland_Site', 'jU95unj5dhJr' ) || exit(mysql_error());
+mysql_select_db( 'geek-land_membre' ) || exit(mysql_error());
+exit();*/
+$pdo = new PDO('mysql:dbname=geek-land_membre;host=sql.redheberg.com', 'geekland_root',  'g2qX3kYbLrYK' );
+$connexion = Doctrine_Manager::connection( $pdo, 'DefaultConnection' );	//It's better to pass the PDO object for some reasons ...
+																		//'mysql://geekland_Site:jU95unj5dhJr@localhost/geek-land_membres'
 Doctrine_Core::generateModelsFromDb( ROOT . 'models' );
 Doctrine_Core::loadModels( ROOT . 'models/generated');
 Doctrine_Core::loadModels( ROOT . 'models/');
@@ -36,31 +40,31 @@ function checkUserParams($from)
 	}
 	if( in_array( 2, $from ) )
 	{
-		echo '<li>Le pseudo doit faire moins de 15 caractères.</li>';
+		$return .= '<li>Le pseudo doit faire moins de 15 caractères.</li>';
 	}
 	if( in_array( 3, $from ) )
 	{
-		echo '<li>Le mot de pass doit faire moins de 15 caractères.</li>';
+		$return .= '<li>Le mot de pass doit faire moins de 15 caractères.</li>';
 	}
 	if( in_array( 4, $from ) )
 	{
-		echo '<li>Les mots de pass ne correspondent pas.</li>';
+		$return .= '<li>Les mots de pass ne correspondent pas.</li>';
 	}
 	if( in_array( 5, $from ) )
 	{
-		echo '<li>Le format de l\'addresse email est incorrecte</li>';
+		$return .= '<li>Le format de l\'addresse email est incorrecte</li>';
 	}
 	if( in_array( 6, $from ) )
 	{
-		echo '<li>L\'adresse email doit faire moins de 40 caractères.</li>';
+		$return .= '<li>L\'adresse email doit faire moins de 40 caractères.</li>';
 	}
 	if( in_array( 9, $from ) )
 	{
-	echo '<li>L\'email est déjà utilisée</li>';
+		$return .= '<li>L\'email est déjà utilisée</li>';
 	}
 	if( in_array( 'c', $from ) )
 	{
-		echo '<li>Le captcha n\'est pas bon</li>';
+		$return .= '<li>Le captcha n\'est pas bon</li>';
 	}
 }
 
