@@ -6,11 +6,10 @@ session_start();
 function inc( $class_name_ )
 {
 	$class_name = str_replace( array( '_', '\\', ), '/', $class_name_ );
-	require_once ROOT_URL . '/lib/class/' . $class_name . PHP_EXT;
+	require_once ROOT . '/lib/class/' . $class_name . PHP_EXT;
 }
-var_dump(debug_backtrace());
 define( 'T_COORD', 'User' );
-echo 'Fonction';
+
 spl_autoload_register( 'inc' );
 inc( 'Doctrine_Core' );
 spl_autoload_register( array( 'Doctrine_Core', 'autoload' ) );
@@ -55,6 +54,10 @@ function checkUserParams($from)
 	if( in_array( 5, $from ) )
 	{
 		$return .= '<li>Le format de l\'addresse email est incorrecte</li>';
+	}
+	else
+	{
+		var_dump( $from );
 	}
 	if( in_array( 6, $from ) )
 	{

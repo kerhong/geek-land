@@ -5,5 +5,4 @@
 			</p>
 		</div>
 	</body>
-</html><?php
-bdd::close();
+</html>
