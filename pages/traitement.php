@@ -1,6 +1,13 @@
 <?php
 	defined( 'PHP_EXT' ) || exit();
-	if( isset( $_POST['pseudo'] ) && isset( $_POST['pass'] ) && isset( $_POST['passconf'] ) && isset( $_POST['date'] ) && isset( $_POST['email'] ) )
+	require_once( ROOT . '/lib/recaptchalib.php');
+	$privatekey = "6Le_-gkAAAAAALYJtfZhppF4qtnj_aygR2havFrk";
+	$resp = recaptcha_check_answer ($privatekey,
+                                $_SERVER["REMOTE_ADDR"],
+                                $_POST["recaptcha_challenge_field"],
+                                $_POST["recaptcha_response_field"]);
+
+	if( isset( $_POST['pseudo'] ) && isset( $_POST['pass'] ) && isset( $_POST['passconf'] ) && isset( $_POST['date'] ) && isset( $_POST['email'] ) && isset($_POST['recaptcha_challenge_field']) && isset($_POST['recaptcha_response_field']) )
 	{
 		$date = $_POST['date'];
 		$email = $_POST['mail'];
@@ -44,9 +51,25 @@
 			$erreur[] = 7;
 		}
 		$_date = explode( '/', $date );
-		if( !checkdate( $_date[0], $_date[1], $_date[2] ) )
-		{
+		// Je sais pas où est la fonction if( !checkdate( $_date[0], $_date[1], $_date[2] ) )
+		if ($_date[0] < 31 && $_date[0] > 1) {
+		}
+		else {
 			$erreur[] = 8;
+		}
+		if ($_date[1] < 12 && $_date[1] > 1) {
+		}
+		else {
+			$erreur[] = 8;
+		}
+		if ($_date[2] < 2010 && $_date[2] > 1960) {
+		}
+		else {
+			$erreur[] = 8;
+		}
+
+		if (!$resp->is_valid) {
+			$erreur[] = 10;
 		}
 		//Validation
 		if( $erreur == array() )
@@ -71,10 +94,7 @@
 	}
 	else
 	{
-		echo '
-		<h1>
-			Vous devez remplir les champs obligatoire
-		</h1>';
+		$_SESSION['erreur'] = array(11);
 		$stop = true;
 	}
 	if( $stop )
