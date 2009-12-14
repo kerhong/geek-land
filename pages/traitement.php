@@ -1,8 +1,10 @@
 <?php
 	defined( 'PHP_EXT' ) || exit();
-	require_once 'crypt/cryptographp.fct.php';
-	if( isset( $_POST['pseudo'] ) && isset( $_POST['pass'] ) && isset( $_POST['passconf'] ) && isset( $_POST['date'] ) )
+	if( isset( $_POST['pseudo'] ) && isset( $_POST['pass'] ) && isset( $_POST['passconf'] ) && isset( $_POST['date'] ) && isset( $_POST['email'] ) )
 	{
+		var_dump( $date );
+		$date = $_POST['date'];
+		$email = $_POST['mail'];
 		$erreur = array();
 		//verification pseudo
 		$result = Doctrine_Core::getTable( T_COORD )->findOneByPseudo( $_POST['pseudo'] );
@@ -19,12 +21,12 @@
 		{
 			$erreur[] = 3;
 		}
-		if( $pass != $passconf )
+		if( $_POST['pass'] != $_POST['passconf'] )
 		{
 			$erreur[] = 4;
 		}
 		//Verification email
-		if( !preg_match( '#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#is', $email ) )
+		if( filter_var( $email, FILTER_VALIDATE_EMAIL ) != $email )
 		{
 			$erreur[] = 5;
 		}
@@ -33,24 +35,17 @@
 		{
 			$erreur[] = 9;
 		}
-		if( strlen($email) > 40 )
+		if( strlen( $email ) > 40 )
 		{
 			$erreur[] = 6;
 		}
 		//Verification date
-		if( strlen( $date ) > 10 )
+		if( strlen( $date ) != 10 )
 		{
 			$erreur[] = 7;
 		}
-		if( !preg_match('#^[0-9]{2}/[0-9]{2}/[0-9]{4}$#is', $date ) ) 
-		{
-			$erreur[] = 8;
-		}
-		//verification captcha
-		if( !chk_crypt( $_POST['code'] ) )
-		{
-			$erreur[] = 'c';
-		}
+		$_date = explode( '/', $date );
+		if( !checkdate( $_date[0], $_date[1], $_date[2] ) )
 		//Validation
 		if( $erreur == array() )
 		{
@@ -58,7 +53,7 @@
 			$coord = new User();
 			$coord->pseudo = $_POST['pseudo'];
 			$coord->pass = $_POST['pass'];
-			$coord->mail = $_POST['mail'];
+			$coord->mail = $email;
 			$coord->date_birth = $_POST['date_birth'];
 			$coord->date_insc = $_POST['date_insc'];
 			$coord->level = 0;
@@ -67,8 +62,9 @@
 		}
 		else
 		{
-			header( 'Location: ' . ROOT . 'index' . PHP_EXT . '?page=inscription&pseudo=' . $pseudo . '&pass=' . $pass . '&mail=' . $email . '&date=' . $date );
+			//header( 'Location: ' . ROOT . 'index' . PHP_EXT . '?page=inscription' );
 			$_SESSION['erreur'] = $erreur;
+			$stop = true;
 		}
 	}
 	else
@@ -77,5 +73,10 @@
 		<h1>
 			Vous devez remplir les champs obligatoire
 		</h1>';
-		header( 'Location: ' . ROOT . 'index' . PHP_EXT . '?page=inscription&pseudo=' . $pseudo . '&pass=' . $pass . '&mail=' . $email . '&date=' . $date );
+		$stop = true;
+	}
+	if( $stop )
+	{
+		header( 'Location: ' . ROOT
+		 . '?page=inscription&pseudo=' . $_POST['pseudo'] . '&pass=' . $_POST['pass'] . '&mail=' . $_POST['email'] . '&date=' . $_POST['date'] );
 	}

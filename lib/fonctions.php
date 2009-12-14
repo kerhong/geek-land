@@ -35,6 +35,12 @@ define( 'LEVEL_ADMINISTRATOR', 3 );
 function checkUserParams($from)
 {
 	$return = '';
+	/* Prototype
+	 *	if( in_array( 7, $from ) )
+	 *	{
+	 *		$return .= '<li></li>';
+	 *	}
+	*/
 	if( in_array( 1, $from ) )
 	{
 		$return .= '<li>Le pseudo est déjà pris</li>';
@@ -55,9 +61,13 @@ function checkUserParams($from)
 	{
 		$return .= '<li>Le format de l\'addresse email est incorrecte</li>';
 	}
-	else
+	if( in_array( 7, $from ) )
 	{
-		var_dump( $from );
+		$return .= '<li>La taille de la date est incorrect</li>';
+	}
+	if( in_array( 8, $from ) )
+	{
+		$return .= '<li>Format de la date incorrect</li>';
 	}
 	if( in_array( 6, $from ) )
 	{
