@@ -3,28 +3,23 @@ defined( 'PHP_EXT' ) || exit();
 define( 'ROOT_URL', 'http://geek-land.redheberg.com' );
 session_start();
 
-if( !function_exists( 'lcfirst' ) )
-{
-	function lcfirst( $name )
-	{
-		$name[0] = strtolower( $name[0] );
-		return $name;
-	}
-}
-
 function inc( $class_name_ )
 {
 	$class_name = str_replace( array( '_', '\\', ), '/', $class_name_ );
-	require_once ROOT . 'lib/class/' . lcfirst( $class_name ) . PHP_EXT;
+	require_once ROOT . 'lib/class/' . $class_name . PHP_EXT;
 }
+
+define( 'T_COORD', 'User' );
 
 spl_autoload_register( 'inc' );
 inc( 'Doctrine_Core' );
 spl_autoload_register( array( 'Doctrine_Core', 'autoload' ) );
+$pdo = new PDO('mysql:dbname=geek-land_membres;host=localhost', 'geekland_Site', 'jU95unj5dhJr');
+exit();
+$connexion = Doctrine_Manager::connection( $pdo, 'DefaultConnection' );////'mysql://geekland_Site:jU95unj5dhJr@localhost/geek-land_membres'
 Doctrine_Core::generateModelsFromDb( ROOT . 'models' );
 Doctrine_Core::loadModels( ROOT . 'models/generated');
 Doctrine_Core::loadModels( ROOT . 'models/');
-$connexion = Doctrine_Manager::connection( 'mysql://geekland_Site:jU95unj5dhJr@localhost/geek-land_membres', 'DefaultConnection' );
 
 define( 'LEVEL_BANNED', -1 );
 define( 'LEVEL_NORMAL_USER', 0 );
@@ -34,9 +29,10 @@ define( 'LEVEL_ADMINISTRATOR', 3 );
 
 function checkUserParams($from)
 {
+	$return = '';
 	if( in_array( 1, $from ) )
 	{
-		echo '<li>Le pseudo est déjà pris</li>';
+		$return .= '<li>Le pseudo est déjà pris</li>';
 	}
 	if( in_array( 2, $from ) )
 	{

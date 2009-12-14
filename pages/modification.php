@@ -15,7 +15,7 @@
 		$erreur = array();
 
 		$count_pseudo = Doctrine_Core::getTable( T_COORD )->findOneByPseudo( $_POST['pseudo'] );
-		if( $count_pseudo != NULL && $_SESSION['pseudo'] != $pseudo)
+		if( $count_pseudo != NULL && $_SESSION['pseudo'] != $pseudo )
 		{
 			$erreur[] = 1;
 		}
@@ -44,11 +44,15 @@
 		}
 		if( isset( $email[40] ) )
 		{
-				$erreur[] = 6;
+			$erreur[] = 6;
 		}
 		if( !isset( $_POST['avatar'] ) )
 		{
 			$avatar = 'no-avatar.gif';
+		}
+		else
+		{
+			$avatar = $_POST['avatar'];
 		}
 		if( $erreur == array() )
 		{

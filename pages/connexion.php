@@ -1,7 +1,7 @@
 <?php
 	if( !empty( $_POST['pseudo'] ) && !empty( $_POST['pass'] ) )
 	{
-		$query = Doctrine_Core::getTable( T_COORD )->findOneByPseudoAndPassword($_POST['pseudo'], $_POST['pass']);
+		$query = Doctrine_Core::getTable( T_COORD )->findOneByPseudoAndPassword( $_POST['pseudo'], md5( $_POST['pass'] ) );
 		if( $query != NULL )
 		{
 			$_SESSION = $query->toArray( false );

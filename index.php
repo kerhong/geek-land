@@ -15,9 +15,13 @@ catch( Exception_Form $e )
 {
 	exit( 'Erreur lors de la génération des formulaires: ' . $e->getMessage() );
 }
-catch( Exception_Bdd $e)
+catch( Doctrine_Exception $e )
 {
-	exit( 'Erreur dans la base de données: ' . $e->getMessage() );
+	exit( 'Erreur dans la base de données(Doctrine): ' . $e->getMessage() );
+}
+catch( PDOException $e )
+{
+	exit( 'Erreur dans la base de données(PDO): ' . $e->getMessage() );
 }
 catch( Exception $e )
 {

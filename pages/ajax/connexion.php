@@ -7,7 +7,7 @@ require_once ROOT . 'lib/fonctions.php';
 ( isAjaxRequest() ) || exit();
 if( isset( $_POST['pseudo'] ) && isset( $_POST['pass'] ) )
 {
-	$resultat = Doctrine_Core::getTable( T_COORD )->findOneByPseudoAndPass( md5( $_POST['pseudo'] ), $_POST['pass'] );
+	$resultat = Doctrine_Core::getTable( T_COORD )->findOneByPseudoAndPass( $_POST['pseudo'], md5( $_POST['pass'] ) );
 	if( $reslultat != NULL )
 	{
 		$_SESSION = $resultat->toArray( false );

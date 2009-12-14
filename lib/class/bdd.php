@@ -19,7 +19,6 @@
 defined( 'PHP_EXT' ) || exit();
 
 //Tables
-define( 'T_COORD', 'user' );
 
 class Bdd_Exception extends Exception {}
 
