@@ -32,7 +32,8 @@ Doctrine_Core::loadModels( ROOT . 'models/' );
 define( 'LEVEL_BANNED', -2 );
 define( 'LEVEL_UNVALIDATED', -1 );
 define( 'LEVEL_GUEST', 0 );
-define( 'LEVEL_NORMAL_USER', 1 );
+define( 'LEVEL_USER', 1 );
+define( 'LEVEL_NORMAL_USER', LEVEL_USER ); //'ll be deleted in the #80
 define( 'LEVEL_REDACTOR', 2 );
 define( 'LEVEL_MODERATOR', 3 );
 define( 'LEVEL_ADMINISTRATOR', 4 );
@@ -66,6 +67,10 @@ function checkUserParams($from)
 	{
 		$return .= '<li>Le format de l\'addresse email est incorrecte</li>';
 	}
+	if( in_array( 6, $from ) )
+	{
+		$return .= '<li>L\'adresse email doit faire moins de 40 caractères.</li>';
+	}
 	if( in_array( 7, $from ) )
 	{
 		$return .= '<li>La taille de la date est incorrect</li>';
@@ -74,19 +79,42 @@ function checkUserParams($from)
 	{
 		$return .= '<li>Format de la date incorrect</li>';
 	}
-	if( in_array( 6, $from ) )
-	{
-		$return .= '<li>L\'adresse email doit faire moins de 40 caractères.</li>';
-	}
 	if( in_array( 9, $from ) )
 	{
 		$return .= '<li>L\'email est déjà utilisée</li>';
 	}
-	if( in_array( 'c', $from ) )
+	if( in_array( 10, $from ) )
 	{
 		$return .= '<li>Le captcha n\'est pas bon</li>';
 	}
+	if( in_array( 11, $from ) )
+	{
+		$return .= '<li>Vous devez remplir tous les champs</li>';
+	}
+	if( in_array( 12, $from ) )
+	{
+		$return .= '<li>Le fichier de l\'avatar est trop gros</li>';
+	}
+	if( in_array( 13, $from ) )
+	{
+		$return .= '<li>L\'extension du fichier de l\'avatar est incorrecte</li>';
+	}
+	if( in_array( 14, $from ) )
+	{
+		$return .= '<li>L\'avatar est trop grand, il doit faire au maximum 120x120</li>';
+	}
 	return $return;
+}
+
+function validates_post_fields()
+{
+	foreach( func_get_args() as $arg )
+	{
+		if( !isset( $_POST[$arg] ) )
+		{
+			$_POST[$arg] = NULL;
+		}
+	}
 }
 
 function check_auth( $auth_have, $auth_needed, $strict = false )

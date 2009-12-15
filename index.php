@@ -2,6 +2,10 @@
 ob_start();
 try
 {
+	if( !isset( $_SESSION ) )
+	{
+		$_SESSION = array();
+	}
 	define( 'BLOCK', 0 );
 	define( 'ROOT', './' );
 	define( 'PHP_EXT', strrchr( __FILE__, '.' ) );

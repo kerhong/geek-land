@@ -46,6 +46,10 @@
 		{
 			return $this->init();
 		}
+		private function __toURI($page)
+		{
+			return $this->p_pages . $page . PHP_EXT;
+		}
 		private function init()
 		{
 			if( !$this->init )
@@ -57,10 +61,10 @@
 				 || ( substr( $page, 0, 4 ) == 'auth' && !check_auth( $_SESSION, LEVEL_REDACTOR ) )
 				 || ( $page[0] == '_' && $page != '_no_auth' ) )
 				{
-					$page = '_no_auth';
+					$this->no_auth();
 				}
 				$this->page = ucfirst( strtolower( $page ) );
-				$this->page_ = $this->p_pages . $page . PHP_EXT;
+				$this->page_ = $this->__toURI( $page );
 				$this->vars = array(
 						'page' => $this->page,
 						'page_' => $this->page_,
@@ -84,6 +88,10 @@
 		{
 			require_once $this->p_lib . 'haut' . PHP_EXT;
 		}
+		public function no_auth()
+		{
+			$this->no_auth = true;
+		}
 		public function page($file_by_def = NULL)
 		{
 			if( $file_by_def != NULL )
@@ -96,20 +104,36 @@
 			{
 				$this->page = $file_by_def;
 			}
+			if( $this->no_auth )
+			{
+				$this->page_ = $this->__toURI( '_no_auth' );
+			}
 			require_once $this->page_;
 			echo '
 			</div>';
+		}
+		public function show_no_off()
+		{
+			$this->no_auth();
+			$this->page();
+			$this->to_end = true;
+			$this->__endOfPage();
 		}
 		public function fullPage()
 		{
 			if( !$this->fullpage )
 			{
+				$this->fullpage = true;
 				$this->init();
 				$this->head();
 				$this->page();
 				$this->to_end = true;
-				$this->end();
-				exit();
+				$this->__endOfPage()
 			}
+		}
+		private function __endOfPage()
+		{
+			$this->end();
+			exit();
 		}
 	}

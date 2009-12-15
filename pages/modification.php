@@ -1,5 +1,9 @@
 <?php
 	defined( 'PHP_EXT' ) || exit();
+	if( !check_auth( $_SESSION, LEVEL_USER ) )
+	{
+		$view->show_no_auth();
+	}
 	if( !isset( $_POST['pass'] ) && !isset( $_POST['passconf'] ) )
 	{
 		$pass = $_SESSION['pass'];
