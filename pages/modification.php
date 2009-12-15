@@ -1,9 +1,15 @@
 <?php
 	defined( 'PHP_EXT' ) || exit();
-	function quitter()
+	define('GL_EXT', '.geek-land');
+	function quitter($erreur)
 	{
 		$_SESSION['erreurprof'] = $erreur;
-		redirect_to( 'profil' );
+		header( 'Location: ' . ROOT . 'profil' . GL_EXT );
+		$view = new View();
+		
+		$view->helper( ':all' );
+		$view->fullPage(); 
+		
 		$view->skip_rest_of_page();
 	}
 	if( !isset( $_POST['pass'] ) && !isset( $_POST['passconf'] ) )
@@ -19,7 +25,8 @@
 	if( isset( $_POST['pseudo'] ) && isset( $_POST['mail'] ) )
 	{
 		$erreur = array();
-
+		$pseudo = $_POST['pseudo'];
+		$email = $_POST['mail'];
 		$count_pseudo = Doctrine_Core::getTable( T_COORD )->findOneByPseudo( $_POST['pseudo'] );
 		if( $count_pseudo != NULL && $_SESSION['pseudo'] != $pseudo )
 		{
@@ -54,7 +61,7 @@
 		}
 		if( !isset( $_FILES['avatarfile'] ) )
 		{
-			$avatar = 'no-avatar.gif';
+			$nom = $_SESSION['avatar'];
 		}
 		else
 		{
@@ -66,38 +73,43 @@
 			$extension = explode( '.', $nom );
 			$extension = end( $extension );
 			$poids = $avatar['size'];
-			$poidsmax = 200;
+			$poidsmax = 20000;
 			$tailles = getimagesize( $chemin );
 			$hauteur = $tailles[1];
 			$largeur = $tailles[0];
 			$hauteurmax = 120;
 			$largeurmax = 120;
+			
 			if ( $poids > $poidsmax )
 			{
 				$erreur[] = 12;
-				quitter();
+				quitter($erreur);
+				
 			}
-			if( !in_array( $extension, $typeautorise ) )
-			{
+			if( !in_array( strtolower($extension), $typeautorise ) )
+			{			
 				$erreur[] = 13;
-				quitter();
+				quitter($erreur);
 			}
 			if( $hauteur > $hauteurmax || $largeur > $largeurmax )
 			{
 				$erreur[] = 14;
-				quitter();
+				quitter($erreur);
 			}
 			if( $avatar['error'] == UPLOAD_ERR_NO_FILE )
 			{
+			
 				$erreur[] = 15;
-				quitter();
+				quitter($erreur);
 			}
 			if( $avatar['error'] == UPLOAD_ERR_PARTIAL )
 			{
 				$erreur[] = 16;
-				quitter();
+				quitter($erreur);
 			}
-			move_uploaded_file( $chemin, ROOT . 'avatar/' . $nom );
+			if (is_uploaded_file($avatar['tmp_name'])) {
+				move_uploaded_file( $avatar['tmp_name'], '/home/geekland/public_html/avatar/' . $nom );
+			}
 		}
 		if( $erreur == array() )
 		{
@@ -107,14 +119,15 @@
 				$user->pseudo = $_POST['pseudo'];
 				$user->mail = $_POST['mail'];
 				$user->pass = $pass;
-				$user->avatar = $avatar;
+				$user->avatar = $nom;
 				$user->save();
 				$_SESSION = $user->toArray( false ); //False: ne pas inclure les relations ;)
 				echo 'Vos informations ont bien été modifiées.';
 			}
 			else
 			{
-				echo 'Erreur';
+				$_SESSION['erreurprof'] = $erreur;
+				header('Location: ' . ROOT . 'profil' . GL_EXT );
 			}
 		}
 		else

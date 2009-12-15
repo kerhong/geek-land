@@ -3,12 +3,13 @@ defined( 'PHP_EXT' ) || exit();
 if( isset( $_SESSION['erreurprof'] ) )
 {
 	echo '<b>Des erreurs sont survenues</b><ul>'
-		. checkUserParams( $_SESSION['erreur'] )
+		. checkUserParams( $_SESSION['erreurprof'] )
 		. '</ul>';
 }
+
 if( isset( $_SESSION['id'] ) )
 {
-	$form_profil = new Form( array( 'action' => '?page=modification', 'enctype' => 'multipart/form-data' ) );
+	$form_profil = new Form( array( 'action' => 'modification.geek-land', 'enctype' => 'multipart/form-data' ) );
 	$form_profil->input( array(
 		'name' => 'pseudo',
 		'value' => $_SESSION['pseudo'],
@@ -40,6 +41,6 @@ if( isset( $_SESSION['id'] ) )
 }
 else
 {
-	header( 'Locaiton: ' . ROOT_URL );
+	header( 'Location: ' . ROOT_URL );
 	echo '<span class="erreur">Vous n\'êtes pas identifié.</span>';
 }

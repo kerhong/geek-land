@@ -11,7 +11,7 @@ if( isset( $_POST['pseudo'] ) && isset( $_POST['pass'] ) )
 	if( $resultat != NULL )
 	{
 		$_SESSION = $resultat->toArray( false );
-		echo '<br /><img src="' . $_SESSION['avatar'] . '"> <br />Bienvenue, ' . $_SESSION['pseudo'] . '<br />
+		echo '<br /><img src="avatar/' . $_SESSION['avatar'] . '"> <br />Bienvenue, ' . $_SESSION['pseudo'] . '<br />
 					<li><a href="?page=deconnexion">Déconnexion</a></li>
 					<li><a href="?page=profil">Profil</a></li>';
 	}

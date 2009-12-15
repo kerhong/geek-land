@@ -106,7 +106,7 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 					else
 					{
 						?>
-						<br /><img src="<?php echo $_SESSION['avatar']; ?>"> <br />Bienvenue, <?php echo $_SESSION['pseudo']; ?><br />
+						<br /><img src="avatar/<?php echo $_SESSION['avatar']; ?>"> <br />Bienvenue, <?php echo $_SESSION['pseudo']; ?><br />
 						<li><?php anchor( 'deconnexion', 'Déconnexion' ); ?></li>
 						<li><?php anchor( 'profil', 'Profil' ); ?></li>
 						<?php
