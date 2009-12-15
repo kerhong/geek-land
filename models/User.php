@@ -14,6 +14,12 @@ class User extends BaseUser
 {
 	public function setUp()
 	{
+	#Relations
+		$this->hasMany( T_NEWS, array(
+				'local' => 'id',
+				'foregin' => 'user_id',
+			) );
+	#Behaviors
 		$this->actAs( 'Timestampable', array(
 				'created' => array( 'name' => 'date_insc' ),
 				'updated' => array( 'disabled' => true ),
