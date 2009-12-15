@@ -1,0 +1,5 @@
+Options +FollowSymLinks
+RewriteEngine On
+
+RewriteRule ^(.+?)\.geek-land$ index.php?page=$1 [QSA,L,N]
+RewriteRule ^index.geek-land$ index.php [QSA,L,N]

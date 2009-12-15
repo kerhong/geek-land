@@ -10,7 +10,7 @@
 	if( isset( $_POST['pseudo'] ) && isset( $_POST['pass'] ) && isset( $_POST['passconf'] ) && isset( $_POST['date'] ) && isset( $_POST['email'] ) && isset($_POST['recaptcha_challenge_field']) && isset($_POST['recaptcha_response_field']) )
 	{
 		$date = $_POST['date'];
-		$email = $_POST['mail'];
+		$email = $_POST['email'];
 		$erreur = array();
 		//verification pseudo
 		$result = Doctrine_Core::getTable( T_COORD )->findOneByPseudo( $_POST['pseudo'] );
@@ -52,23 +52,13 @@
 		}
 		$_date = explode( '/', $date );
 		// Je sais pas où est la fonction if( !checkdate( $_date[0], $_date[1], $_date[2] ) )
-		if ($_date[0] < 31 && $_date[0] > 1) {
+		if ($_date[0] < 31 && $_date[0] > 1){
 		}
 		else {
 			$erreur[] = 8;
 		}
-		if ($_date[1] < 12 && $_date[1] > 1) {
-		}
-		else {
-			$erreur[] = 8;
-		}
-		if ($_date[2] < 2010 && $_date[2] > 1960) {
-		}
-		else {
-			$erreur[] = 8;
-		}
-
-		if (!$resp->is_valid) {
+		if( !$resp->is_valid )
+		{
 			$erreur[] = 10;
 		}
 		//Validation
@@ -82,6 +72,7 @@
 			$coord->date_birth = $_POST['date_birth'];
 			$coord->date_insc = $_POST['date_insc'];
 			$coord->level = 0;
+			$coord->save();
 //			$coord->date = new Doctrine_Expression( 'NOW()' ); //PreInsert, dans model
 			echo '<center>Inscription r&eacute;ussie !</center>';
 		}

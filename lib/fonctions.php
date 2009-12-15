@@ -23,14 +23,15 @@ exit();*/
 */
 $pdo = new PDO('mysql:dbname=geekland_membre;host=localhost', 'geekland_root',  'g2qX3kYbLrYK' );
 $connexion = Doctrine_Manager::connection( $pdo, 'DefaultConnection' );
-Doctrine_Core::loadModels( ROOT . 'models/generated');
-Doctrine_Core::loadModels( ROOT . 'models/');
+Doctrine_Core::loadModels( ROOT . 'models/generated' );
+Doctrine_Core::loadModels( ROOT . 'models/' );
 
 define( 'LEVEL_BANNED', -1 );
-define( 'LEVEL_NORMAL_USER', 0 );
-define( 'LEVEL_REDACTOR', 1 );
-define( 'LEVEL_MODERATOR', 2 );
-define( 'LEVEL_ADMINISTRATOR', 3 );
+define( 'LEVEL_UNVALIDATED', 0 );
+define( 'LEVEL_NORMAL_USER', 1 );
+define( 'LEVEL_REDACTOR', 2 );
+define( 'LEVEL_MODERATOR', 3 );
+define( 'LEVEL_ADMINISTRATOR', 4 );
 
 function checkUserParams($from)
 {
@@ -146,11 +147,7 @@ function addDoubleDot($str)
 
 function isAjaxRequest()
 {
-	if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' )
-	{
-		return true;
-	}
-	return false;
+	return ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' );
 }
 
 //Répète un certain nombre de fois la balise <br />
@@ -159,7 +156,7 @@ function doBR($i = 1)
 	return str_repeat( '<br />', $i );
 }
 //Tranforme un array() en attributs HTML/CSS
-function toHTMLAttr( $attr, $for_CSS = false )
+function toHTMLAttr($attr, $for_CSS = false)
 {
 	//Ce n'est pas un array ?
 	if( !is_array( $attr ) )
@@ -177,4 +174,20 @@ function toHTMLAttr( $attr, $for_CSS = false )
 		}
 	}
 	return $formattedElem;
+}
+
+function anchor($link, $text, $add_opt = NULL)
+{
+	if( $add_opt == NULL )
+	{
+		$add_opt = array();
+	}
+	if( $link == NULL )
+	{
+		$link = $text;
+	}
+	$link = strtolower( $link );
+	echo '<a ' . toHTMLAttr( array_merge( $add_opt, array( 'href' => ROOT . $link . '.geek-land', ) ) )
+		. $text . '
+	</a>';
 }
