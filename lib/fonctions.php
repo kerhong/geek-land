@@ -1,5 +1,6 @@
 <?php
 defined( 'PHP_EXT' ) || exit();
+define( 'GL_EXT', '.geek-land' );
 define( 'ROOT_URL', 'http://geek-land.redheberg.com' );
 session_start();
 
@@ -194,7 +195,7 @@ function anchor($link, $text = NULL, $add_opt = NULL, $force_return = false)
 	}
 	$link = strtolower( $link );
 	$opt = array_merge( $add_opt, array(
-			'href' => ROOT . $link . '.geek-land',
+			'href' => ROOT . $link . GL_EXT,
 		) );
 	$str = '<a ' . toHTMLAttr( $opt ) . '>'
 		. $text . '

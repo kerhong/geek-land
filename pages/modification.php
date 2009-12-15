@@ -75,6 +75,6 @@
 		else
 		{
 			$_SESSION['erreurprof'] = $erreur;
-			header('Location: ' . ROOT . 'index' . PHP_EXT . '?page=profil');
+			header('Location: ' . ROOT . 'profil' . GL_EXT );
 		}
 	}
