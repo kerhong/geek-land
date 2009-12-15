@@ -13,6 +13,9 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 			a(function ($)
 			{
 				$( '._hide_me' ).hide();
+				$.ajaxSetup(
+					'cache': false,
+				} );
 			} );
 		</script>
 	</head>

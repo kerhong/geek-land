@@ -37,7 +37,7 @@
 		{
 			$erreur[] = 5;
 		}
-		$count_mail = Doctrine_Core::getTable( T_COORD )->findOneByMail( $_POST['email'] );
+		$count_mail = Doctrine_Core::getTable( T_COORD )->findOneByMail( $_POST['mail'] );
 		if( $count_mail != NULL && $_SESSION['mail'] != $email )
 		{
 			$erreur[] = 9;
@@ -61,7 +61,7 @@
 			{
 				$user->pseudo = $_POST['pseudo'];
 				$user->mail = $_POST['mail'];
-				$user->pass = $_POST['pass'];
+				$user->pass = $pass;
 				$user->avatar = $avatar;
 				$user->save();
 				$_SESSION = $user->toArray( false ); //False: ne pas inclure les relations ;)
