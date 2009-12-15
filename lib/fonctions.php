@@ -40,70 +40,89 @@ define( 'LEVEL_ADMINISTRATOR', 4 );
 
 function checkUserParams($from)
 {
-	$return = '';
+	$return = array();
 	/* Prototype
 	 *	if( in_array( 7, $from ) )
 	 *	{
-	 *		$return .= '<li></li>';
+	 *		$return .= '';
 	 *	}
 	*/
 	if( in_array( 1, $from ) )
 	{
-		$return .= '<li>Le pseudo est déjà pris</li>';
+		$return[] = 'Le pseudo est déjà pris';
 	}
 	if( in_array( 2, $from ) )
 	{
-		$return .= '<li>Le pseudo doit faire moins de 15 caractères.</li>';
+		$return[] = 'Le pseudo doit faire moins de 15 caractères.';
 	}
 	if( in_array( 3, $from ) )
 	{
-		$return .= '<li>Le mot de pass doit faire moins de 15 caractères.</li>';
+		$return[] = 'Le mot de pass doit faire moins de 15 caractères.';
 	}
 	if( in_array( 4, $from ) )
 	{
-		$return .= '<li>Les mots de pass ne correspondent pas.</li>';
+		$return[] = 'Les mots de pass ne correspondent pas.';
 	}
 	if( in_array( 5, $from ) )
 	{
-		$return .= '<li>Le format de l\'addresse email est incorrecte</li>';
+		$return[] = 'Le format de l\'addresse email est incorrecte';
 	}
 	if( in_array( 6, $from ) )
 	{
-		$return .= '<li>L\'adresse email doit faire moins de 40 caractères.</li>';
+		$return[] = 'L\'adresse email doit faire moins de 40 caractères.';
 	}
 	if( in_array( 7, $from ) )
 	{
-		$return .= '<li>La taille de la date est incorrect</li>';
+		$return[] = 'La taille de la date est incorrect';
 	}
 	if( in_array( 8, $from ) )
 	{
-		$return .= '<li>Format de la date incorrect</li>';
+		$return[] = 'Format de la date incorrect';
 	}
 	if( in_array( 9, $from ) )
 	{
-		$return .= '<li>L\'email est déjà utilisée</li>';
+		$return[] = 'L\'email est déjà utilisée';
 	}
 	if( in_array( 10, $from ) )
 	{
-		$return .= '<li>Le captcha n\'est pas bon</li>';
+		$return[] = 'Le captcha n\'est pas bon';
 	}
 	if( in_array( 11, $from ) )
 	{
-		$return .= '<li>Vous devez remplir tous les champs</li>';
+		$return[] = 'Vous devez remplir tous les champs';
 	}
 	if( in_array( 12, $from ) )
 	{
-		$return .= '<li>Le fichier de l\'avatar est trop gros</li>';
+		$return[] = 'Le fichier de l\'avatar est trop gros';
 	}
 	if( in_array( 13, $from ) )
 	{
-		$return .= '<li>L\'extension du fichier de l\'avatar est incorrecte</li>';
+		$return[] = 'L\'extension du fichier de l\'avatar est incorrecte';
 	}
 	if( in_array( 14, $from ) )
 	{
-		$return .= '<li>L\'avatar est trop grand, il doit faire au maximum 120x120</li>';
+		$return[] = 'L\'avatar est trop grand, il doit faire au maximum 120x120';
 	}
-	return $return;
+	if( in_array( 15, $from ) )
+	{
+		$return[] = 'Le fichier de l\'avatar est manquant';
+	}
+	if( in_array( 16, $from ) )
+	{
+		$return[] = 'Erreur durant le transfert du fichier';
+	}
+	return '<li>' . implode( '</li><li>', $return ) . '</li>';
+}
+
+function validates_get_fields()
+{
+	foreach( func_get_args() as $arg )
+	{
+		if( !isset( $_GET[$arg] ) )
+		{
+			$_GET[$arg] = NULL;
+		}
+	}
 }
 
 function validates_post_fields()
@@ -127,6 +146,7 @@ function encode($str)
 {
 	return utf8_encode( htmlentities( $str, ENT_QUOTES ) );
 }
+
 function relative_or_external($name, $add)
 {
 	$added = '';
@@ -209,11 +229,39 @@ function toHTMLAttr($attr, $for_CSS = false)
 	return $formattedElem;
 }
 
+function QSA($params)
+{
+	$str = '';
+	if( count( $params ) )
+	{
+		$str .= '?';
+		$first = true;
+		foreach( $params as $key => $value )
+		{
+			$str .= ( ( !$first )?'&':'' );
+			if( intval( $key ) !== $key ) //we are in a non-associative array context !
+			{
+				$str .= $key . '=';
+			}
+			$str .= $value;
+		}
+		if( $first )
+			$first = false;
+	}
+	return $str;
+}
+
 function anchor($link, $text = NULL, $add_opt = NULL, $force_return = false)
 {
+	$params = '';
 	if( $add_opt == NULL )
 	{
 		$add_opt = array();
+	}
+	if( isset( $add_opt['_get'] ) )
+	{
+		$params .= QSA( $add_opt['_get'] );
+		unset( $add_opt['_get'] );
 	}
 	if( $link == NULL && $text != NULL )
 	{
