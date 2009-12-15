@@ -56,8 +56,8 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 						), 'submit' )
 							->margin( true );
 					echo $form;
+					anchor( 'inscription' );
 					?>
-					<a href="?page=inscription">Inscription</a>
 					<script type="text/javascript">
 						var xhr_active_request,
 							elem_pseudo = jQuery( '#pseudo' ),
@@ -102,11 +102,11 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 					}
 					else
 					{
-					?>
-					<br /><img src="<?php echo $_SESSION['avatar']; ?>"> <br />Bienvenue, <?php echo $_SESSION['pseudo']; ?><br />
-					<li><?php anchor( 'deconnexio', 'Déconnexion' );</li>
-					<li><?php anchor( 'profil', 'Profil' ); ?></li>
-					<?php
+						?>
+						<br /><img src="<?php echo $_SESSION['avatar']; ?>"> <br />Bienvenue, <?php echo $_SESSION['pseudo']; ?><br />
+						<li><?php anchor( 'deconnexion', 'Déconnexion' ); ?></li>
+						<li><?php anchor( 'profil', 'Profil' ); ?></li>
+						<?php
 					}
 					?>
 				</span>
@@ -117,7 +117,7 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 				</span>
 				<ul>
 					<li>
-						<a href="?">Accueil</a>
+						<?php anchor( 'index', 'Acceuil' ); ?>
 					</li>
 					<li>
 						<a href="#">Forum</a>

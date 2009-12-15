@@ -19,9 +19,10 @@ class User extends BaseUser
 				'updated' => array( 'disabled' => true ),
 			) );
 	}
-	public function preInsert(Doctrine_Event $event)
+	public function preInsert($event)
 	{
 		$invoker = $event->getInvoker();
-		$invoker->pass = md5( $invoker->pass );
+		$this->pass = md5( $invoker->pass );
+		$this->pseudo = htmlentities( $invoker->pseudo, ENT_QUOTES );
 	}
 }

@@ -22,7 +22,9 @@ exit();*/
  *	'mysql://geekland_Site:jU95unj5dhJr@localhost/geek-land_membres'var
 */
 $pdo = new PDO('mysql:dbname=geekland_membre;host=localhost', 'geekland_root',  'g2qX3kYbLrYK' );
+$manager = Doctrine_Manager::getInstance();
 $connexion = Doctrine_Manager::connection( $pdo, 'DefaultConnection' );
+$manager->setAttribute( Doctrine_Core::ATTR_USE_DQL_CALLBACKS, true );
 Doctrine_Core::loadModels( ROOT . 'models/generated' );
 Doctrine_Core::loadModels( ROOT . 'models/' );
 
@@ -176,18 +178,33 @@ function toHTMLAttr($attr, $for_CSS = false)
 	return $formattedElem;
 }
 
-function anchor($link, $text, $add_opt = NULL)
+function anchor($link, $text = NULL, $add_opt = NULL, $force_return = false)
 {
 	if( $add_opt == NULL )
 	{
 		$add_opt = array();
 	}
-	if( $link == NULL )
+	if( $link == NULL && $text != NULL )
 	{
 		$link = $text;
 	}
+	elseif( $text == NULL )
+	{
+		$text = ucfirst( $link );
+	}
 	$link = strtolower( $link );
-	echo '<a ' . toHTMLAttr( array_merge( $add_opt, array( 'href' => ROOT . $link . '.geek-land', ) ) )
+	$opt = array_merge( $add_opt, array(
+			'href' => ROOT . $link . '.geek-land',
+		) );
+	$str = '<a ' . toHTMLAttr( $opt ) . '>'
 		. $text . '
 	</a>';
+	if( $force_return )
+	{
+		return $str;
+	}
+	else
+	{
+		echo $str;
+	}
 }

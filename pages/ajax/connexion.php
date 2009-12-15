@@ -8,7 +8,7 @@ require_once ROOT . 'lib/fonctions.php';
 if( isset( $_POST['pseudo'] ) && isset( $_POST['pass'] ) )
 {
 	$resultat = Doctrine_Core::getTable( T_COORD )->findOneByPseudoAndPass( $_POST['pseudo'], md5( $_POST['pass'] ) );
-	if( $reslultat != NULL )
+	if( $resultat != NULL )
 	{
 		$_SESSION = $resultat->toArray( false );
 		echo '<br /><img src="' . $_SESSION['avatar'] . '"> <br />Bienvenue, ' . $_SESSION['pseudo'] . '<br />
