@@ -36,11 +36,6 @@
 		{
 			$erreur[] = 5;
 		}
-		$result = Doctrine::getTable( T_COORD )->findOneBymail( $_POST['email'] );
-		if( $result != NULL )
-		{
-			$erreur[] = 9;
-		}
 		if( strlen( $email ) > 40 )
 		{
 			$erreur[] = 6;
@@ -50,12 +45,14 @@
 		{
 			$erreur[] = 7;
 		}
-		$_date = explode( '/', $date );
-		// Je sais pas où est la fonction if( !checkdate( $_date[0], $_date[1], $_date[2] ) )
-		if ($_date[0] < 31 && $_date[0] > 1){
-		}
-		else {
+		if( !checkdate( $_date[0], $_date[1], $_date[2] ) )
+		{
 			$erreur[] = 8;
+		}
+		$result = Doctrine::getTable( T_COORD )->findOneBymail( $_POST['email'] );
+		if( $result != NULL )
+		{
+			$erreur[] = 9;
 		}
 		if( !$resp->is_valid )
 		{
