@@ -29,8 +29,9 @@ $manager->setAttribute( Doctrine_Core::ATTR_USE_DQL_CALLBACKS, true );
 Doctrine_Core::loadModels( ROOT . 'models/generated' );
 Doctrine_Core::loadModels( ROOT . 'models/' );
 
-define( 'LEVEL_BANNED', -1 );
-define( 'LEVEL_UNVALIDATED', 0 );
+define( 'LEVEL_BANNED', -2 );
+define( 'LEVEL_UNVALIDATED', -1 );
+define( 'LEVEL_GUEST', 0 );
 define( 'LEVEL_NORMAL_USER', 1 );
 define( 'LEVEL_REDACTOR', 2 );
 define( 'LEVEL_MODERATOR', 3 );
@@ -90,6 +91,7 @@ function checkUserParams($from)
 
 function check_auth( $auth_have, $auth_needed, $strict = false )
 {
+	$auth_have = ( is_array( $auth_have ) )?( isset( $auth_have['level'] )?$auth_have['level']:LEVEL_GUEST ):$auth_have;
 	return ( $strict )?( $auth_have > $auth_needed ):( $auth_have >= $auth_needed );
 }
 

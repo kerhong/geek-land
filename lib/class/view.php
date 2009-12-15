@@ -52,6 +52,13 @@
 			{
 				$this->init = true;
 				$page = isset( $_GET['page'] )?str_replace( array( '/', '\\', '..', ), '', $_GET['page'] ):$this->file_by_def;
+				if( ( substr( $page, 0, 5 ) == 'admin' && !check_auth( $_SESSION, LEVEL_ADMIN ) )
+				 || ( substr( $page, 0, 3 ) == 'mod' && !check_auth( $_SESSION, LEVEL_MODERATOR ) )
+				 || ( substr( $page, 0, 4 ) == 'auth' && !check_auth( $_SESSION, LEVEL_REDACTOR ) )
+				 || ( $page[0] == '_' && $page != '_no_auth' ) )
+				{
+					$page = '_no_auth';
+				}
 				$this->page = ucfirst( strtolower( $page ) );
 				$this->page_ = $this->p_pages . $page . PHP_EXT;
 				$this->vars = array(
@@ -89,7 +96,6 @@
 			{
 				$this->page = $file_by_def;
 			}
-//			require_once 
 			require_once $this->page_;
 			echo '
 			</div>';
