@@ -1,8 +1,11 @@
 <?php defined( 'PHP_EXT' ) || exit();
-	$news = Doctrine_Query::create()
-						->from( 'News n' )
-						->limit( 5 )
-						->execute( array(), Doctrine_Core::HYDRATE_ARRAY );
+	$type_getter = 'p_id';
+	$page_actuelle = isset( $_GET[$type_getter] )?intval( $_GET[$type_getter] ):1;
+	$par_page = 2;
+	$query = Doctrine_Query::create()
+							->from( T_NEWS )
+	$pagination = new Doctrine_Pager( $requete, $page_actuelle, $par_page );
+	$news = $pagination->execute( array(), Doctrine::HYDRATE_ARRAY );
 	if( $news == NULL )
 	{
 		echo 'Aucune news';
@@ -28,3 +31,6 @@
 	{
 		echo '<br /><br />' . anchor( 'admin_news', 'Ajouter une news', array( '_get' => array( 'mode' => 'add', ) ), true );
 	}
+	$affichage = new Doctrine_Pager_Layout( $pagination, new Doctrine_Pager_Range_Jumping( array( 'chunk' => 4 ) ), '?' . $type_getter . '={%page_number}' );
+	$affichage->setTemplate( '[<a href="{%url}">{%page}</a>]' );
+	$affichage->setSelectedTemplate( '[<b>{%page}</b>]' );
