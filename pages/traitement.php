@@ -2,10 +2,8 @@
 	defined( 'PHP_EXT' ) || exit();
 	require_once( ROOT . '/lib/recaptchalib.php');
 	$privatekey = "6Le_-gkAAAAAALYJtfZhppF4qtnj_aygR2havFrk";
-	$resp = recaptcha_check_answer ($privatekey,
-                                $_SERVER["REMOTE_ADDR"],
-                                $_POST["recaptcha_challenge_field"],
-                                $_POST["recaptcha_response_field"]);
+	validates_post_fields( 'recaptcha_challenge_field', 'recaptcha_response_filed' );
+	$resp = recaptcha_check_answer( $privatekey, $_SERVER['REMOTE_ADDR'], $_POST['recaptcha_challenge_field'], $_POST['recaptcha_response_field'] );
 
 	if( isset( $_POST['pseudo'] ) && isset( $_POST['pass'] ) && isset( $_POST['passconf'] ) && isset( $_POST['date'] ) && isset( $_POST['email'] ) && isset($_POST['recaptcha_challenge_field']) && isset($_POST['recaptcha_response_field']) )
 	{
