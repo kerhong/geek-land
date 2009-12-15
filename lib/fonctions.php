@@ -33,7 +33,6 @@ define( 'LEVEL_BANNED', -2 );
 define( 'LEVEL_UNVALIDATED', -1 );
 define( 'LEVEL_GUEST', 0 );
 define( 'LEVEL_USER', 1 );
-define( 'LEVEL_NORMAL_USER', LEVEL_USER ); //'ll be deleted in the #80
 define( 'LEVEL_REDACTOR', 2 );
 define( 'LEVEL_MODERATOR', 3 );
 define( 'LEVEL_ADMINISTRATOR', 4 );

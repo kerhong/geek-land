@@ -18,6 +18,7 @@ class User extends BaseUser
 				'created' => array( 'name' => 'date_insc' ),
 				'updated' => array( 'disabled' => true ),
 			) );
+		$this->actAs( 'SoftDelete' );
 	}
 	public function preInsert($event)
 	{

@@ -116,6 +116,10 @@
 		{
 			$this->no_auth();
 			$this->page();
+			$this->skip_rest_of_page();
+		}
+		public function skip_rest_of_page()
+		{
 			$this->to_end = true;
 			$this->__endOfPage();
 		}
