@@ -268,6 +268,7 @@
 	class Form_Input_Img		extends Form_Input { }
 	class Form_Input_Text		extends Form_Input { }
 	class Form_Input_Button		extends Form_Input { }
+	class Form_Input_File		extends Form_Input { }
 	class Form_Input_Select		extends Form_Input
 	{
 		public function between($begin, $end)

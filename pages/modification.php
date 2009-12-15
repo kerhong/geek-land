@@ -1,8 +1,9 @@
 <?php
 	defined( 'PHP_EXT' ) || exit();
-	if( !check_auth( $_SESSION, LEVEL_USER ) )
-	{
-		$view->show_no_auth();
+	function quitter() {
+		$_SESSION['erreurprof'] = $erreur;
+		header('Location: ' . ROOT . 'profil' . GL_EXT );
+		die();
 	}
 	if( !isset( $_POST['pass'] ) && !isset( $_POST['passconf'] ) )
 	{
@@ -50,13 +51,32 @@
 		{
 			$erreur[] = 6;
 		}
-		if( !isset( $_POST['avatar'] ) )
+		if( !isset( $_FILES['avatarfile'] ) )
 		{
 			$avatar = 'no-avatar.gif';
 		}
 		else
 		{
-			$avatar = $_POST['avatar'];
+			$avatar = $_FILES['avatarfile'];
+			if ($avatar['error'] == UPLOAD_ERR_NO_FILE) $erreur[] = 15; quitter();
+			if ($avatar['error'] == UPLOAD_ERR_PARTIAL) $erreur[] = 16; quitter();
+			$nom = $avatar['name'];
+			$type = $avatar['type'];
+			$chemin = $avatar['tmp_name'];
+			$typeautorise = array( 'jpg', 'gif', 'png', 'jpeg');
+			$extension = explode('.', $nom);
+			$extension = end($extension);
+			$poids = $avatar['size'];
+			$poidsmax = 200;
+			$tailles = getimagesize($chemin);
+			$hauteur = $tailles[1];
+			$largeur = $tailles[0];
+			$hauteurmax = 120;
+			$largeurmax = 120;
+			if ($hauteur > $hauteurmax || $largeur > $largeurmax) $erreur[] = 14; quitter();
+			if ($poids > $poidsmax) $erreur[] = 12; quitter();
+			if (!in_array($extension, $typeautorise)) $erreur[] = 13; quitter();
+			move_uploaded_file($chemin, ROOT . '/avatar/' . $nom);
 		}
 		if( $erreur == array() )
 		{

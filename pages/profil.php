@@ -8,7 +8,7 @@ if( isset( $_SESSION['erreurprof'] ) )
 }
 if( isset( $_SESSION['id'] ) )
 {
-	$form_profil = new Form( array( 'action' => '?page=modification' ) );
+	$form_profil = new Form( array( 'action' => '?page=modification', 'enctype' => 'multipart/form-data' ) );
 	$form_profil->input( array(
 		'name' => 'pseudo',
 		'value' => $_SESSION['pseudo'],
@@ -30,14 +30,11 @@ if( isset( $_SESSION['id'] ) )
 		'name' => 'passconf'
 	), 'password' )
 		->label( 'Confirmation :', array( 'class' => 'form_align' ) ) . '<br />';
-	
-		$form_profil->input( array(
-		'name' => 'avatar',
-		'value' => $_SESSION['avatar'],
-		'maxlength' => '20',
-	), '' )
-		->label( 'Mettez le nom de votre avatar uploader :', array( 'class' => 'form_align' ) ) . '<br />';
-		
+	$form_profil->input( array(
+		'name' => 'avatarfile'
+	), 'file' )
+		->label( 'Vous pouvez uploader un avatar de 120x120 et de 200ko maximum', array( 'class' => 'form_align' ) ) . '<br />';
+
 	$form_profil->input( NULL, 'submit' );
 	echo $form_profil;
 }
