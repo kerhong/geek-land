@@ -6,12 +6,6 @@
 		global $erreur;
 		$_SESSION['erreurprof'] = $erreur;
 		header( 'Location: ' . ROOT . 'profil' . GL_EXT );
-		$view = new View();
-		
-		$view->helper( ':all' );
-		$view->fullPage(); 
-		
-		$view->skip_rest_of_page();
 	}
 	if( !isset( $_POST['pass'] ) && !isset( $_POST['passconf'] ) )
 	{
@@ -84,29 +78,29 @@
 			if ( $poids > $poidsmax )
 			{
 				$erreur[] = 12;
-				quitter($erreur);
+				quitter();
 				
 			}
 			if( !in_array( strtolower($extension), $typeautorise ) )
 			{			
 				$erreur[] = 13;
-				quitter($erreur);
+				quitter();
 			}
 			if( $hauteur > $hauteurmax || $largeur > $largeurmax )
 			{
 				$erreur[] = 14;
-				quitter($erreur);
+				quitter();
 			}
 			if( $avatar['error'] == UPLOAD_ERR_NO_FILE )
 			{
 			
 				$erreur[] = 15;
-				quitter($erreur);
+				quitter();
 			}
 			if( $avatar['error'] == UPLOAD_ERR_PARTIAL )
 			{
 				$erreur[] = 16;
-				quitter($erreur);
+				quitter();
 			}
 			if( is_uploaded_file( $avatar['tmp_name'] ) )
 			{
