@@ -9,7 +9,7 @@ if( isset( $_SESSION['erreurprof'] ) )
 
 if( isset( $_SESSION['id'] ) )
 {
-	$form_profil = new Form( array( 'action' => 'modification.geek-land', 'enctype' => 'multipart/form-data' ) );
+	$form_profil = new Form( array( 'action' => 'modification' . GL_EXT, 'enctype' => 'multipart/form-data' ) );
 	$form_profil->input( array(
 		'name' => 'pseudo',
 		'value' => $_SESSION['pseudo'],
@@ -35,12 +35,11 @@ if( isset( $_SESSION['id'] ) )
 		'name' => 'avatarfile'
 	), 'file' )
 		->label( 'Vous pouvez uploader un avatar de 120x120 et de 200ko maximum', array( 'class' => 'form_align' ) ) . '<br />';
-
 	$form_profil->input( NULL, 'submit' );
 	echo $form_profil;
 }
 else
 {
-	header( 'Location: ' . ROOT_URL );
 	echo '<span class="erreur">Vous n\'êtes pas identifié.</span>';
+	redirect_to( ':root_url' );
 }

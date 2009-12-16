@@ -5,7 +5,12 @@
 	}
 	function redirect_to($page)
 	{
+		if( $page == ':root_url' )
+		{
+			$page = 'index';
+		}
 		header( 'Location: ' ROOT . $page . GL_EXT );
+		exit();
 	}
 	function validates_get_fields()
 	{

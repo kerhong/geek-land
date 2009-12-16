@@ -3,6 +3,7 @@
 	define('GL_EXT', '.geek-land');
 	function quitter($erreur)
 	{
+		global $erreur;
 		$_SESSION['erreurprof'] = $erreur;
 		header( 'Location: ' . ROOT . 'profil' . GL_EXT );
 		$view = new View();
@@ -107,7 +108,8 @@
 				$erreur[] = 16;
 				quitter($erreur);
 			}
-			if (is_uploaded_file($avatar['tmp_name'])) {
+			if( is_uploaded_file( $avatar['tmp_name'] ) )
+			{
 				move_uploaded_file( $avatar['tmp_name'], '/home/geekland/public_html/avatar/' . $nom );
 			}
 		}
