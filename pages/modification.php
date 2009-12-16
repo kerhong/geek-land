@@ -6,18 +6,18 @@
 		global $erreur;
 		$_SESSION['erreurprof'] = $erreur;
 		header( 'Location: ' . ROOT . 'profil' . GL_EXT );
-	}
-	if( !isset( $_POST['pass'] ) && !isset( $_POST['passconf'] ) )
+	} 
+	if( empty( $_POST['pass'] ) && empty( $_POST['passconf'] ) )
 	{
 		$pass = $_SESSION['pass'];
 		$passconf = $_SESSION['pass'];
 	}
 	else
 	{
-		$pass = isset( $_POST['pass'] ) ? md5( $_POST['pass'] ) : '';
-		$passconf = isset( $_POST['passconf'] ) ? md5( $_POST['passconf'] ) : '';
+		$pass = !empty( $_POST['pass'] ) ? md5( $_POST['pass'] ) : '';
+		$passconf = !empty( $_POST['passconf'] ) ? md5( $_POST['passconf'] ) : '';
 	}
-	if( isset( $_POST['pseudo'] ) && isset( $_POST['mail'] ) )
+	if( !empty( $_POST['pseudo'] ) && !empty( $_POST['mail'] ) )
 	{
 		$erreur = array();
 		$pseudo = $_POST['pseudo'];
@@ -32,7 +32,7 @@
 			$erreur[] = 2;
 		}
 		//Verification mot de pass
-		if( isset($_POST['pass']) && isset( $_POST['pass'][20] ) )
+		if( !empty($_POST['pass']) && isset( $_POST['pass'][15] ) )
 		{
 			$erreur[] = 3;
 		}
@@ -100,7 +100,6 @@
 				$erreur[] = 14;
 				quitter();
 			}
-			
 			if( $avatar['error'] == UPLOAD_ERR_NO_FILE )
 			{
 			
