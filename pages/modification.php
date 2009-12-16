@@ -63,8 +63,9 @@
 			$avatar = $_FILES['avatarfile'];
 			$nom = $avatar['name'];
 			$type = $avatar['type'];
+			$typeautorise = array( 'image/gif', 'image/jpeg', 'image/png');
 			$chemin = $avatar['tmp_name'];
-			$typeautorise = array( 'jpg', 'gif', 'png', 'jpeg' );
+			$extensionautorise = array( 'jpg', 'gif', 'png', 'jpeg' );
 			$extension = explode( '.', $nom );
 			$extension = end( $extension );
 			$poids = $avatar['size'];
@@ -74,23 +75,32 @@
 			$largeur = $tailles[0];
 			$hauteurmax = 120;
 			$largeurmax = 120;
-			
+			$mime = $chemin['mime'];
 			if ( $poids > $poidsmax )
 			{
 				$erreur[] = 12;
 				quitter();
 				
 			}
-			if( !in_array( strtolower($extension), $typeautorise ) )
+			if( !in_array( strtolower($extension), $extensionautorise ) )
 			{			
 				$erreur[] = 13;
 				quitter();
 			}
+			if (!in_array($type, $typeautorise) ) {
+				$erreur[] = 13;
+				quitter();
+			}
+			/*if (!in_array($mime, $typeautorise) ) {
+				$erreur[] = 13;
+				quitter();
+			}*/
 			if( $hauteur > $hauteurmax || $largeur > $largeurmax )
 			{
 				$erreur[] = 14;
 				quitter();
 			}
+			
 			if( $avatar['error'] == UPLOAD_ERR_NO_FILE )
 			{
 			
@@ -102,6 +112,13 @@
 				$erreur[] = 16;
 				quitter();
 			}
+			if (file_exists( '/home/geekland/public_html/avatar/' . $_SESSION['avatar'] )) unlink( '/home/geekland/public_html/avatar/' . $_SESSION['avatar'] );
+			$n = 0;
+			while ( file_exists( '/home/geekland/public_html/avatar/' . $nom) ) {
+				$n++;
+				$nom = $n . '-' .  $avatar['name'];
+			}
+			$nom = str_replace('/', '-', $nom);
 			if( is_uploaded_file( $avatar['tmp_name'] ) )
 			{
 				move_uploaded_file( $avatar['tmp_name'], '/home/geekland/public_html/avatar/' . $nom );
