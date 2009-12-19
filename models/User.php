@@ -26,10 +26,8 @@ class User extends BaseUser
 			) );
 		$this->actAs( 'SoftDelete' );
 	}
-	public function preInsert($event)
+	public function setPass($pass)
 	{
-		$invoker = $event->getInvoker();
-		$this->pass = md5( $invoker->pass );
-		$this->pseudo = htmlentities( $invoker->pseudo, ENT_QUOTES );
+		return $this->_set( 'pass', md5( $pass ) );
 	}
 }
