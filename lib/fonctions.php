@@ -4,6 +4,24 @@ define( 'GL_EXT', '.geek-land' );
 define( 'ROOT_URL', 'http://geek-land.redheberg.com' );
 session_start();
 
+function vardump($a)
+{
+	echo '<pre>';
+	var_dump( $a );
+	echo '</pre>';
+}
+
+function debug($to_debug, $debug = false)
+{
+	if( $debug )
+	{
+		var_dump( debug_backtrace() );
+		echo '<hr />';
+	}
+	vardump( $to_debug );
+	exit();
+}
+
 function inc( $class_name_ )
 {
 	$class_name = str_replace( array( '_', '\\', ), '/', $class_name_ );

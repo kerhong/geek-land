@@ -43,7 +43,6 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 					$form->input( array(
 							'name' => 'pseudo',
 							'id' => 'pseudo',
-							'value' => 'Pseudo',
 							'onclick' => 'if (this.value == \'Pseudo\') this.value = \'\';',
 						) )
 							->margin( true )
@@ -66,7 +65,12 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 						var xhr_active_request,
 							elem_pseudo = jQuery( '#pseudo' ),
 							elem_pass = jQuery( '#pass' ),
-							elem_connexion = jQuery( '#connexion' );
+							elem_connexion = jQuery( '#connexion' ),
+							elem_pseudo = jQuery( '#pseudo' );
+						a( function ()
+						{
+							elem_pseudo.val( 'Pseudo'' );
+						} );
 						function connection()
 						{
 							var pseudo = toURI( elem_pseudo );

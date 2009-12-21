@@ -10,7 +10,7 @@ if( !empty( $_POST['pseudo'] ) && !empty( $_POST['pass'] ) )
 	var_dump( $_POST['pseudo'] );
 	echo '<hr />';
 	var_dump( md5($_POST['pass']) );
-	$resultat = Doctrine_Core::getTable( T_COORD )->findOneByPseudoAndPass( $_POST['pseudo'], md5( $_POST['pass'] ) );
+	$resultat = Doctrine_Core::getTable( T_USER )->findOneByPseudoAndPass( $_POST['pseudo'], md5( $_POST['pass'] ) );
 	if( $resultat != NULL )
 	{
 		var_dump( $resultat );
