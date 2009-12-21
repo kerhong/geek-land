@@ -3,7 +3,7 @@
 	$page_actuelle = isset( $_GET[$type_getter] )?intval( $_GET[$type_getter] ):1;
 	$par_page = 2;
 	$query = Doctrine_Query::create()
-							->from( T_NEWS )
+							->from( T_NEWS );
 	$pagination = new Doctrine_Pager( $requete, $page_actuelle, $par_page );
 	$news = $pagination->execute( array(), Doctrine::HYDRATE_ARRAY );
 	if( $news == NULL )
@@ -21,13 +21,13 @@
 	Ajouté le: ' . $new['created_at'] . '&nbsp;' . ( ( $new['created_at'] == $new['updated_at'] )?'&nbsp;&bull;Dernière modification: ':$new['updated_at'] ) .
  ( !check_auth( $_SESSION, LEVEL_ADMINISTRATOR )?'':'<br /><br />'
 	. anchor( 'admin_news', '&Eacute;diter cette news', array( '_get' => array( 'mode' => 'edit', 'id' => $new['id'], ) ), true ) ) . '&nbsp;&bull;&nbsp;'
-	. anchor( 'admin_news', 'Supprimer cette news', array( '_get' => array( 'mode' => 'delete', 'id' => $new['id'], ) ), true ) ) . '
+	. anchor( 'admin_news', 'Supprimer cette news', array( '_get' => array( 'mode' => 'delete', 'id' => $new['id'], ) ), true ) . '
 </em>
 <p align="center">
 	' . $new['body'] . '
 </p>';
-	}
-	if( check_auth( $_SESSION, LEVEL_ADMINISTRATOR )
+	} 
+	if( check_auth( $_SESSION, LEVEL_ADMINISTRATOR ) )
 	{
 		echo '<br /><br />' . anchor( 'admin_news', 'Ajouter une news', array( '_get' => array( 'mode' => 'add', ) ), true );
 	}

@@ -10,6 +10,8 @@ function inc( $class_name_ )
 	require_once ROOT . '/lib/class/' . $class_name . PHP_EXT;
 }
 define( 'T_COORD', 'User' );
+define( 'T_USER', T_COORD );
+define( 'T_NEWS', 'News' );
 
 spl_autoload_register( 'inc' );
 inc( 'Doctrine_Core' );
@@ -26,6 +28,7 @@ $pdo = new PDO('mysql:dbname=geekland_membre;host=localhost', 'geekland_root',  
 $manager = Doctrine_Manager::getInstance();
 $connexion = Doctrine_Manager::connection( $pdo, 'DefaultConnection' );
 $manager->setAttribute( Doctrine_Core::ATTR_USE_DQL_CALLBACKS, true );
+#Doctrine_Core::generateModelsFromDb( ROOT . 'models/' ); exit(); //Only one time, delete after ;)
 Doctrine_Core::loadModels( ROOT . 'models/generated' );
 Doctrine_Core::loadModels( ROOT . 'models/' );
 
@@ -159,6 +162,11 @@ function QSA($params)
 			$first = false;
 	}
 	return $str;
+}
+
+function encode($str)
+{
+	return utf8_encode( htmlentities( $str, ENT_QUOTES ) );
 }
 
 function anchor($link, $text = NULL, $add_opt = NULL, $force_return = false)

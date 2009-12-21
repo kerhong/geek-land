@@ -6,7 +6,6 @@ if( isset( $_SESSION['erreurprof'] ) )
 		. checkUserParams( $_SESSION['erreurprof'] )
 		. '</ul>';
 }
-
 if( isset( $_SESSION['id'] ) )
 {
 	$form_profil = new Form( array( 'action' => 'modification' . GL_EXT, 'enctype' => 'multipart/form-data' ) );

@@ -8,12 +8,13 @@ include_once 'lib/fonctions' . PHP_EXT; ?>
 		</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<link rel="stylesheet" media="screen" type="text/css" title="Design" href="geek-3.css" />
-		<?php require_js( 'http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js', 'fonctions' ); ?>
+		<?php require_js( 'http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min', 'fonctions' ); ?>
 		<script type="text/javascript">
 			a(function ($)
 			{
 				$( '._hide_me' ).hide();
 				$.ajaxSetup(
+				{
 					'cache': false,
 				} );
 			} );
