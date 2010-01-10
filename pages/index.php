@@ -5,7 +5,7 @@
 	$query = Doctrine_Query::create()
 							->from( T_NEWS );
 	$pagination = new Doctrine_Pager( $requete, $page_actuelle, $par_page );
-	$news = $pagination->execute( array(), Doctrine::HYDRATE_ARRAY );
+	$news = $query->execute( array(), Doctrine::HYDRATE_ARRAY );
 	if( $news == NULL )
 	{
 		echo 'Aucune news';
